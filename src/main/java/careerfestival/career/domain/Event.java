@@ -46,11 +46,13 @@ public class Event extends BaseEntity {
     private String eventContent;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventImage> eventImg = new ArrayList<>();
+
     //checkpoint 주최자랑 연결?
     //회원 id 연결 주최자와
     private String managerName;
     private String managerEmail;
     private int hits;
+
     //checkpoint 행사 연결해주기
 
 
