@@ -1,15 +1,9 @@
-
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/careerfestival
+    url: jdbc:mysql://localhost:3306/careerfestival
     username: root
-    password: "0000"
+    password: swtndhks12
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  data:
-#    redis:
-#      host: ${REDIS_HOST}
-#      port: ${REDIS_PORT}
-
   sql:
     init:
       mode: never
@@ -23,9 +17,3 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
-server:
-  port: 9000
-
-  jwt:
-    secretKey: ${SECRET_KEY}
-    toeknValidTime: ${TOKEN_VALID_TIME}
