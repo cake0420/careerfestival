@@ -18,8 +18,8 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
-#server:
-#  port: 9000
+server:
+  port: 9000
 
   jwt:
     secretKey: ${SECRET_KEY}
