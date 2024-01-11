@@ -20,3 +20,7 @@ spring:
         default_batch_fetch_size: 1000
 server:
   port: 9000
+
+  jwt:
+    secretKey: ${SECRET_KEY}
+    toeknValidTime: ${TOKEN_VALID_TIME}
