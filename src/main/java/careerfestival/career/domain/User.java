@@ -10,17 +10,16 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private Long id;
 
-    @NotNull
-    private String loginId;
-
     // 시큐리티 import하고, @NotNull 붙이기
     private String name;
 
+    @NotNull
     private String email;
     private String password;
 
