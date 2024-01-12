@@ -1,4 +1,4 @@
-package careerfestival.career.jeongyeon.dto;
+package careerfestival.career.dto;
 
 import lombok.Getter;
 import lombok.Setter;

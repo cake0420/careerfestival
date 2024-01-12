@@ -1,8 +1,8 @@
-package careerfestival.career.jeongyeon.service;
+package careerfestival.career.service;
 
-import careerfestival.career.jeongyeon.domain.User;
-import careerfestival.career.jeongyeon.repository.UserRepository;
-import careerfestival.career.jeongyeon.dto.JoinDTO;
+import careerfestival.career.domain.User;
+import careerfestival.career.repository.UserRepository;
+import careerfestival.career.dto.JoinDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
