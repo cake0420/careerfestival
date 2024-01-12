@@ -1,8 +1,8 @@
-package careerfestival.career.jeongyeon.config;
+package careerfestival.career.config;
 
-import careerfestival.career.jeongyeon.jwt.JWTFilter;
-import careerfestival.career.jeongyeon.jwt.JWTUtil;
-import careerfestival.career.jeongyeon.jwt.LoginFilter;
+import careerfestival.career.jwt.JWTFilter;
+import careerfestival.career.jwt.JWTUtil;
+import careerfestival.career.jwt.LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
