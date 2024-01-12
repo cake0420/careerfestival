@@ -1,4 +1,4 @@
-package careerfestival.career.jeongyeon.controller;
+package careerfestival.career.controller;
 
 import careerfestival.career.service.JoinService;
 import careerfestival.career.dto.JoinDTO;

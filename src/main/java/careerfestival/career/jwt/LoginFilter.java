@@ -1,6 +1,6 @@
-package careerfestival.career.jeongyeon.jwt;
+package careerfestival.career.jwt;
 
-import careerfestival.career.jeongyeon.dto.CustomUserDetails;
+import careerfestival.career.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +23,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+
 
         //클라이언트 요청에서 username, password 추출
         String username = obtainUsername(request);

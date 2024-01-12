@@ -1,4 +1,4 @@
-package careerfestival.career.jeongyeon.jwt;
+package careerfestival.career.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

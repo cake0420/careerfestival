@@ -1,6 +1,6 @@
-package careerfestival.career.jeongyeon.dto;
+package careerfestival.career.dto;
 
-import careerfestival.career.jeongyeon.domain.User;
+import careerfestival.career.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

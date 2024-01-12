@@ -6,7 +6,8 @@ import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class User {
@@ -15,14 +16,17 @@ public class User {
     @Column(name = "USER_ID")
     private Long id;
 
-    @NotNull
-    private String loginId;
+
+    @Column(unique = true)
+    private String email;
+
+    private String password;
+
 
     // 시큐리티 import하고, @NotNull 붙이기
     private String name;
 
-    private String email;
-    private String password;
+    private String role;
 
     private String phoneNumber;
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
