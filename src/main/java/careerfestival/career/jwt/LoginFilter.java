@@ -1,5 +1,6 @@
 package careerfestival.career.jwt;
 
+import careerfestival.career.domain.Role;
 import careerfestival.career.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,9 +50,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
 
-        String role = auth.getAuthority();
+        String authority = auth.getAuthority();
+        Role role = Role.fromString(authority);
 
-        String token = jwtUtil.createJwt(email, role, 60*60*10L);
+        String token = jwtUtil.createJwt(email, role.name(), 60*60*10L);
 
         response.addHeader("Authorization", "Bearer " + token);
 

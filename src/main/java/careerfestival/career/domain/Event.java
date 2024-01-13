@@ -11,12 +11,11 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-//@DynamicUpdate
-//@DyamicInsert
-public class Event extends BaseEntity {
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +30,7 @@ public class Event extends BaseEntity {
 
     // 행사명, 간단소개, 주소, 상세주소, 대표이미지
     private String eventName;
-    private String selfIntro;
+    private String description;
     private String address;
 
     private String specAddress;
@@ -43,8 +42,8 @@ public class Event extends BaseEntity {
     private String link;
     private String eventContent;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<EventImage> eventImg = new ArrayList<>();
+//    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+//    private List<EventImage> eventImg = new ArrayList<>();
 
     // 단순하게 입력받고 보여주는 용도
     private String managerName;

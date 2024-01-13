@@ -1,4 +1,4 @@
-package careerfestival.career.service;
+package careerfestival.career.login.service;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.repository.UserRepository;
@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -16,7 +17,6 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,6 +32,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return null;
     }
-
 
 }
