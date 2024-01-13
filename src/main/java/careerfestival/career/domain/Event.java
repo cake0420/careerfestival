@@ -58,8 +58,8 @@ public class Event extends BaseEntity {
     @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
     private EventAddress eventAddress;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<EventInformation> eventInformation = new ArrayList<>();
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
+    private EventInformation eventInformation;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventKeyword> eventKeyword = new ArrayList<>();

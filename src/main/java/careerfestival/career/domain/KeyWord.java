@@ -1,5 +1,6 @@
 package careerfestival.career.domain;
 
+import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.mapping.EventKeyword;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class KeyWord {
+public class KeyWord extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="KEYWORD_ID")
