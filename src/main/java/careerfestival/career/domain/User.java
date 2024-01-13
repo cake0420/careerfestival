@@ -1,8 +1,12 @@
 package careerfestival.career.domain;
 
+import careerfestival.career.domain.mapping.EventKeyword;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,7 +17,6 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
     private Long id;
 
 
@@ -36,5 +39,6 @@ public class User {
     private Gender gender;
 
     private int age;
+
 
 }

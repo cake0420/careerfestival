@@ -28,13 +28,12 @@ public class EventInformation {
     private String link;
     @Column(nullable = false, length = 200,name ="EVENTCONTENT")
     private String eventContent;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<EventImage> eventImg = new ArrayList<>();
+
 
     private String managerName;
     private String managerEmail;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "EVENT_ID")
     private Event event;
 }

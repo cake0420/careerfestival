@@ -2,6 +2,7 @@ package careerfestival.career.domain;
 
 
 import careerfestival.career.domain.common.BaseEntity;
+import careerfestival.career.domain.mapping.EventKeyword;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class Event extends BaseEntity {
     @Column(nullable = false, name="RECRUITMENTEND")
     private LocalDate recruitmentEnd;
 
-    // 행사명, 간단소개, 주소, 상세주소, 대표이미지
+    // 행사명, 간단소개,  대표이미지
     @Column(nullable = false, length = 20 ,name ="EVENTNAME")
     private String eventName;
     @Column(nullable = false, length = 200,name="SELFINTRO")
@@ -45,5 +46,16 @@ public class Event extends BaseEntity {
     private String managerEmail;
     private int hits;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<EventImage> eventImg = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<EventAddress> eventAddress = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<EventInformation> eventInformation = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<EventKeyword> eventKeyword = new ArrayList<>();
 
 }
