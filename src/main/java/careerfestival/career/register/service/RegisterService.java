@@ -18,9 +18,7 @@ public class RegisterService {
 
     public Long registerEvent(RegisterEventDto registerEventDto) {
         Event event = registerEventDto.toEntity();
-
         eventRepository.save(event);
-
         return event.getId();
     }
 

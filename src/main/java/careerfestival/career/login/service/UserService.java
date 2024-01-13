@@ -2,6 +2,7 @@ package careerfestival.career.login.service;
 
 import careerfestival.career.domain.Role;
 import careerfestival.career.domain.User;
+import careerfestival.career.login.dto.UserSignDetailRequestDto;
 import careerfestival.career.login.dto.UserSignInRequestDto;
 import careerfestival.career.login.dto.UserSignRoleRequestDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
@@ -19,45 +20,31 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void signUp(UserSignUpRequestDto userSignUpRequestDto) {
-        String email = userSignUpRequestDto.getEmail();
-        String password = userSignUpRequestDto.getPassword();
-        String name = userSignUpRequestDto.getName();
+    public Long signUp(UserSignUpRequestDto userSignUpRequestDto) {
+        User user = userSignUpRequestDto.toEntity();
 
-        boolean exists = userRepository.existsByEmail(email);
-        if (exists) {
-            return;
-        }
+        // DB에 존재하는지 여부
+        // boolean exists = userRepository.existsByEmail(userSignUpRequestDto.getEmail());
 
-        User data = new User();
-        data.setEmail(email);
-        data.setPassword(bCryptPasswordEncoder.encode(password));
-        data.setName(name);
+        userRepository.save(user);
 
-        userRepository.save(data);
+        return user.getId();
     }
 
-
-    public void signRole(Long user_id, UserSignRoleRequestDto userSignRoleRequestDto) {
-
-        System.out.println("----------------------------------------");
-        Optional<User> userOptional = userRepository.findById(user_id);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            Role newRole = userSignRoleRequestDto.getRole();
-
-            // 사용자의 Role 업데이트
-            user.setRole(newRole);
-
-            // 변경 사항 저장
-            userRepository.save(user);
-        } else {
-            // 사용자가 존재하지 않는 경우, 적절한 예외 처리
-            throw new RuntimeException("User not found with user_id: " + user_id);
-        }
-
+    public void signRole(Long userId, UserSignRoleRequestDto userSignRoleRequestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRole(userSignRoleRequestDto.getRole());
+        userRepository.save(user);
     }
 
+    public void signDetail(Long userId, UserSignDetailRequestDto userSignDetailRequestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setGender(userSignDetailRequestDto.getGender());
+        user.setAge(userSignDetailRequestDto.getAge());
+        user.setPhoneNumber(userSignDetailRequestDto.getPhoneNumber());
 
+        userRepository.save(user);
+    }
 }

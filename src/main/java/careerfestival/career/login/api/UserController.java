@@ -1,9 +1,14 @@
 package careerfestival.career.login.api;
 
+import careerfestival.career.domain.Role;
+import careerfestival.career.login.dto.UserSignDetailRequestDto;
 import careerfestival.career.login.dto.UserSignRoleRequestDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,26 +20,35 @@ public class UserController {
 
     // 회원가입 1
     @PostMapping("/join")
-    public String signUp(UserSignUpRequestDto userSignUpRequestDto) {
-        System.out.println("userSignUpRequestDto.getEmail() = " + userSignUpRequestDto.getEmail());
-        System.out.println("userSignUpRequestDto.getPassword() = " + userSignUpRequestDto.getPassword());
-        userService.signUp(userSignUpRequestDto);
-        return "200";
-
-        // 바로 회원가입 2로 넘어가야 함
+    public ResponseEntity<Void> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) {
+        Long userId = userService.signUp(userSignUpRequestDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/join/role?userId=" + userId);
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-
-    @PostMapping("/signrole/{user_id}")
-    public String signRole(@PathVariable("user_id") Long user_id, UserSignRoleRequestDto userSignRoleRequestDto) {
-        System.out.println("-----------------------------------------------");
-        userService.signRole(user_id, userSignRoleRequestDto);
-        return "200";
+    @PostMapping("/join/role")
+    public ResponseEntity<Void> signRole(@RequestParam("userId") Long userId, @RequestBody UserSignRoleRequestDto userSignRoleRequestDto) {
+        try {
+            userService.signRole(userId, userSignRoleRequestDto);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Location", "/join/detail?userId=" + userId);
+            return new ResponseEntity<>(headers, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @GetMapping("/login")
-    public String signIn(){
-        return "login";
+    @PostMapping("/join/detail")
+    public ResponseEntity<Void> signDetail(@RequestParam("userId") Long userId, @RequestBody UserSignDetailRequestDto userSignDetailRequestDto) {
+        try {
+            userService.signDetail(userId, userSignDetailRequestDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
+
 
 }
