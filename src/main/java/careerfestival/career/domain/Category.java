@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Category {
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="CATEGORY_ID")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 255) // 예: 최대 길이 255로 설정

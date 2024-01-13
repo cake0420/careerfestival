@@ -18,6 +18,7 @@ public class Record {
     private Long id;
 
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EVENT_ID")
     private Event event;
