@@ -1,5 +1,6 @@
 package careerfestival.career.domain;
 
+import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.mapping.EventKeyword;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,4 +42,18 @@ public class User {
     private int age;
 
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Event> event = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserKeyWord> userKeyWord = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Wish> wish = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<RecordKeyWord> recordKeyWords = new ArrayList<>();
 }

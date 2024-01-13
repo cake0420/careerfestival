@@ -21,7 +21,6 @@ public class Event extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EVENT_ID")
     private Long id;
 
     // 모집 시작일 & 모집 종료일
@@ -46,6 +45,13 @@ public class Event extends BaseEntity {
     private String managerEmail;
     private int hits;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CATEGORY_ID")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventImage> eventImg = new ArrayList<>();
 
@@ -58,4 +64,12 @@ public class Event extends BaseEntity {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventKeyword> eventKeyword = new ArrayList<>();
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Wish> wish = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<RecordKeyWord> recordKeyWord = new ArrayList<>();
 }

@@ -21,7 +21,10 @@ public class KeyWord {
     @Column(length = 255) // 예: 최대 길이 255로 설정
     private String categoryName;
 
+    @OneToMany(mappedBy = "keyWord", cascade = CascadeType.ALL)
+    private List<EventKeyword> eventKeyword = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "keyWord", cascade = CascadeType.ALL)
+    private List<RecordKeyWord> recordKeyWord = new ArrayList<>();
 
 }

@@ -16,8 +16,9 @@ public class EventKeyword extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "KEWORD_ID")
+    @JoinColumn(name = "KEYWORD_ID")
     private KeyWord keyWord;
 
     @ManyToOne(fetch = FetchType.LAZY)
