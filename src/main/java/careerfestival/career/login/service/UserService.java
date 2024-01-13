@@ -23,11 +23,13 @@ public class UserService {
     public Long signUp(UserSignUpRequestDto userSignUpRequestDto) {
         User user = userSignUpRequestDto.toEntity();
 
-        // DB에 존재하는지 여부
-        // boolean exists = userRepository.existsByEmail(userSignUpRequestDto.getEmail());
-
+        // DB에 존재하는지 여부 (email로 판단)
+        boolean exists = userRepository.existsByEmail(userSignUpRequestDto.getEmail());
+        if(exists){
+            return null;
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(userSignUpRequestDto.getPassword()));
         userRepository.save(user);
-
         return user.getId();
     }
 

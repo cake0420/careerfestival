@@ -1,6 +1,5 @@
 package careerfestival.career.converter;
 
-
 import careerfestival.career.web.dto.temp.TempResponse;
 
 public class TempConverter {
