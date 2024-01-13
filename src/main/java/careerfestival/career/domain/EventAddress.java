@@ -20,7 +20,7 @@ public class EventAddress {
     @Column(nullable = false, length = 40, name ="SPECADDRESS")
     private String specAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EVENT_ID")
     private Event event;
 }
