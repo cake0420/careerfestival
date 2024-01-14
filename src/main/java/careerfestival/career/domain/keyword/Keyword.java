@@ -1,4 +1,4 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.keyword;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,13 +8,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class KeyWord {
+public class Keyword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="KEYWORD_ID")
     private Long id;
 
-    @Column(length = 255) // 예: 최대 길이 255로 설정
-    private String categoryName;
-
+    // 행사 분야 13개의 값
+    private KeywordName keywordName;
 }

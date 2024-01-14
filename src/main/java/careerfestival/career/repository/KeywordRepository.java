@@ -1,9 +1,9 @@
 package careerfestival.career.repository;
 
-import careerfestival.career.domain.KeyWord;
+import careerfestival.career.domain.keyword.Keyword;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface KeyWordRepository extends JpaRepository<KeyWord, Long> {
+public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 }

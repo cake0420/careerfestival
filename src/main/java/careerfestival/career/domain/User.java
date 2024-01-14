@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -19,7 +22,11 @@ public class User {
     @Column(name = "USER_ID")
     private Long id;
 
+    @OneToMany(mappedBy = "user")
+    private List<Record> records = new ArrayList<>();
+
     private String email;
+
     private String password;
     private String name;
 
