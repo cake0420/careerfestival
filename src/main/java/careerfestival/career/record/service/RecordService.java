@@ -2,7 +2,10 @@ package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.keyword.RecordKeyword;
+import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
+import careerfestival.career.repository.RecordKeywordRepository;
 import careerfestival.career.repository.RecordRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +15,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RecordService {
     private final RecordRepository recordRepository;
+    private final RecordKeywordRepository recordKeywordRepository;
     private final UserRepository userRepository;
 
     public void recordLectureSeminar(Long userId, RecordLectureSeminarDto recordLectureSeminarDto) {
+
         // 전달받은 userId로 연관관계 매핑된 User 테이블에 맞춰서 DB에 저장하기
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
@@ -23,6 +28,20 @@ public class RecordService {
         record.setUser(user);
 
         recordRepository.save(record);
+    }
+
+    public void recordEtc(Long userId, RecordEtcDto recordEtcDto) {
+        System.out.println("recordEtcDto.getEventName() = " + recordEtcDto.getEventName());
+        System.out.println("recordEtcDto.getRecordKeyword() = " + recordEtcDto.getRecordKeyword());
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new RuntimeException("User not found with id: " + userId));
+
+        Record record = recordEtcDto.toEntity();
+        record.setUser(user);
+        recordRepository.save(record);
+        recordKeywordRepository.saveAll(record.getRecordKeywords());
+        // Record 테이블에만 저장된 상태
     }
 
 }

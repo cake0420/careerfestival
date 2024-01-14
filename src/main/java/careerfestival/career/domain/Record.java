@@ -26,6 +26,7 @@ public class Record {
     private User user;
 
     @OneToMany(mappedBy = "record")
+//    @JoinColumn(name = "RECORDKEYWORD_ID")
     private List<RecordKeyword> recordKeywords = new ArrayList<>();
 
     // 행사명

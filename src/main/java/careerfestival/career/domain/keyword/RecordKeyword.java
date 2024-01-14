@@ -25,4 +25,6 @@ public class RecordKeyword {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "KEYWORD_ID")
     private Keyword keyWord;
+
+    private String recordKeywordEtcDetail;
 }
