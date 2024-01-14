@@ -10,13 +10,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Getter
+@Setter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-//@DynamicUpdate
-//@DyamicInsert
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Event extends BaseEntity {
 
     @Id
@@ -24,18 +24,34 @@ public class Event extends BaseEntity {
     private Long id;
 
     // 모집 시작일 & 모집 종료일
-    @Column(nullable = false, name="RECRUITMENTSTART")
+    @Column(nullable = false, name = "RECRUITMENTSTART")
     private LocalDate recruitmentStart;
-    @Column(nullable = false, name="RECRUITMENTEND")
+    @Column(nullable = false, name = "RECRUITMENTEND")
     private LocalDate recruitmentEnd;
 
     // 행사명, 간단소개,  대표이미지
-    @Column(nullable = false, length = 20 ,name ="EVENTNAME")
+    @Column(nullable = false, length = 20, name = "EVENTNAME")
     private String eventName;
-    @Column(nullable = false, length = 200,name="SELFINTRO")
-    private String selfIntro;
-    @Column(nullable = false, length = 300, name="MAINIMG")
+    @Column(nullable = false, length = 200, name = "DESCRIPTION")
+    private String description;
+    @Column(nullable = false, length = 300, name = "MAINIMG")
     private String mainImg;
+
+    // 행사 시작일, 행사 종료일, 행사 외부 사이트, 행사 정보, 행사 정보 이미지
+    @Column(nullable = false, name = "EVENTSTART")
+    private LocalDate eventStart;
+    @Column(nullable = false, name = "EVENTEND")
+    private LocalDate eventEnd;
+    @Column(nullable = false, length = 300, name = "LINK")
+    private String link;
+    @Column(nullable = false, length = 200, name = "EVENTCONTENT")
+    private String eventContent;
+
+    //행사 주소
+    @Column(nullable = false, length = 40, name ="ADDRESS")
+    private String address;
+    @Column(nullable = false, length = 40, name ="SPECADDRESS")
+    private String specAddress;
 
 
 
@@ -44,6 +60,7 @@ public class Event extends BaseEntity {
     private String managerName;
     private String managerEmail;
     private int hits;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
@@ -54,12 +71,6 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventImage> eventImg = new ArrayList<>();
-
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    private EventAddress eventAddress;
-
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    private EventInformation eventInformation;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventKeyword> eventKeyword = new ArrayList<>();
@@ -72,4 +83,5 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<RecordKeyWord> recordKeyWord = new ArrayList<>();
+
 }

@@ -7,6 +7,8 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -16,8 +18,13 @@ import java.util.List;
 public class Record extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "RECORD_ID")
     private Long id;
 
+    private LocalDate eventDate;
+
+    private String networkingName;
+    private String networkingContact;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

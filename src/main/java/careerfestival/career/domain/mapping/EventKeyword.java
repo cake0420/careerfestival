@@ -25,6 +25,4 @@ public class EventKeyword extends BaseEntity {
     @JoinColumn(name = "EVENT_ID")
     private Event event;
 
-
-
 }

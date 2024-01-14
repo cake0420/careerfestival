@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class KeyWord extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="KEYWORD_ID")
@@ -28,5 +27,4 @@ public class KeyWord extends BaseEntity {
 
     @OneToMany(mappedBy = "keyWord", cascade = CascadeType.ALL)
     private List<RecordKeyWord> recordKeyWord = new ArrayList<>();
-
 }

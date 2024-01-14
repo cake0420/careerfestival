@@ -70,8 +70,8 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/join").permitAll()
                         .requestMatchers("/mypage").hasRole("PARTICIPANT")
                         .requestMatchers("/mypage").hasRole("PARTICIPANT")
-                        .anyRequest().authenticated()
-        );
+                        .anyRequest().permitAll()
+                );
 
         //경로 접근 필터
         http

@@ -1,6 +1,5 @@
 package careerfestival.career.domain;
 
-
 import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
