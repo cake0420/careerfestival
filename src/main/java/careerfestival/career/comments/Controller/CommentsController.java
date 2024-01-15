@@ -3,7 +3,6 @@ package careerfestival.career.comments.Controller;
 import careerfestival.career.comments.Service.CommentService;
 import careerfestival.career.comments.dto.CommentRequestDto;
 import careerfestival.career.comments.dto.CommentResponseDto;
-import careerfestival.career.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
