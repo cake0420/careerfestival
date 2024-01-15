@@ -18,8 +18,11 @@ public class Category extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 255) // 예: 최대 길이 255로 설정
+    @Column(length = 200, name = "category_name")
     private String categoryName;
+
+    @Column(length = 200, name = "category_detail")
+    private String categoryDetail;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Record> record = new ArrayList<>();

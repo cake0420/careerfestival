@@ -1,5 +1,6 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.mapping;
 
+import careerfestival.career.domain.Event;
 import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +19,6 @@ public class EventImage extends BaseEntity {
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EVENT_ID")
     private Event event;
 
 }

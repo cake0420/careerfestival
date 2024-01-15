@@ -20,4 +20,5 @@ public class RegisterController {
         registerService.registerEvent(registerEventDto);
         return new ResponseEntity(HttpStatus.OK);
     }
+
 }

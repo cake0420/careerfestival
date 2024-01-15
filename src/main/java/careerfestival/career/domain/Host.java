@@ -1,5 +1,6 @@
 package careerfestival.career.domain;
 
+import careerfestival.career.domain.User;
 import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,26 +8,21 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-public class RecordKeyWord extends BaseEntity {
+
+public class Host extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EVENT_ID")
-    private Event event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "KEYWORD_ID")
-    private KeyWord keyWord;
+    @Column(nullable = false, length = 20, name = "host_name")
+    private String hostName;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RECORD_ID")
-    private Record record;
+    @Column(nullable = false, length = 300, name = "profile_img")
+    private String profileImg;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

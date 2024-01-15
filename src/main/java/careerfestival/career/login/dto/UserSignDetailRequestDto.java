@@ -1,6 +1,6 @@
 package careerfestival.career.login.dto;
 
-import careerfestival.career.domain.Gender;
+import careerfestival.career.domain.enums.Gender;
 import lombok.*;
 
 @Getter

@@ -1,17 +1,13 @@
 package careerfestival.career.login.service;
 
-import careerfestival.career.domain.Role;
 import careerfestival.career.domain.User;
 import careerfestival.career.login.dto.UserSignDetailRequestDto;
-import careerfestival.career.login.dto.UserSignInRequestDto;
 import careerfestival.career.login.dto.UserSignRoleRequestDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

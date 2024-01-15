@@ -1,8 +1,7 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.enums;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Builder;
 
 public enum Role {
     ROLE_USER, ROLE_ADMIN;

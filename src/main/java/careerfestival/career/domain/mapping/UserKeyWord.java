@@ -1,6 +1,8 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.mapping;
 
+import careerfestival.career.domain.User;
 import careerfestival.career.domain.common.BaseEntity;
+import careerfestival.career.domain.enums.KeywordName;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,9 +20,8 @@ public class UserKeyWord extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "KEYWORD_ID")
-    private KeyWord keyWord;
+    @Enumerated(EnumType.STRING)
+    private KeywordName keywordName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

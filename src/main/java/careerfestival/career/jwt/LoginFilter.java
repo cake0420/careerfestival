@@ -1,6 +1,6 @@
 package careerfestival.career.jwt;
 
-import careerfestival.career.domain.Role;
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

@@ -7,13 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class RecordLectureSeminarDto {
-    private LocalDate eventDate;
+    private LocalDateTime eventDate;
     private String networkingName;
     private String networkingContact;
 
