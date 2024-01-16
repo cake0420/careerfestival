@@ -2,7 +2,6 @@ package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
-import careerfestival.career.domain.keyword.RecordKeyword;
 import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
 import careerfestival.career.repository.RecordKeywordRepository;
@@ -29,6 +28,8 @@ public class RecordService {
 
         recordRepository.save(record);
     }
+
+
 
     public void recordEtc(Long userId, RecordEtcDto recordEtcDto) {
         System.out.println("recordEtcDto.getEventName() = " + recordEtcDto.getEventName());
