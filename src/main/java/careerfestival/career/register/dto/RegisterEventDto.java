@@ -2,16 +2,15 @@ package careerfestival.career.register.dto;
 
 import careerfestival.career.domain.Event;
 import lombok.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class RegisterEventDto {
-    private LocalDate recruitmentStart;
-    private LocalDate recruitmentEnd;
+    private LocalDateTime recruitmentStart;
+    private LocalDateTime recruitmentEnd;
 
     private String eventName;
     private String description;

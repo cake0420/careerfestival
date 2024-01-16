@@ -1,10 +1,9 @@
 package careerfestival.career.login.api;
 
+
 import careerfestival.career.login.dto.UpdateUserDetailRequestDto;
-import careerfestival.career.login.dto.UserSignInRequestDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

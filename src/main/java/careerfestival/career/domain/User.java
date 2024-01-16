@@ -1,11 +1,16 @@
 package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
+import careerfestival.career.domain.enums.Gender;
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
+import careerfestival.career.domain.mapping.Participate;
+import careerfestival.career.domain.mapping.RecordKeyword;
+import careerfestival.career.domain.mapping.UserKeyword;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +26,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @Email
+    @Column(nullable = false, length = 300, name = "email")
     private String email;
 
     @Column(nullable = false, length = 300, name = "password")
@@ -34,6 +38,12 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 200, name = "phone_number")
     private String phoneNumber;
 
+    // status와 inacticedate는 회원 탈퇴, 게시글 삭제 시 필요 기능
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
+    private UserStatus status;
+
+    private Timestamp inactiveDate;
     // status와 inactivedate는 회원 탈퇴, 게시글 삭제 시 필요 기능
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
@@ -49,6 +59,37 @@ public class User extends BaseEntity {
 
     @Column(columnDefinition = "INT")
     private int age;
+
+    @Column(length = 20, name = "company")
+    private String company;
+
+    @Column(length = 20, name = "position")
+    private String position;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Event> event = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserKeyword> userKeyWord = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Wish> wish = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Participate> participate = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Host> host = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Follow> follow = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<RecordKeyword> recordKeyWord = new ArrayList<>();
 
     public void updatePassword(String password) {
         this.password = password;
@@ -69,17 +110,4 @@ public class User extends BaseEntity {
     public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-
-    // 회사
-    @Column(length = 20, name = "company")
-    private String company;
-
-
-    // ???
-    @Column(length = 20, name = "position")
-    private String position;
-
-    @OneToMany(mappedBy = "user")
-    private List<Record> records = new ArrayList<>();
 }

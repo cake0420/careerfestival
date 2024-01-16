@@ -1,13 +1,13 @@
 package careerfestival.career.record.dto;
 
 import careerfestival.career.domain.Record;
-import careerfestival.career.domain.keyword.RecordKeyword;
+import careerfestival.career.domain.mapping.RecordKeyword;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class RecordEtcDto {
     private String eventName;
-    private LocalDate eventDate;
+    private LocalDateTime eventDate;
     private List<RecordKeyword> recordKeyword;
     private String networkingName;
     private String networkingContact;

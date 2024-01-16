@@ -1,8 +1,7 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.enums;
 
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Builder;
 
 public enum Role {
     ROLE_PARTICIPANT, ROLE_ORGANIZER, ROLE_ADMIN;
@@ -16,5 +15,4 @@ public enum Role {
         }
         throw new IllegalArgumentException("No constant with text " + roleStr + " found");
     }
-
 }

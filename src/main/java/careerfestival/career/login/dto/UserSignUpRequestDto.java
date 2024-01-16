@@ -1,7 +1,7 @@
 package careerfestival.career.login.dto;
 
-import careerfestival.career.domain.Role;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Role;
 import lombok.*;
 
 @Getter

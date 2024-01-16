@@ -6,13 +6,12 @@ import careerfestival.career.login.dto.UserSignInRequestDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static careerfestival.career.domain.Role.ROLE_ORGANIZER;
-import static careerfestival.career.domain.Role.ROLE_PARTICIPANT;
+import static careerfestival.career.domain.enums.Role.ROLE_ORGANIZER;
+import static careerfestival.career.domain.enums.Role.ROLE_PARTICIPANT;
 
 @Service
 @RequiredArgsConstructor

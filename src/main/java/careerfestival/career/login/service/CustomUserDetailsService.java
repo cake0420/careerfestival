@@ -1,6 +1,5 @@
 package careerfestival.career.login.service;
 
-import careerfestival.career.domain.Role;
 import careerfestival.career.domain.User;
 import careerfestival.career.repository.UserRepository;
 import careerfestival.career.dto.CustomUserDetails;
@@ -10,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

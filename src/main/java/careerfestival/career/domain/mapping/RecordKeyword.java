@@ -1,6 +1,8 @@
-package careerfestival.career.domain.keyword;
+package careerfestival.career.domain.mapping;
 
 import careerfestival.career.domain.Record;
+import careerfestival.career.domain.common.BaseEntity;
+import careerfestival.career.domain.enums.KeywordName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RecordKeyword {
+public class RecordKeyword extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RECORDKEYWORD_ID")
@@ -22,5 +24,6 @@ public class RecordKeyword {
     @JoinColumn(name = "RECORD_ID")
     private Record record;
 
-    private String recordKeywordEtcDetail;
+    @Enumerated(EnumType.STRING)
+    private KeywordName keywordName;
 }

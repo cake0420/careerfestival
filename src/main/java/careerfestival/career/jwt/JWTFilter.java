@@ -2,8 +2,8 @@ package careerfestival.career.jwt;
 
 //JWT 토큰 검증 필터
 
-import careerfestival.career.domain.Role;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
