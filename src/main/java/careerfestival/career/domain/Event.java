@@ -25,6 +25,11 @@ public class Event extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long eventId;
+
+
     // 모집 시작일 & 모집 종료일
     @Column(nullable = false, name = "recruitment_start")
     private LocalDateTime recruitmentStart;
@@ -92,19 +97,4 @@ public class Event extends BaseEntity {
     private List<Participate> participate = new ArrayList<>();
 
 
-    @Entity
-    @Getter
-    @Setter
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PUBLIC)
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Follow extends BaseEntity {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        private User user;
-
-    }
 }

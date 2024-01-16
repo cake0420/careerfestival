@@ -81,7 +81,7 @@ public class User extends BaseEntity {
     private List<Host> host = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Event.Follow> follow = new ArrayList<>();
+    private List<Follow> follow = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RecordKeyWord> recordKeyWord = new ArrayList<>();
