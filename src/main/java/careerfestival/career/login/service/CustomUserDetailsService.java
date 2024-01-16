@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +21,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         //DB에서 조회
         User findByEmail = userRepository.findByEmail(username);
-
-        System.out.println("------------------------------------------------");
-        System.out.println("findByEmail = " + findByEmail);
 
         if (findByEmail != null) {
             return new CustomUserDetails(findByEmail);

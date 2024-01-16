@@ -1,6 +1,7 @@
 package careerfestival.career.login.dto;
 
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Role;
 import lombok.*;
 
 @Getter
@@ -8,9 +9,15 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 public class UserSignUpRequestDto {
+
     private String email;
+
     private String password;
+    private String checkPassword;
+
     private String name;
+
+    private Role role;
 
     @Builder
     public User toEntity() {
@@ -18,6 +25,7 @@ public class UserSignUpRequestDto {
                 .email(email)
                 .password(password)
                 .name(name)
+                .role(role)
                 .build();
     }
 }

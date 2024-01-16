@@ -18,7 +18,6 @@ public class JWTUtil {
 
     public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
 
-
         byte[] byteSecretKey = Decoders.BASE64.decode(secret);
         key = Keys.hmacShaKeyFor(byteSecretKey);
     }
@@ -41,7 +40,7 @@ public class JWTUtil {
     public String createJwt(String email, String role, Long expiredMs) {
 
         Claims claims = Jwts.claims();
-        claims.put("email", email);
+        claims.put("username", email);
         claims.put("role", role);
 
         return Jwts.builder()
@@ -51,6 +50,7 @@ public class JWTUtil {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
 }
 
 

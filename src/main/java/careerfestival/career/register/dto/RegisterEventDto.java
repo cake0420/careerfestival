@@ -2,8 +2,6 @@ package careerfestival.career.register.dto;
 
 import careerfestival.career.domain.Event;
 import lombok.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

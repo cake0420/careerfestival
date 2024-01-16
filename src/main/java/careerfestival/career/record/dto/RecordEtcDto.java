@@ -10,19 +10,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-// 강연, 세미나 DTO
-public class RecordLectureSeminarDto {
-
-    private LocalDateTime eventDate;
-
+public class RecordEtcDto {
     private String eventName;
+    private LocalDateTime eventDate;
     private List<RecordKeyword> recordKeyword;
-
     private String networkingName;
     private String networkingContact;
 

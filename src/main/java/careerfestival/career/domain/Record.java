@@ -1,11 +1,11 @@
 package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
-import careerfestival.career.domain.mapping.RecordKeyWord;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import careerfestival.career.domain.mapping.RecordKeyword;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,14 +32,12 @@ public class Record extends BaseEntity {
     @Column(length = 300, name = "networking_contact")
     private String networkingContact;
 
+    @OneToMany(mappedBy = "record", cascade = CascadeType.ALL)
+    private List<RecordKeyword> recordKeywords = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-
-    @OneToMany(mappedBy = "record", cascade = CascadeType.ALL)
-    private List<RecordKeyWord> recordKeyWords = new ArrayList<>();
-
 }

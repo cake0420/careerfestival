@@ -1,7 +1,7 @@
 package careerfestival.career.login.api;
 
-import careerfestival.career.login.dto.UserSignDetailRequestDto;
-import careerfestival.career.login.dto.UserSignRoleRequestDto;
+
+import careerfestival.career.login.dto.UpdateUserDetailRequestDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,41 +17,54 @@ public class UserController {
 
     private final UserService userService;
 
-    // 회원가입 1
+    // 회원가입 1, 2 (이름, 이메일, 비밀번호, 비밀번호 확인, role)
     @PostMapping("/join")
     public ResponseEntity<Void> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) {
         Long userId = userService.signUp(userSignUpRequestDto);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/join/role?userId=" + userId);
+        headers.add("Location", "/join/detail?userId=" + userId);
+
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-    @PostMapping("/join/role")
-    public ResponseEntity<Void> signRole(@RequestParam("userId") Long userId, @RequestBody UserSignRoleRequestDto userSignRoleRequestDto) {
-        try {
-            userService.signRole(userId, userSignRoleRequestDto);
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", "/join/detail?userId=" + userId);
-            return new ResponseEntity<>(headers, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+    //화면 테스트용
+    @GetMapping("/join/detail")
+    @ResponseBody
+    public String detail() {
+        return "join detail";
     }
 
+    //회원가입3
+    //@RequestParam : 클라이언트가 요청한 URL의 쿼리 파라미터에 대한 값을 받아옴(url 상에서 데이터를 찾음)
     @PostMapping("/join/detail")
-    public ResponseEntity<Void> signDetail(@RequestParam("userId") Long userId, @RequestBody UserSignDetailRequestDto userSignDetailRequestDto) {
+    public ResponseEntity<Void> updateDetail(@RequestParam("userId") Long userId, @RequestBody UpdateUserDetailRequestDto userSignDetailRequestDto) {
         try {
-            userService.signDetail(userId, userSignDetailRequestDto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            userService.updateDetail(userId, userSignDetailRequestDto);
+            return new ResponseEntity<>(HttpStatus.OK); //200
 
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
         }
     }
 
-//    @PostMapping("/login")
-////    @ResponseStatus(HttpStatus.OK)
-////    public ResponseEntity login(@Valid @RequestBody UserSignInRequestDto userSignInRequestDto) throws Exception {
-////        return new ResponseEntity<>(userService.signIn(userSignInRequestDto), HttpStatus.OK);
-////    }
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity login() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/");
+        return new ResponseEntity<>(headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/")
+    @ResponseBody
+    public String home(){
+        return "home";
+    }
+
+    @GetMapping("/mypage")
+    @ResponseBody
+    public String mypage(){
+        return "mypage";
+    }
 }

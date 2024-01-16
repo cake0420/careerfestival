@@ -1,6 +1,5 @@
 package careerfestival.career.participate.dto;
 
-import careerfestival.career.domain.Comment;
 import careerfestival.career.domain.mapping.Participate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

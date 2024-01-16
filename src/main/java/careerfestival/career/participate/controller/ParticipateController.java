@@ -1,8 +1,5 @@
 package careerfestival.career.participate.controller;
 
-import careerfestival.career.comments.dto.CommentRequestDto;
-import careerfestival.career.comments.dto.CommentResponseDto;
-import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.participate.dto.ParticipateRequestDto;
 import careerfestival.career.participate.dto.ParticipateResponseDto;
 import careerfestival.career.participate.service.ParticipateService;
