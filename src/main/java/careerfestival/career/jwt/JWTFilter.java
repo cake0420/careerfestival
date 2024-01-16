@@ -2,6 +2,7 @@ package careerfestival.career.jwt;
 
 //JWT 토큰 검증 필터
 
+import careerfestival.career.domain.Role;
 import careerfestival.career.domain.User;
 import careerfestival.career.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
@@ -27,6 +28,7 @@ public class JWTFilter extends OncePerRequestFilter {
         //request에서 Authorization 헤더를 찾음
         String authorization = request.getHeader("Authorization");
 
+
         //Authorization 헤더 검사
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             System.out.println("token null");
@@ -35,6 +37,7 @@ public class JWTFilter extends OncePerRequestFilter {
             //조건이 해당되면 매소드 종료 (필수!)
             return;
         }
+
 
         //Bearer 부분 제거 후 순수 토큰 획득 -> 토큰 시간 검증
         String token = authorization.split(" ")[1];
@@ -50,11 +53,13 @@ public class JWTFilter extends OncePerRequestFilter {
         String email = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
+
         //Member 엔티티 생성하여 값 세팅
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword("temppassword");
-        //user.setRole(role);
+        User user = User.builder()
+                .email(email)
+                .password("tempPassword")
+                .role(Role.valueOf(role))
+                .build();
 
 
         //UserDetails에 회원정보 객체 담기

@@ -1,5 +1,6 @@
 package careerfestival.career.login.service;
 
+import careerfestival.career.domain.Role;
 import careerfestival.career.domain.User;
 import careerfestival.career.repository.UserRepository;
 import careerfestival.career.dto.CustomUserDetails;
@@ -23,9 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         //DB에서 조회
         User findByEmail = userRepository.findByEmail(username);
-
-        System.out.println("------------------------------------------------");
-        System.out.println("findByEmail = " + findByEmail);
 
         if (findByEmail != null) {
             return new CustomUserDetails(findByEmail);
