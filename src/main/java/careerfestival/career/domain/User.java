@@ -88,8 +88,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<RecordKeyword> recordKeyWord = new ArrayList<>();
 
     public void updatePassword(String password) {
         this.password = password;
