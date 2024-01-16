@@ -25,23 +25,23 @@ public class ParticipateService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
-    public Long participateSave(String email, String eventName, ParticipateRequestDto requestDto) {
+    public Long participateSave(Long userId, Long eventId, ParticipateRequestDto requestDto) {
         Optional<Participate> participate = participateRepository.findById(requestDto.getId());
-        User user = userRepository.findByEmail(email);
-        Event event = eventRepository.findByEventName(eventName);
+        Optional<User> userid = userRepository.findById(userId);
+        Optional<Event> eventid = eventRepository.findById(eventId);
 
         Participate participates = Participate.builder()
                 .id(requestDto.getId())
-                .user(user)
-                .event(event)
                 .build();
 
         Participate savedParticipate = participateRepository.save(participates);
         return savedParticipate.getId();
     }
 
-    public List<ParticipateResponseDto> getAllParticipateByEvent(String eventName) {
-        List<Participate> participates = participateRepository.findByEvent_EventName(eventName);
+    public List<ParticipateResponseDto> getAllParticipateByEvent(Long userId, Long eventId, String nam) {
+        Optional<User> userid = userRepository.findById(userId);
+        Optional<Event> eventid = eventRepository.findById(eventId);
+        List<Participate> participates = participateRepository.findByEvent_EventName(nam);
         return participates.stream()
                 .map(ParticipateResponseDto::new)
                 .collect(Collectors.toList());

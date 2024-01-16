@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,17 +22,21 @@ public class CommentService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
-    public Long commentSave(String email, String eventName, CommentRequestDto commentRequestDto)
+    public Long commentSave(String email, Long userId, Long eventId, CommentRequestDto commentRequestDto)
     {
         User user = userRepository.findByEmail(email);
-        Event event = eventRepository.findByEventName(eventName);
+        Optional<User> userid = userRepository.findById(userId);
+        Optional<Event> event = eventRepository.findById(eventId);
 
         Comment comment = commentRequestDto.toEntity();
         Comment savedComment = commentRepository.save(comment);
         return savedComment.getId();
     }
-    public List<CommentResponseDto> getAllCommentsByEvent(String eventName) {
-        List<Comment> comments = commentRepository.findByEvent_EventName(eventName);
+    public List<CommentResponseDto> getAllCommentsByEvent(String comment, String email, Long userId, Long eventId) {
+        List<Comment> comments = commentRepository.findCommentByCommentContent(comment);
+        User user = userRepository.findByEmail(email);
+        Optional<User> userid = userRepository.findById(userId);
+        Optional<Event> event = eventRepository.findById(eventId);
         return comments.stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());

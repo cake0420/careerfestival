@@ -18,15 +18,16 @@ import java.util.List;
 public class ParticipateController {
     private final ParticipateService participateService;
 
-    @PostMapping("/event/{id}/participate")
+    @PostMapping("/event/{userId}/{eventId}/participate")
     public ResponseEntity<Long> addParticipate(
-            @PathVariable("id") Long eventId,
+            @PathVariable("userId") Long userId,
+            @PathVariable("eventId") Long eventId,
             @RequestBody ParticipateRequestDto participateRequestDto) {
         // Assuming you have the authenticated user's email
         String userEmail = "user@example.com"; // Replace this with the actual email
-
+        String eventName = "test";
         try {
-            Long participateId = participateService.participateSave(userEmail, String.valueOf(eventId), participateRequestDto);
+            Long participateId = participateService.participateSave(userId, eventId, participateRequestDto);
             return new ResponseEntity<>(participateId, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,10 +37,15 @@ public class ParticipateController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-        @GetMapping("/event/{id}/participate")
-        public ResponseEntity<List<ParticipateResponseDto>> getAllCommentsByEvent(@PathVariable("id") Long eventId) {
+        @GetMapping("/event/{userId}/{eventId}/participate")
+        public ResponseEntity<List<ParticipateResponseDto>> getAllCommentsByEvent(
+                @PathVariable("userId") Long userId,
+                @PathVariable("eventId") Long eventId) {
+            String userEmail = "user@example.com"; // Replace this with the actual email
+            String name = "test";
+            String nam = "test";
             try {
-                List<ParticipateResponseDto> comments = participateService.getAllParticipateByEvent(String.valueOf(eventId));
+                List<ParticipateResponseDto> comments = participateService.getAllParticipateByEvent(userId, eventId, nam);
                 return new ResponseEntity<>(comments, HttpStatus.OK);
             } catch (IllegalArgumentException e) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

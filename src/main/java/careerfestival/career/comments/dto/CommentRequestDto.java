@@ -23,4 +23,5 @@ public class CommentRequestDto {
                 .parentContent(parentContent)
                 .build();
     }
+
 }
