@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Builder;
 
 public enum Role {
-    ROLE_USER, ROLE_ADMIN;
+    ROLE_PARTICIPANT, ROLE_ORGANIZER, ROLE_ADMIN;
 
     @JsonCreator
     public static Role fromString(String roleStr) {
