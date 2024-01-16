@@ -1,5 +1,6 @@
 package careerfestival.career.record.controller;
 
+import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
 import careerfestival.career.record.service.RecordService;
 import lombok.RequiredArgsConstructor;
@@ -22,4 +23,16 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    // User가 Keyword 테이블에서 선택한다고 했을 때, Keyword_id를 넘겨주는 방법은 어떤지? (어차피 Keyword는 정해져 있으니까?)
+    @PostMapping("/etc")
+    public ResponseEntity<Void> recordEtc(@RequestParam("userId") Long userId, @RequestBody RecordEtcDto recordEtcDto) {
+        try {
+            recordService.recordEtc(userId, recordEtcDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

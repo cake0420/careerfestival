@@ -1,5 +1,6 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.keyword;
 
+import careerfestival.career.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,13 +9,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class KeyWord {
+public class UserKeyword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="KEYWORD_ID")
     private Long id;
 
-    @Column(length = 255) // 예: 최대 길이 255로 설정
-    private String categoryName;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 }

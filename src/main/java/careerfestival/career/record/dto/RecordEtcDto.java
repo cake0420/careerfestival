@@ -14,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-// 강연, 세미나 DTO
-public class RecordLectureSeminarDto {
+public class RecordEtcDto {
     private String eventName;
     private LocalDate eventDate;
     private List<RecordKeyword> recordKeyword;

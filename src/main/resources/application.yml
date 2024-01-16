@@ -5,6 +5,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
 #  data:
 #    redis:
 #      host: ${REDIS_HOST}
@@ -23,6 +24,7 @@ spring:
         hbm2ddl:
           auto: none
         default_batch_fetch_size: 1000
+
 
   jwt:
     secret: 86221d73fc259a5107f402c07a85d92379a00f9a5add4bd258179733b07de544b8ab747c931715c
