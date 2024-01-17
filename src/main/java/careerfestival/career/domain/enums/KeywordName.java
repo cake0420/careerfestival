@@ -5,5 +5,4 @@ public enum KeywordName {
     예술, 마켓팅, 과학기술,
     디자인, 영상, 의학,
     여행, 기타
-
 }

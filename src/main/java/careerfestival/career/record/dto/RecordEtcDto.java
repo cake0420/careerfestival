@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class RecordEtcDto {
     private String eventName;
-    private LocalDateTime eventDate;
+    private LocalDate eventDate;
     private List<RecordKeyword> recordKeyword;
     private String networkingName;
     private String networkingContact;

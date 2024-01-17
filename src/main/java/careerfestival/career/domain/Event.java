@@ -65,9 +65,11 @@ public class Event extends BaseEntity {
     private String managerName;
     @Column(nullable = false, length = 20, name = "manager_email")
     private String managerEmail;
-    @Column(columnDefinition = "INT")
+    @Column(columnDefinition = "INT DEFAULT 0")
     private int hits;
 
+    @Column(length = 300, name = "event_etc_detail")
+    private String eventEtcDetail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
@@ -92,6 +94,4 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
-
-
 }

@@ -4,11 +4,15 @@ import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
 import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
+import careerfestival.career.record.dto.RecordMainResponseDto;
 import careerfestival.career.repository.RecordKeywordRepository;
 import careerfestival.career.repository.RecordRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +36,6 @@ public class RecordService {
 
 
     public void recordEtc(Long userId, RecordEtcDto recordEtcDto) {
-        System.out.println("recordEtcDto.getEventName() = " + recordEtcDto.getEventName());
-        System.out.println("recordEtcDto.getRecordKeyword() = " + recordEtcDto.getRecordKeyword());
 
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new RuntimeException("User not found with id: " + userId));
@@ -45,4 +47,10 @@ public class RecordService {
         // Record 테이블에만 저장된 상태
     }
 
+    public List<RecordMainResponseDto> getRecordsByUserId(Long userId) {
+        List<Record> records = recordRepository.findByUserId(userId);
+        return records.stream()
+                .map(RecordMainResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 }
