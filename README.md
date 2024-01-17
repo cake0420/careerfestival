@@ -1,4 +1,4 @@
-## 디렉토리 구조
+## career 내부 디렉토리 구조
 ```
 C:.
 │  CareerApplication.java
@@ -38,14 +38,9 @@ C:.
 │      SecurityConfig.java
 │      
 ├─domain
-│  │  Comment.java
 │  │  Event.java
-│  │  Follow.java
-│  │  Organizer.java
 │  │  Record.java
-│  │  Region.java
 │  │  User.java
-│  │  Wish.java
 │  │  
 │  ├─common
 │  │      BaseEntity.java
@@ -58,8 +53,12 @@ C:.
 │  │      UserStatus.java
 │  │      
 │  └─mapping
+│          Comment.java
 │          EventImage.java
+│          Follow.java
 │          Participate.java
+│          Region.java
+│          Wish.java
 │          
 ├─dto
 │      CustomUserDetails.java
