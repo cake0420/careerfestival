@@ -1,6 +1,5 @@
 package careerfestival.career.register.dto;
 
-import careerfestival.career.domain.Category;
 import careerfestival.career.domain.Event;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -29,7 +28,6 @@ public class RegisterEventDto {
     private String managerName;
     private String managerEmail;
 
-    private Category category;
     private String eventEtcDetail;
 
     @Builder

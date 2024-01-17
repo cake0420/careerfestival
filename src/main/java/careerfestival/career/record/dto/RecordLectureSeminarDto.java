@@ -1,7 +1,8 @@
 package careerfestival.career.record.dto;
 
 import careerfestival.career.domain.Record;
-import careerfestival.career.domain.mapping.RecordKeyword;
+import careerfestival.career.domain.enums.Category;
+import careerfestival.career.domain.enums.KeywordName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,21 +11,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 // 강연, 세미나 DTO
 public class RecordLectureSeminarDto {
+    private Category category;
     private String eventName;
     private LocalDate eventDate;
-    // 행사 커리어 키워드 in RecordKeyword
-    private List<RecordKeyword> recordKeyword;
+    private List<KeywordName> keywordName;
     private String eventDescription;
+    /*
+    ----이미지 첨부 관련 내용----
+     */
     private String networkingName;
     private String networkingContact;
-
 
     @Builder
     public Record toEntity() {
@@ -32,7 +34,6 @@ public class RecordLectureSeminarDto {
                 .eventName(eventName)
                 .eventDate(eventDate)
                 .eventDescription(eventDescription)
-                .recordKeywords(recordKeyword)
                 .networkingName(networkingName)
                 .networkingContact(networkingContact)
                 .build();

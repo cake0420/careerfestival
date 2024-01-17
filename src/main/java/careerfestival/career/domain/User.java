@@ -4,8 +4,10 @@ import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
+import careerfestival.career.domain.mapping.Comment;
+import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
-import careerfestival.career.domain.mapping.UserKeyword;
+import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -66,9 +68,6 @@ public class User extends BaseEntity {
     @Column(length = 20, name = "position")
     private String position;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserKeyword> userKeyWord = new ArrayList<>();
-
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
      */
@@ -97,7 +96,7 @@ public class User extends BaseEntity {
     private List<Participate> participate = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Host> host = new ArrayList<>();
+    private List<Comment.Organizer> organizer = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
