@@ -1,8 +1,15 @@
 package careerfestival.career.record.controller;
 
+import careerfestival.career.apiPayload.ApiResponse;
+import careerfestival.career.domain.Record;
+import careerfestival.career.record.converter.RecordConverter;
 import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
+import careerfestival.career.record.dto.RecordRequestDto;
+import careerfestival.career.record.dto.RecordResponseDto;
+import careerfestival.career.record.service.RecordCommandService;
 import careerfestival.career.record.service.RecordService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class RecordController {
     private final RecordService recordService;
-
+    private final RecordCommandService recordCommandService;
     @PostMapping("/lecture-seminar")
     public ResponseEntity<Void> recordLectureSeminar(@RequestParam("userId") Long userId, @RequestBody RecordLectureSeminarDto recordLectureSeminarDto) {
         try {
@@ -34,5 +41,15 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    //기록장
+    @PostMapping("/{memberId}")
+    public ApiResponse<RecordResponseDto.AddRecordResponseDto>
+    addRecordConference(@RequestBody @Valid RecordRequestDto.AddRecordConferenceRequestDto request
+              ,@PathVariable Long memberId){
+        Record record = recordCommandService.addRecord(request, memberId);
+        return ApiResponse.onSuccess(RecordConverter.toAddRecordResponseDto(record));
+    }
+
+
 
 }

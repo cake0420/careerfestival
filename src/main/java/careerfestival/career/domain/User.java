@@ -88,6 +88,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Record> records = new ArrayList<>();
+
 
     public void updatePassword(String password) {
         this.password = password;
@@ -108,4 +111,10 @@ public class User extends BaseEntity {
     public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+
+    public void addRecord(Record record){
+        records.add(record);
+    }
+
 }
