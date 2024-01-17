@@ -1,4 +1,5 @@
 ## 디렉토리 구조
+```
 C:.
 │  CareerApplication.java
 │  
@@ -126,4 +127,4 @@ C:.
         ParticipateRepository.java
         RecordRepository.java
         UserRepository.java
-        
+```
