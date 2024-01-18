@@ -5,9 +5,11 @@ import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
+import careerfestival.career.domain.mapping.Comment;
+import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
-import careerfestival.career.domain.mapping.UserKeyword;
 import careerfestival.career.login.dto.UpdateMypageResponseDto;
+import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +45,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     // 전화번호는 회원가입 3 화면에서 저장되는 값이기 때문에 nullable이면 insert 과정에서 오류 발생 -> null 허용으로 수정함
     @Column(length = 200, name = "phone_number")
     private String phoneNumber;
@@ -73,8 +74,10 @@ public class User extends BaseEntity {
     @Column(length = 20, name = "position")
     private String position;
 
+
     @Enumerated(EnumType.STRING)
     private KeywordName keywordName;
+
 
 
     /*
@@ -89,10 +92,6 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
     private UserStatus userStatus;
 
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserKeyword> userKeyWord = new ArrayList<>();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
 
@@ -100,13 +99,20 @@ public class User extends BaseEntity {
     private List<Event> event = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+
+    private List<Record> record = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+
     private List<Wish> wish = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Host> host = new ArrayList<>();
+    private List<Comment.Organizer> organizer = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
@@ -178,7 +184,4 @@ public class User extends BaseEntity {
         this.updateKeyword(updateMypageResponseDto.getKeywordName());
     }
 }
-
-
-
 

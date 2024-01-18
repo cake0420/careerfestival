@@ -15,12 +15,20 @@ public class RegisterEventDto {
     private String eventName;
     private String description;
 
+    private LocalDateTime eventStart;
+    private LocalDateTime eventEnd;
+
     // 행사 신청 외부사이트
     private String link;
     private String eventContent;
 
+    private String address;
+    private String specAddress;
+
     private String managerName;
     private String managerEmail;
+
+    private String eventEtcDetail;
 
     @Builder
     public Event toEntity() {
@@ -29,11 +37,18 @@ public class RegisterEventDto {
                 .recruitmentEnd(recruitmentEnd)
                 .eventName(eventName)
                 .description(description)
+                .eventStart(eventStart)
+                .eventEnd(eventEnd)
                 .link(link)
                 .eventContent(eventContent)
+                .address(address)
+                .specAddress(specAddress)
                 .managerName(managerName)
                 .managerEmail(managerEmail)
+                .eventEtcDetail(eventEtcDetail)
                 .build();
     }
+
+
 
 }

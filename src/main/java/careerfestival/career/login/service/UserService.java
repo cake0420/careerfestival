@@ -29,11 +29,15 @@ public class UserService {
         if(exists){
             throw new IllegalStateException("이미 존재하는 이메일입니다.");
         }
+        System.out.println("userSignUpRequestDto.getPassword() = " + userSignUpRequestDto.getPassword());
+        System.out.println("userSignUpRequestDto.getCheckPassword() = " + userSignUpRequestDto.getCheckPassword());
 
         //비밀번호 입력 확인
         if(!userSignUpRequestDto.getPassword().equals(userSignUpRequestDto.getCheckPassword())){
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
+
+
 
         User user = userSignUpRequestDto.toEntity();
         user.updatePassword(bCryptPasswordEncoder.encode(userSignUpRequestDto.getPassword()));

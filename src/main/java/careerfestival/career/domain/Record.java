@@ -1,13 +1,14 @@
 package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
+import careerfestival.career.domain.enums.Category;
+import careerfestival.career.domain.enums.KeywordName;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import careerfestival.career.domain.mapping.RecordKeyword;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -23,21 +24,29 @@ public class Record extends BaseEntity {
     @Column(nullable = false, length = 20, name = "event_name")
     private String eventName;
     @Column(nullable = false, name = "event_date")
-    private LocalDateTime eventDate;
-
+    private LocalDate eventDate;
     @Column(nullable = false, length = 300, name = "event_description")
     private String eventDescription;
     @Column(length = 300, name = "networking_name")
     private String networkingName;
     @Column(length = 300, name = "networking_contact")
     private String networkingContact;
+    @Column(length = 300, name = "record_etc_detail")
+    private String recordEtcDetail;
 
-    @OneToMany(mappedBy = "record", cascade = CascadeType.ALL)
-    private List<RecordKeyword> recordKeywords = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
+    private List<KeywordName> keywordName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public void user(Optional<User> user){
+        //checkpoint
+    /* Optional.ofNullable(this.user)
+                .ifPresent(oldUser -> oldUser.removeRecord(this));
+
+        this.user = user;
+        user.addRecord(this);*/
+    }
+
 }
