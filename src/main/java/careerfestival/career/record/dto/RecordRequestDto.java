@@ -1,7 +1,6 @@
 package careerfestival.career.record.dto;
 
-import careerfestival.career.domain.Category;
-import careerfestival.career.domain.mapping.RecordKeyword;
+import careerfestival.career.domain.enums.Category;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -18,8 +17,7 @@ public class RecordRequestDto {
         private String eventName;
         @NotNull
         private LocalDate deadline;
-        @NotNull
-        private List<RecordKeyword> recordKeywords;
+
         @NotNull
         private Category category;
         @NotNull

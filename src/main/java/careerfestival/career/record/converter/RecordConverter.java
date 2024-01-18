@@ -13,7 +13,7 @@ public class RecordConverter {
 
         return Record.builder()
                 .eventName(request.getEventName())
-                .eventDate(request.getEventDate())
+                //.eventDate(request.getEventDate())
                 .eventDescription(request.getEventDescription())
                 .networkingName(request.getNetworkingName())
                 .networkingContact(request.getNetworkingContact())
