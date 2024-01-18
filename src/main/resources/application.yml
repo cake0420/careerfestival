@@ -21,7 +21,6 @@ spring:
           auto: create-drop
         default_batch_fetch_size: 1000
 
-
   jwt:
     secret: 86221d73fc259a5107f402c07a85d92379a00f9a5add4bd258179733b07de544b8ab747c931715c
     toeknValidTime: ${TOKEN_VALID_TIME}
