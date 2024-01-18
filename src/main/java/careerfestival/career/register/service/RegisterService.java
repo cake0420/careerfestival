@@ -1,9 +1,7 @@
 package careerfestival.career.register.service;
 
-import careerfestival.career.domain.Category;
 import careerfestival.career.domain.Event;
 import careerfestival.career.register.dto.RegisterEventDto;
-import careerfestival.career.repository.CategoryRepository;
 import careerfestival.career.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

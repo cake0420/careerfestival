@@ -4,9 +4,9 @@ import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
+import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.domain.mapping.Participate;
-import careerfestival.career.domain.mapping.RecordKeyword;
-import careerfestival.career.domain.mapping.UserKeyword;
+import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +37,15 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, length = 200, name = "phone_number")
     private String phoneNumber;
+
+
+    // category enums
+    @Enumerated(EnumType.STRING)
+    private String category;
+
+    // keyword enums
+    @Enumerated(EnumType.STRING)
+    private String keyword;
 
     // status와 inacticedate는 회원 탈퇴, 게시글 삭제 시 필요 기능
     @Enumerated(EnumType.STRING)
@@ -75,9 +84,6 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Event> event = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserKeyword> userKeyWord = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Wish> wish = new ArrayList<>();

@@ -2,9 +2,10 @@ package careerfestival.career.domain;
 
 
 import careerfestival.career.domain.common.BaseEntity;
+import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.domain.mapping.EventImage;
-import careerfestival.career.domain.mapping.EventKeyword;
 import careerfestival.career.domain.mapping.Participate;
+import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,16 @@ public class Event extends BaseEntity {
     private Long id;
 
 
+    // category enums
+    @Enumerated(EnumType.STRING)
+    private String category;
+
+    // keyword enums
+    @Enumerated(EnumType.STRING)
+    private String keyword;
+
+    @Column(length = 20, name = "keyword_detail")
+    private String keywordDetail;
 
     // 모집 시작일 & 모집 종료일
     @Column(nullable = false, name = "recruitment_start")
@@ -69,8 +80,6 @@ public class Event extends BaseEntity {
     private int hits;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Region region;
@@ -80,9 +89,6 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<EventImage> eventImg = new ArrayList<>();
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<EventKeyword> eventKeyword = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
