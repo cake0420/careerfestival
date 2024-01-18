@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 public class RecordController {
     private final RecordService recordService;
+    private final RecordCommandService recordCommandService;
     //
     @PostMapping("/lecture-seminar/{userId}")
     public ResponseEntity<Void> recordLectureSeminar(@PathVariable("userId") Long userId, @RequestBody RecordLectureSeminarDto recordLectureSeminarDto) {
