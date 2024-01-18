@@ -15,9 +15,9 @@ public class RegisterController {
     private final RegisterService registerService;
 
     // 이벤트 등록 (eventName이랑 description만)
-    @PostMapping("/event")
-    public ResponseEntity registerEvent(@RequestBody RegisterEventDto registerEventDto) {
-        registerService.registerEvent(registerEventDto);
+    @PostMapping("/event/{userId}")
+    public ResponseEntity registerEvent(@PathVariable("userId") Long userId, @RequestBody RegisterEventDto registerEventDto) {
+        registerService.registerEvent(userId, registerEventDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.mapping;
 
+import careerfestival.career.domain.Event;
 import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -11,12 +11,9 @@ import lombok.*;
 public class UserSignUpRequestDto {
 
     private String email;
-
     private String password;
     private String checkPassword;
-
     private String name;
-
     private Role role;
 
     @Builder
