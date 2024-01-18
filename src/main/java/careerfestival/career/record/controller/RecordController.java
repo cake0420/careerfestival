@@ -22,6 +22,7 @@ import java.util.List;
 @RequestMapping("/record")
 @RestController
 public class RecordController {
+    private final RecordCommandService recordCommandService;
     private final RecordService recordService;
     private final RecordCommandService recordCommandService;
     //

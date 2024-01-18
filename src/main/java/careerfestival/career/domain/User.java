@@ -2,18 +2,24 @@ package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Gender;
+import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
 import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
+import careerfestival.career.login.dto.UpdateMypageResponseDto;
 import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static careerfestival.career.domain.enums.Role.ROLE_ORGANIZER;
+import static careerfestival.career.domain.enums.Role.ROLE_PARTICIPANT;
 
 @Entity
 @Getter
@@ -68,6 +74,12 @@ public class User extends BaseEntity {
     @Column(length = 20, name = "position")
     private String position;
 
+
+    @Enumerated(EnumType.STRING)
+    private KeywordName keywordName;
+
+
+
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
      */
@@ -87,9 +99,13 @@ public class User extends BaseEntity {
     private List<Event> event = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+
     private List<Record> record = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+
     private List<Wish> wish = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -104,30 +120,68 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 
-
-    public void updatePassword(String password) {
-        this.password = password;
-    }
-
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void updateGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public void updateAge(int age) {
-        this.age = age;
-    }
-
-    public void updatePhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-
     public void addRecord(Record record){
         records.add(record);
     }
 
+
+    //--------------------------------update--------------------------------
+
+    public void updatePassword(String password) {
+        if(password==null) return;
+        this.password = password;
+    }
+
+    public void updateName(String name) {
+        if(name==null) return;
+        this.name = name;
+    }
+
+    public void updateGender(Gender gender) {
+        if(gender==null) return;
+        this.gender = gender;
+    }
+
+    public void updateAge(int age) {
+        if((Integer)age==null) return;
+        this.age = age;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        if(phoneNumber==null) return;
+        this.phoneNumber = phoneNumber;
+    }
+
+
+    public void updateCompany(String company) {
+        if(company==null) return;
+        this.company = company;
+    }
+
+    public void updateDepartment(String department) {
+        if(department==null) return;
+        this.department = department;
+    }
+    public void updatePosition(String position) {
+        if(position==null) return;
+        this.position = position;
+    }
+
+    public void updateKeyword(KeywordName keyword) {
+        if(keyword==null) return;
+        this.keywordName = keyword;
+    }
+
+    @Transactional
+    public void update(UpdateMypageResponseDto updateMypageResponseDto) {
+        this.updateName(updateMypageResponseDto.getName());
+        this.updateAge(updateMypageResponseDto.getAge());
+        this.updateGender(updateMypageResponseDto.getGender());
+        this.updatePhoneNumber(updateMypageResponseDto.getPhoneNumber());
+        this.updateCompany(updateMypageResponseDto.getCompany());
+        this.updateDepartment(updateMypageResponseDto.getDepartment());
+        this.updatePosition(updateMypageResponseDto.getPosition());
+        this.updateKeyword(updateMypageResponseDto.getKeywordName());
+    }
 }
+

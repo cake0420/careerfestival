@@ -1,13 +1,15 @@
 package careerfestival.career.login.api;
 
 
-import careerfestival.career.login.dto.UpdateUserDetailRequestDto;
+import careerfestival.career.dto.CustomUserDetails;
+import careerfestival.career.login.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,12 +37,13 @@ public class UserController {
         return "join detail";
     }
 
+
     //회원가입3
     //@RequestParam : 클라이언트가 요청한 URL의 쿼리 파라미터에 대한 값을 받아옴(url 상에서 데이터를 찾음)
     @PostMapping("/join/detail")
-    public ResponseEntity<Void> updateDetail(@RequestParam("userId") Long userId, @RequestBody UpdateUserDetailRequestDto userSignDetailRequestDto) {
+    public ResponseEntity<Void> updateDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
         try {
-            userService.updateDetail(userId, userSignDetailRequestDto);
+            userService.findUserByEmailandUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
             return new ResponseEntity<>(HttpStatus.OK); //200
 
         } catch (IllegalArgumentException e) {
@@ -62,9 +65,4 @@ public class UserController {
         return "home";
     }
 
-    @GetMapping("/mypage")
-    @ResponseBody
-    public String mypage(){
-        return "mypage";
-    }
 }
