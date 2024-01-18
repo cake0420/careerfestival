@@ -38,7 +38,7 @@ public class RecordController {
         }
     }
 
-    // 메인페이지 1차 구현 완료
+    // 메인페이지
     @GetMapping("/{userId}")
     public ResponseEntity<List<RecordMainResponseDto>> getRecordsByUserId(@PathVariable("userId") Long userId) {
         try {
