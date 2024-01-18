@@ -1,17 +1,16 @@
 package careerfestival.career.login.service;
 
 import careerfestival.career.domain.User;
-import careerfestival.career.login.dto.UpdateUserDetailRequestDto;
-import careerfestival.career.login.dto.UserSignInRequestDto;
+import careerfestival.career.dto.CustomUserDetails;
+import careerfestival.career.jwt.JWTUtil;
+import careerfestival.career.login.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
+import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static careerfestival.career.domain.enums.Role.ROLE_ORGANIZER;
-import static careerfestival.career.domain.enums.Role.ROLE_PARTICIPANT;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +18,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RegionRepository regionRepository;
+    private final JWTUtil jwtUtil;
 
     @Transactional
     public Long signUp(UserSignUpRequestDto userSignUpRequestDto) {
@@ -44,25 +45,13 @@ public class UserService {
 
 
     @Transactional
-    public void updateDetail(Long userId, UpdateUserDetailRequestDto userSignDetailRequestDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if(user.getRole() == ROLE_PARTICIPANT){
-            user.updateGender(userSignDetailRequestDto.getGender());
-            user.updateAge(userSignDetailRequestDto.getAge());
-            user.updatePhoneNumber(userSignDetailRequestDto.getPhoneNumber());
-        }
-
-        else if(user.getRole() == ROLE_ORGANIZER){
-            user.updatePhoneNumber(userSignDetailRequestDto.getPhoneNumber());
-        }
-
-        userRepository.save(user);
+    public void findUserByEmailandUpdate(String email, UpdateMypageResponseDto updateMypageResponseDto){
+        User findUser = userRepository.findByEmail(email);
+        findUser.update(updateMypageResponseDto);
     }
 
     @Transactional
-    public void signIn(UserSignInRequestDto userSignInRequestDto){
-
+    public User findUserByCustomUserDetails(CustomUserDetails customUserDetails){
+        return userRepository.findByEmail(customUserDetails.getUsername());
     }
 }
