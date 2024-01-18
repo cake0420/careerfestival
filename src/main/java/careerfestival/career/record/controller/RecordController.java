@@ -1,13 +1,20 @@
 package careerfestival.career.record.controller;
 
+import careerfestival.career.apiPayload.ApiResponse;
+import careerfestival.career.domain.Record;
+import careerfestival.career.record.converter.RecordConverter;
 import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
-import careerfestival.career.record.dto.RecordMainResponseDto;
+import careerfestival.career.record.dto.RecordRequestDto;
+import careerfestival.career.record.dto.RecordResponseDto;
+import careerfestival.career.record.service.RecordCommandService;
 import careerfestival.career.record.service.RecordService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import careerfestival.career.record.dto.RecordMainResponseDto;
 
 import java.util.List;
 
@@ -16,7 +23,6 @@ import java.util.List;
 @RestController
 public class RecordController {
     private final RecordService recordService;
-
     //
     @PostMapping("/lecture-seminar/{userId}")
     public ResponseEntity<Void> recordLectureSeminar(@PathVariable("userId") Long userId, @RequestBody RecordLectureSeminarDto recordLectureSeminarDto) {
@@ -37,6 +43,16 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    //기록장
+    @PostMapping("/{memberId}")
+    public ApiResponse<RecordResponseDto.AddRecordResponseDto>
+    addRecordConference(@RequestBody @Valid RecordRequestDto.AddRecordConferenceRequestDto request
+              ,@PathVariable Long memberId){
+        Record record = recordCommandService.addRecord(request, memberId);
+        return ApiResponse.onSuccess(RecordConverter.toAddRecordResponseDto(record));
+    }
+
+
 
     // 메인페이지 1차 구현 완료
     @GetMapping("/{userId}")

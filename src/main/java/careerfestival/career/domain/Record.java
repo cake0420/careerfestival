@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -38,4 +39,14 @@ public class Record extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public void user(Optional<User> user){
+        //checkpoint
+    /* Optional.ofNullable(this.user)
+                .ifPresent(oldUser -> oldUser.removeRecord(this));
+
+        this.user = user;
+        user.addRecord(this);*/
+    }
+
 }
