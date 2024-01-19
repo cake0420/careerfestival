@@ -1,4 +1,4 @@
-package careerfestival.career.login.dto;
+package careerfestival.career.myPage.dto;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;

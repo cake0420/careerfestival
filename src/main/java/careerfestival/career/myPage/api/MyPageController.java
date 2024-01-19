@@ -1,8 +1,8 @@
-package careerfestival.career.login.api;
+package careerfestival.career.myPage.api;
 
 import careerfestival.career.domain.User;
-import careerfestival.career.dto.CustomUserDetails;
-import careerfestival.career.login.dto.UpdateMypageResponseDto;
+import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

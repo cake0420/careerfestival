@@ -1,8 +1,8 @@
 package careerfestival.career.login.api;
 
 
-import careerfestival.career.dto.CustomUserDetails;
-import careerfestival.career.login.dto.UpdateMypageResponseDto;
+import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
 import lombok.RequiredArgsConstructor;
