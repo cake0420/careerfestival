@@ -4,10 +4,7 @@ import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
-import careerfestival.career.domain.mapping.Comment;
-import careerfestival.career.domain.mapping.Follow;
-import careerfestival.career.domain.mapping.Participate;
-import careerfestival.career.domain.mapping.Wish;
+import careerfestival.career.domain.mapping.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -96,7 +93,7 @@ public class User extends BaseEntity {
     private List<Participate> participate = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment.Organizer> organizer = new ArrayList<>();
+    private List<Organizer> organizer = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
