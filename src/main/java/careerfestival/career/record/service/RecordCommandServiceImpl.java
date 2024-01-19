@@ -1,3 +1,4 @@
+/*
 package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
@@ -21,6 +22,14 @@ public class RecordCommandServiceImpl implements RecordCommandService{
     @Override
     public Record addRecord(RecordRequestDto.AddRecordConferenceRequestDto request, Long userId){
         Record newRecord = RecordConverter.toRecord(request);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        newRecord.setEventName(request.getEventName());
+        newRecord.setEventDate(request.getEventDate());
+        newRecord.setKeywordName(request.getKeywordName());
+        newRecord.setDetailEventName(req);
+        newRecord.setUser(user);
         //checkpoint userid에 맞게 저장하는방법?
         //Optional<User> user = userRepository.findById(userId);
         //checkpoint 리스트
@@ -29,3 +38,5 @@ public class RecordCommandServiceImpl implements RecordCommandService{
     };
 
 }
+*/
+//checkpoint 지울지

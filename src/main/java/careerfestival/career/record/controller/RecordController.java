@@ -1,13 +1,10 @@
 package careerfestival.career.record.controller;
 
-import careerfestival.career.apiPayload.ApiResponse;
-import careerfestival.career.domain.Record;
-import careerfestival.career.record.converter.RecordConverter;
+
 import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
 import careerfestival.career.record.dto.RecordRequestDto;
-import careerfestival.career.record.dto.RecordResponseDto;
-import careerfestival.career.record.service.RecordCommandService;
+import careerfestival.career.record.service.RecordConferenceService;
 import careerfestival.career.record.service.RecordService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +19,7 @@ import java.util.List;
 @RequestMapping("/record")
 @RestController
 public class RecordController {
-    private final RecordCommandService recordCommandService;
+    private final RecordConferenceService recordConferenceService;
     private final RecordService recordService;
     //
     @PostMapping("/lecture-seminar/{userId}")
@@ -45,12 +42,15 @@ public class RecordController {
         }
     }
     //기록장
-    @PostMapping("/{memberId}")
-    public ApiResponse<RecordResponseDto.AddRecordResponseDto>
-    addRecordConference(@RequestBody @Valid RecordRequestDto.AddRecordConferenceRequestDto request
-              ,@PathVariable Long memberId){
-        Record record = recordCommandService.addRecord(request, memberId);
-        return ApiResponse.onSuccess(RecordConverter.toAddRecordResponseDto(record));
+    @PostMapping("/conference/{memberId}")
+    public   ResponseEntity<Void>
+    addRecordConference(@RequestBody @Valid RecordRequestDto request,@PathVariable("memberId") Long memberId){
+        try{
+            recordConferenceService.recordConference(memberId, request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 

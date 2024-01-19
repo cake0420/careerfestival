@@ -1,3 +1,4 @@
+/*
 package careerfestival.career.record.converter;
 import careerfestival.career.domain.Record;
 import careerfestival.career.record.dto.RecordRequestDto;
@@ -13,7 +14,8 @@ public class RecordConverter {
 
         return Record.builder()
                 .eventName(request.getEventName())
-                //.eventDate(request.getEventDate())
+                .eventDate(request.getEventDate())
+                .keywordName(request.getKeywordName())
                 .eventDescription(request.getEventDescription())
                 .networkingName(request.getNetworkingName())
                 .networkingContact(request.getNetworkingContact())
@@ -29,3 +31,5 @@ public class RecordConverter {
 
 
 }
+*/
+//checkpoint 지울지

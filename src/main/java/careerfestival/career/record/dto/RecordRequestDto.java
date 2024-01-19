@@ -1,31 +1,42 @@
 package careerfestival.career.record.dto;
 
-import careerfestival.career.domain.enums.Category;
-import jakarta.persistence.Column;
+import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.domain.Record;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RecordRequestDto {
+    private String eventName;
+    private LocalDate eventDate;
+    private KeywordName keywordName;
+    private String detailEventName;
+    private String eventDescription;
+    private String networkingName;
+    private String networkingContact;
 
-    @Getter
-    public static class AddRecordConferenceRequestDto{
-        @NotNull
-        private String eventName;
-        @NotNull
-        private LocalDate deadline;
+    @Builder
+    public Record toEntity() {
+    return Record.builder()
+            .eventName(eventName)
+            .eventDate(eventDate)
+            .keywordName(Collections.singletonList(keywordName))
+            .detailEventName(detailEventName)
+            .eventDescription(eventDescription)
+            .networkingName(networkingName)
+            .networkingContact(networkingContact)
+            .build();
 
-        @NotNull
-        private Category category;
-        @NotNull
-        private LocalDateTime eventDate;
-        //checkpoint 세션과 부스 어차피 같은 형태로 그냥 제목부스이름이던 세션이름이던 같이 받을 수 있음 그래서 event description 제목 받을 거 하나 생성
-        @NotNull
-        private String eventDescription;
-        private String networkingName;
-        private String networkingContact;
     }
 }
