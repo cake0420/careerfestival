@@ -1,6 +1,5 @@
 package careerfestival.career.domain;
 
-
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.mapping.*;
