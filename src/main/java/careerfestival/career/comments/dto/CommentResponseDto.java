@@ -11,12 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CommentResponseDto {
-    private Long id;
+    private Long userId;
+    private Long eventId;
     private String commentContent;
-    private String parentContent;
+    //    private String parentContent;
+//    private int depth;
     public CommentResponseDto(Comment comment) {
-        this.id = comment.getId();
+        this.userId = comment.getUser().getId();
+        this.eventId = comment.getEvent().getId();
         this.commentContent = comment.getCommentContent();
-        this.parentContent = comment.getParentContent();
+//        this.parentContent = (comment.getParentComment() != null) ? comment.getParentComment().getCommentContent() : null;
+//        this.depth = comment.getDepth();
     }
 }
