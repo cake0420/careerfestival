@@ -8,7 +8,7 @@ import careerfestival.career.domain.enums.UserStatus;
 import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
-import careerfestival.career.login.dto.UpdateMypageResponseDto;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
-import static careerfestival.career.domain.enums.Role.ROLE_ORGANIZER;
-import static careerfestival.career.domain.enums.Role.ROLE_PARTICIPANT;
 
 @Entity
 @Getter

@@ -2,7 +2,7 @@ package careerfestival.career.login.service;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.repository.UserRepository;
-import careerfestival.career.dto.CustomUserDetails;
+import careerfestival.career.login.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

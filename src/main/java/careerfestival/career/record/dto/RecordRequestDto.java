@@ -17,7 +17,6 @@ public class RecordRequestDto {
         private String eventName;
         @NotNull
         private LocalDate deadline;
-
         @NotNull
         private Category category;
         @NotNull

@@ -79,9 +79,6 @@ public class Event extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<EventImage> eventImg = new ArrayList<>();
-
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
