@@ -2,19 +2,29 @@ package careerfestival.career.jwt;
 
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.login.dto.UserSignInRequestDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
+
+import static org.springframework.util.StreamUtils.copyToString;
 
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -22,12 +32,42 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
+        if (request.getContentType() == null || !request.getContentType().equals("application/json")) {
+            throw new AuthenticationServiceException("Authentication Content-Type not supported: " + request.getContentType());
+        }
+
+        ObjectMapper objectMapper =  new ObjectMapper();
+
+        ServletInputStream inputStream = null;
+        try {
+            inputStream = request.getInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String messageBody = null;
+        try {
+            messageBody = copyToString(inputStream, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        UserSignInRequestDto userSignInRequestDto = new UserSignInRequestDto();
+        try {
+            userSignInRequestDto = objectMapper.readValue(messageBody, UserSignInRequestDto.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+
         //클라이언트 요청에서 username, password 추출
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        String username = userSignInRequestDto.getUsername();
+        String password = userSignInRequestDto.getPassword();
+
 
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야함
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
