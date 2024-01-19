@@ -1,6 +1,5 @@
 package careerfestival.career.myPage.dto;
 
-import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import lombok.*;

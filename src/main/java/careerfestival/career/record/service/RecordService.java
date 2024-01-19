@@ -37,13 +37,15 @@ public class RecordService {
                 .orElseThrow(()->new RuntimeException("User not found with id: " + userId));
 
         Record record = recordEtcDto.toEntity();
+        record.setCategory(recordEtcDto.getCategory());
+        record.setKeywordName(recordEtcDto.getKeywordName());
         record.setUser(user);
         recordRepository.save(record);
-        // Record 테이블에만 저장된 상태
     }
 
     public List<RecordMainResponseDto> getRecordsByUserId(Long userId) {
         List<Record> records = recordRepository.findByUserId(userId);
+
         return records.stream()
                 .map(RecordMainResponseDto::fromEntity)
                 .collect(Collectors.toList());

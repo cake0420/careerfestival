@@ -29,26 +29,4 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Entity
-    @Getter
-    @Setter
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PUBLIC)
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Organizer extends BaseEntity {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-
-        @Column(nullable = false, length = 20, name = "host_name")
-        private String organizerName;
-
-        @Column(nullable = false, length = 300, name = "profile_img")
-        private String organizerImg;
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        private User user;
-    }
 }

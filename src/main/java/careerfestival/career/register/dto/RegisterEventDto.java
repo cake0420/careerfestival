@@ -22,6 +22,8 @@ public class RegisterEventDto {
     private String link;
     private String eventContent;
 
+    private String eventCost;
+
     private String address;
     private String specAddress;
 
@@ -41,6 +43,7 @@ public class RegisterEventDto {
                 .eventEnd(eventEnd)
                 .link(link)
                 .eventContent(eventContent)
+                .eventCost(eventCost)
                 .address(address)
                 .specAddress(specAddress)
                 .managerName(managerName)
