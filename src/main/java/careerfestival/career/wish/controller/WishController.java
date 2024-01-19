@@ -1,8 +1,8 @@
-package careerfestival.career.comments.Controller;
+package careerfestival.career.wish.controller;
 
-import careerfestival.career.comments.Service.CommentService;
-import careerfestival.career.comments.dto.CommentRequestDto;
-import careerfestival.career.comments.dto.CommentResponseDto;
+import careerfestival.career.wish.dto.WishRequestDto;
+import careerfestival.career.wish.dto.WishResponseDto;
+import careerfestival.career.wish.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,28 +10,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
-public class CommentsController {
-    private final CommentService commentService;
-
-    @PostMapping("/event/{eventId}/{userId}/comments")
-    public ResponseEntity<Long> addComment(
-            @RequestBody CommentRequestDto commentRequestDto,
+@RestController
+public class WishController {
+    private final WishService wishService;
+    @PostMapping("/event/{eventId}/{userId}/wish")
+    public ResponseEntity<Long> addWish(
             @PathVariable("userId") Long userId,
-            @PathVariable("eventId") Long eventId){
+            @PathVariable("eventId") Long eventId,
+            @RequestBody WishRequestDto wishRequestDto) {
         // Assuming you have the authenticated user's email
-        // Replace this with the actual email
+        String userEmail = "user@example.com"; // Replace this with the actual email
 
         try {
-            Long commentId = commentService.commentSave(userId, eventId, commentRequestDto);
+            Long wishId = wishService.WishSave(userId, eventId, wishRequestDto);
             // 리다이렉트를 위한 URL 생성
             String redirectUrl = "/event/" + userId + "/" + eventId;
 
             // ResponseEntity로 리다이렉트 응답 생성
             return ResponseEntity.status(HttpStatus.FOUND)
                     .header("Location", redirectUrl)
-                    .body(commentId);
+                    .body(wishId);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -40,16 +39,18 @@ public class CommentsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("/event/{eventId}/{userId}/comments")
-    public ResponseEntity<List<CommentResponseDto>> getAllCommentsByEvent(
+    @GetMapping("/event/{eventId}/{userId}/wish")
+    public ResponseEntity<List<WishResponseDto>> getAllWishByEvent(
             @PathVariable("userId") Long userId,
             @PathVariable("eventId") Long eventId) {
+        String userEmail = "user@example.com"; // Replace this with the actual email
+        String name = "test";
 
-        String comment = "test";
+
+
         try {
-            List<CommentResponseDto> comments = commentService.getAllCommentsByEvent(comment, userId, eventId);
-            return new ResponseEntity<>(comments, HttpStatus.OK);
+            List<WishResponseDto> wishlist = wishService.getAllWishByEvent(userId, eventId);
+            return new ResponseEntity<>(wishlist, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
