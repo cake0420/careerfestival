@@ -15,4 +15,3 @@ public enum Gender {
         throw new IllegalArgumentException("No constant with text " + genderStr + " found");
     }
 }
-

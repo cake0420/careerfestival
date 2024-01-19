@@ -2,6 +2,7 @@ package careerfestival.career.comments.Service;
 
 import careerfestival.career.comments.dto.CommentRequestDto;
 import careerfestival.career.comments.dto.CommentResponseDto;
+import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.mapping.Comment;

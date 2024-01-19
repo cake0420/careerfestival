@@ -10,6 +10,7 @@ import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
+import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;

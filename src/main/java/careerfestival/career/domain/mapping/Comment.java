@@ -16,6 +16,8 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 300, name = "comment_content")
+    private String commentContent;
 
     @Column(length = 300, name = "parent_content")
     private String parentContent;
@@ -28,7 +30,6 @@ public class Comment extends BaseEntity {
 
     Boolean isCommentForComment; //대댓글 여부
     Long orderNumber; //댓글의 순서
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
