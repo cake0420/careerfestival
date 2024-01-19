@@ -11,13 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ParticipateResponseDto {
-    private Long id;
-    private String email;
-    private String eventName;
+    private Long userId;
+    private Long eventId;
 
     public ParticipateResponseDto(Participate participate) {
-        this.id = participate.getId();
-        this.email = participate.getUser().getEmail();
-        this.eventName = participate.getEvent().getEventName();
+        this.userId = participate.getUser().getId();
+        this.eventId = participate.getEvent().getId();
     }
 }

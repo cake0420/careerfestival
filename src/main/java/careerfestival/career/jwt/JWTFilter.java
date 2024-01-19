@@ -4,7 +4,7 @@ package careerfestival.career.jwt;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Role;
-import careerfestival.career.dto.CustomUserDetails;
+import careerfestival.career.login.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //Authorization 헤더 검사
         if (authorization == null || !authorization.startsWith("Bearer ")) {
-            System.out.println("token null");
+            System.out.println("JWTFilter token null");
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 매소드 종료 (필수!)

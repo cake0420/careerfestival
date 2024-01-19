@@ -24,10 +24,15 @@ bin/
 *.iml
 *.ipr
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 *.yml
 application.properties
 >>>>>>> d39ab3d3e777230ca3816b6a7ff77fdc474c70f9
+=======
+application.yml
+application.properties
+>>>>>>> 615b8c49cc747f38625b531f6fe1126f013014a9
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/

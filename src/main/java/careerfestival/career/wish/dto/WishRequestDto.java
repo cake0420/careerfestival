@@ -1,8 +1,8 @@
-package careerfestival.career.participate.dto;
+package careerfestival.career.wish.dto;
 
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
-import careerfestival.career.domain.mapping.Participate;
+import careerfestival.career.domain.mapping.Wish;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,20 +12,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ParticipateRequestDto {
-
+public class WishRequestDto {
     private Long userId;
     private Long eventId;
     @Builder
-    public static ParticipateRequestDto of(Long userId, Long eventId) {
-        return ParticipateRequestDto.builder()
+    public static WishRequestDto of(Long userId, Long eventId) {
+        return WishRequestDto.builder()
                 .userId(userId)
                 .eventId(eventId)
                 .build();
     }
 
-    public Participate toEntity(User user, Event event) {
+    public Wish toEntity(User user, Event event) {
         // toEntity 메서드를 통해 Participate 엔티티 생성
-        return new Participate(user, event);
+        return new Wish(user, event);
     }
+
 }

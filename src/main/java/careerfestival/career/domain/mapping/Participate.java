@@ -24,4 +24,8 @@ public class Participate {
     @JoinColumn(name = "event_id")
     private Event event;
 
+    public Participate(User user, Event event) {
+        this.user = user;
+        this.event = event;
+    }
 }

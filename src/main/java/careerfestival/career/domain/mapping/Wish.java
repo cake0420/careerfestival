@@ -24,4 +24,9 @@ public class Wish extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
+
+    public Wish(User user, Event event) {
+        this.user = user;
+        this.event = event;
+    }
 }

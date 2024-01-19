@@ -1,6 +1,6 @@
-package careerfestival.career.domain;
+package careerfestival.career.domain.mapping;
 
-import careerfestival.career.domain.common.BaseEntity;
+import careerfestival.career.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,13 +10,20 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-
-public class Follow extends BaseEntity {
+public class Organizer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @Column(nullable = false, length = 300, name = "organizer_name")
+    private String organizerName;
 
+    /*
+    --------주최자 이미지--------
+     */
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
+

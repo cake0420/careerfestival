@@ -68,7 +68,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/login", "/join", "/join/detail").permitAll()
-                        .requestMatchers("/mypage").hasRole("PARTICIPANT")
+                        .requestMatchers("/mypage", "/mypage/update").hasRole("PARTICIPANT")
                         .anyRequest().permitAll()
                 );
 
