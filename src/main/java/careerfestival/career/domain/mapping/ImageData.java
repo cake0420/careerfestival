@@ -1,28 +1,31 @@
 package careerfestival.career.domain.mapping;
 
 import careerfestival.career.domain.Event;
-import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ImageData {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+public class ImageData extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Lob
     @Column(name = "user_profile_image")
     private byte[] userProfileImage;
 
     @Lob
-    @Column(name = "organizer_profile_imaage")
+    @Column(name = "organizer_profile_image")
     private byte[] organizerProfileImage;
 
     @Lob
@@ -49,15 +52,11 @@ public class ImageData {
     @Column(name = "register_etc_image")
     private List<byte[]> registerEtcImage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "record_id")
-    private Record record;
 }

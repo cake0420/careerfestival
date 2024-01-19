@@ -53,9 +53,9 @@ public class Event extends BaseEntity {
     private String eventCost;
 
     //행사 주소
-    @Column(nullable = false, length = 40, name ="address")
+    @Column(nullable = false, length = 40, name = "address")
     private String address;
-    @Column(nullable = false, length = 40, name ="spec_address")
+    @Column(nullable = false, length = 40, name = "spec_address")
     private String specAddress;
 
     @Column(nullable = false, length = 20, name = "manager_name")
@@ -85,4 +85,7 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
+
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
+    private ImageData imageData;
 }
