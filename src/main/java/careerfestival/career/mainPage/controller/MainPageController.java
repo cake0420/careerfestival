@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping("/")
@@ -18,13 +20,23 @@ public class MainPageController {
     private final MainPageService mainPageService;
 
 
-    // 로그인 이전 조회수 top6 보여주기
+    // 로그인 이전 화면 Authorization 이전
     @GetMapping("")
-    public ResponseEntity<MainPageResponseDto> getEvents(){
+    public ResponseEntity<Map<String, Object>> getEvents(){
         try{
-            // 다른 객체들로 전달되어야하지않을까?
+            // 1. 조회수에 의한 이벤트명
+            List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
+            // 2. 조회수에 의한 정렬 리스트
+            List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEvents();
+            // 3. 랜덤에 의한 정렬 리스트
+            List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEvents();
 
+            Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
+            mainPageResponseDtoObjectMap.put("eventrandom", mainPageResponseDtoRandom);
+            mainPageResponseDtoObjectMap.put("eventviews", mainPageResponseDtoViews);
+            mainPageResponseDtoObjectMap.put("eventnames", mainPageResponseDtoNames);
 
+            return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

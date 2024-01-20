@@ -24,4 +24,13 @@ public class MainPageService {
                 .map(MainPageResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
+    public List<MainPageResponseDto> getEventNames() {
+        // 조회수에 의한 정렬 처리 필요
+        List<Event> eventNames = eventRepository.findAll();
+
+        return eventNames.stream()
+                .map(MainPageResponseDto::fromEntityName)
+                .collect(Collectors.toList());
+    }
 }

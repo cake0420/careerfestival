@@ -1,6 +1,7 @@
 package careerfestival.career.mainPage.dto;
 
 import careerfestival.career.domain.Event;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MainPageResponseDto {
     private String eventName;
     private LocalDateTime recruitmentStart;
@@ -26,6 +28,12 @@ public class MainPageResponseDto {
                 .recruitmentEnd(event.getRecruitmentEnd())
                 .favorites(event.isFavorites())
                 .eventCost(event.getEventCost())
+                .build();
+    }
+
+    public static MainPageResponseDto fromEntityName(Event event) {
+        return MainPageResponseDto.builder()
+                .eventName(event.getEventName())
                 .build();
     }
 }

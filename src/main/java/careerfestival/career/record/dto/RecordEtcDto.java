@@ -31,8 +31,10 @@ public class RecordEtcDto {
     @Builder
     public Record toEntity() {
         return Record.builder()
+                .category(category)
                 .eventName(eventName)
                 .eventDate(eventDate)
+                .keywordName(keywordName)
                 .topic(topic)
                 .topicDetail(topicDetail)
                 .eventDescription(eventDescription)

@@ -26,7 +26,8 @@ public class Record extends BaseEntity {
     private String eventName;
     @Column(nullable = false, name = "event_date")
     private LocalDate eventDate;
-    @Column(nullable = false, length = 50, name = "event_title")
+    // 기록장에서 쓰이는 행사 타이틀 (나만의)
+    @Column(length = 50, name = "event_title")
     private String eventTitle;
     @Column(nullable = false, length = 300, name = "event_description")
     private String eventDescription;
@@ -41,6 +42,7 @@ public class Record extends BaseEntity {
     @Column(length = 300, name = "topic_detail")
     private String topicDetail;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
     private List<KeywordName> keywordName;
 
