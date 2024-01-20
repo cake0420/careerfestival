@@ -22,9 +22,6 @@ public class Comment extends BaseEntity {
     @Column(length = 300, name = "parent_content")
     private String parentContent;
 
-    @Column(columnDefinition = "TEXT")
-    private String commentContent;
-
     @Column(columnDefinition = "INT")
     private int depth; // 댓글 깊이
 

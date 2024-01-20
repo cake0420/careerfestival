@@ -1,6 +1,7 @@
 package careerfestival.career.domain.mapping;
 
 import careerfestival.career.domain.Event;
+import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
@@ -59,4 +60,8 @@ public class ImageData extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "record_id")
+    private Record record;
 }
