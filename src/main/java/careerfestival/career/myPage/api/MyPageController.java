@@ -2,6 +2,7 @@ package careerfestival.career.myPage.api;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.myPage.dto.MyPageResponseDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,15 @@ public class MyPageController {
 
     @GetMapping("/mypage")
     @ResponseBody
-    public User myPage (@AuthenticationPrincipal CustomUserDetails customUserDetails){
-        return userService.findUserByCustomUserDetails(customUserDetails);
+    public MyPageResponseDto myPage (@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        User findUser = userService.findUserByCustomUserDetails(customUserDetails);
+        return userService.fillMyPage(findUser);
     }
 
 
     @PatchMapping("/mypage/update")
     public ResponseEntity<Void> updateMember(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
-        userService.findUserByEmailandUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
+        userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/mypage");
         return new ResponseEntity<>(headers, HttpStatus.OK);

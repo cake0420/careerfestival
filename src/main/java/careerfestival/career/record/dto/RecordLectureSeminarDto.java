@@ -21,6 +21,7 @@ public class RecordLectureSeminarDto {
     private String eventName;
     private LocalDate eventDate;
     private List<KeywordName> keywordName;
+    private String eventTitle;
     private String eventDescription;
     /*
     ----이미지 첨부 관련 내용----
@@ -34,6 +35,7 @@ public class RecordLectureSeminarDto {
                 .eventName(eventName)
                 .eventDate(eventDate)
                 .eventDescription(eventDescription)
+                .eventTitle(eventTitle)
                 .networkingName(networkingName)
                 .networkingContact(networkingContact)
                 .build();

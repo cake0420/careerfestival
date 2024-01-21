@@ -5,12 +5,14 @@ import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
+import careerfestival.career.domain.mapping.*;
 import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 300, name = "password")
     private String password;
 
+    @Email
     @Column(nullable = false, length = 300, name = "email")
     private String email;
 
@@ -53,11 +56,8 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "INT")
     private int age;
 
-    /*
-
-    ------------관심 지역 들어갈 자리----------------
-
-    */
+    // 관심지역
+    private String addressLine;
 
     // 소속(회사/기관/학교명)
     @Column(length = 20, name = "company")
@@ -73,7 +73,7 @@ public class User extends BaseEntity {
 
 
     @Enumerated(EnumType.STRING)
-    private KeywordName keywordName;
+    private List<KeywordName> keyword = new ArrayList<>();
 
 
 
@@ -105,7 +105,7 @@ public class User extends BaseEntity {
     private List<Participate> participate = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment.Organizer> organizer = new ArrayList<>();
+    private List<Organizer> organizer = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
@@ -160,9 +160,21 @@ public class User extends BaseEntity {
         this.position = position;
     }
 
-    public void updateKeyword(KeywordName keyword) {
+    public void updateKeyword(KeywordName[] keyword) {
         if(keyword==null) return;
-        this.keywordName = keyword;
+        if(this.keyword != null) {
+            this.keyword.clear();
+        }
+        else this.keyword = new ArrayList<>();
+
+        this.keyword.addAll(List.of(keyword));
+    }
+
+    public void updateAddressLine(String addressLine) {
+        if(addressLine==null) return;
+
+        this.addressLine = addressLine;
+
     }
 
     @Transactional

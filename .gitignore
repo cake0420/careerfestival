@@ -23,11 +23,8 @@ bin/
 *.iws
 *.iml
 *.ipr
-<<<<<<< HEAD
-=======
-*.yml
+application.yml
 application.properties
->>>>>>> d39ab3d3e777230ca3816b6a7ff77fdc474c70f9
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/

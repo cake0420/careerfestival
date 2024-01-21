@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByEvent_EventName(String eventName);
     List<Comment> findCommentByCommentContent(String contents);
+    List<Comment> findCommentByParentComment(Comment parentComment);
+
+
 }
