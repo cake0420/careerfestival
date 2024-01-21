@@ -47,7 +47,7 @@ public class UserController {
     @PostMapping("/join/detail")
     public ResponseEntity<Void> updateDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
         try {
-            userService.findUserByEmailandUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
+            userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
             return new ResponseEntity<>(HttpStatus.OK); //200
 
         } catch (IllegalArgumentException e) {
@@ -55,11 +55,19 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity login() throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/");
-        return new ResponseEntity<>(headers, HttpStatus.OK);
+
+//    @PostMapping("/login")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseEntity login() throws Exception {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Location", "/");
+//        return new ResponseEntity<>(headers, HttpStatus.OK);
+//    }
+
+    @GetMapping("/")
+    @ResponseBody
+    public String home(){
+        return "home";
+
     }
 }

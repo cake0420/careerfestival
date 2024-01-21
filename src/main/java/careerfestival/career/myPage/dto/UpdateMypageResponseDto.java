@@ -2,6 +2,7 @@ package careerfestival.career.myPage.dto;
 
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.domain.mapping.Region;
 import lombok.*;
 
 @Getter
@@ -25,7 +26,9 @@ public class UpdateMypageResponseDto {
     private String position;
 
     //커리어 키워드
-    private KeywordName keywordName;
+    private KeywordName[] keywordName;
 
     //관심 지역
+    private String city;
+    private String addressLine;
 }

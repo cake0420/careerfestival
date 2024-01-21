@@ -78,7 +78,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //로그인 성공
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -99,6 +99,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         System.out.println("Login Success");
         System.out.println("------------------------");
 
+        response.sendRedirect("/");
     }
 
     //로그인 실패
