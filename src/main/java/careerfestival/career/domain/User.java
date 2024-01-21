@@ -78,8 +78,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private KeywordName keywordName;
 
-
-
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
      */

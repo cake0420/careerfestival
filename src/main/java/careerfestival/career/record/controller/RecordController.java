@@ -1,15 +1,18 @@
 package careerfestival.career.record.controller;
 
-import careerfestival.career.record.dto.RecordEtcDto;
-import careerfestival.career.record.dto.RecordLectureSeminarDto;
+import careerfestival.career.record.dto.RecordEtcRequestDto;
+import careerfestival.career.record.dto.RecordLectureSeminarRequestDto;
 import careerfestival.career.record.service.RecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import careerfestival.career.record.dto.RecordMainResponseDto;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/record")
@@ -19,9 +22,9 @@ public class RecordController {
     private final RecordService recordService;
 
     @PostMapping("/lecture-seminar/{userId}")
-    public ResponseEntity<Void> recordLectureSeminar(@PathVariable("userId") Long userId, @RequestBody RecordLectureSeminarDto recordLectureSeminarDto) {
+    public ResponseEntity<Void> recordLectureSeminar(@PathVariable("userId") Long userId, @RequestBody RecordLectureSeminarRequestDto recordLectureSeminarRequestDto) {
         try {
-            recordService.recordLectureSeminar(userId, recordLectureSeminarDto);
+            recordService.recordLectureSeminar(userId, recordLectureSeminarRequestDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -29,9 +32,9 @@ public class RecordController {
     }
 
     @PostMapping("/etc/{userId}")
-    public ResponseEntity<Void> recordEtc(@PathVariable("userId") Long userId, @RequestBody RecordEtcDto recordEtcDto) {
+    public ResponseEntity<Void> recordEtc(@PathVariable("userId") Long userId, @RequestBody RecordEtcRequestDto recordEtcRequestDto) {
         try {
-            recordService.recordEtc(userId, recordEtcDto);
+            recordService.recordEtc(userId, recordEtcRequestDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -47,13 +50,14 @@ public class RecordController {
 //    }
 
 
-
-    // 메인페이지
+    // 기록장 메인페이지 Record_Id 내림차순에 의한 정렬 반영, User_Id에 의한 Repository 접근
     @GetMapping("/{userId}")
-    public ResponseEntity<List<RecordMainResponseDto>> getRecordsByUserId(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Page<RecordMainResponseDto>> getRecordsByUserId(
+            @PathVariable("userId") Long userId,
+            @PageableDefault(size = 4, sort = "updated_at", direction = Sort.Direction.DESC) Pageable pageable) {
         try {
-            List<RecordMainResponseDto> recordMainResponses = recordService.getRecordsByUserId(userId);
-            return ResponseEntity.ok(recordMainResponses);
+            Page<RecordMainResponseDto> recordMainResponseDtos = recordService.recordList(userId, pageable);
+            return ResponseEntity.ok(recordMainResponseDtos);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

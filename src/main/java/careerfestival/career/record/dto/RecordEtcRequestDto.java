@@ -1,13 +1,11 @@
 package careerfestival.career.record.dto;
 
 import careerfestival.career.domain.Record;
-import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,12 +13,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-// 강연, 세미나 DTO
-public class RecordLectureSeminarDto {
-    private Category category;
+public class RecordEtcRequestDto {
     private String eventName;
     private LocalDate eventDate;
     private List<KeywordName> keywordName;
+    // 기타에만 있는 주제, 내용 칸을 위한 topic과 topicDetail
+    private String topic;
+    private String topicDetail;
+
     private String eventTitle;
     private String eventDescription;
     /*
@@ -34,11 +34,13 @@ public class RecordLectureSeminarDto {
         return Record.builder()
                 .eventName(eventName)
                 .eventDate(eventDate)
-                .eventDescription(eventDescription)
+                .keywordName(keywordName)
+                .topic(topic)
+                .topicDetail(topicDetail)
                 .eventTitle(eventTitle)
+                .eventDescription(eventDescription)
                 .networkingName(networkingName)
                 .networkingContact(networkingContact)
                 .build();
     }
-
 }

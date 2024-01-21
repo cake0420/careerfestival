@@ -3,6 +3,8 @@ package careerfestival.career.domain.mapping;
 import careerfestival.career.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
 
 @Entity
 @Getter
@@ -25,5 +27,8 @@ public class Organizer {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne(mappedBy = "organizer", cascade = CascadeType.ALL)
+    private ImageData imageData;
 }
 

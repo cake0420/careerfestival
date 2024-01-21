@@ -24,6 +24,7 @@ public class RegisterController {
         registerService.registerOrganizer(userId, registerOrganizerDto);
         return new ResponseEntity(HttpStatus.OK);
     }
+
     // 행사 등록하기 1, 행사 등록하기 2 통합
     @PostMapping("/register/{userId}")
     public ResponseEntity registerEvent(@PathVariable("userId") Long userId, @RequestBody RegisterEventDto registerEventDto) {
@@ -31,6 +32,8 @@ public class RegisterController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
+    // 5단계 화면 수정해야함
     @GetMapping("/{userId}")
     public ResponseEntity getRegisterByUserId(@PathVariable("userId") Long userId) {
         try{
