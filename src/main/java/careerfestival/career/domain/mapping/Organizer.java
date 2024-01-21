@@ -22,7 +22,7 @@ public class Organizer {
     --------주최자 이미지--------
      */
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

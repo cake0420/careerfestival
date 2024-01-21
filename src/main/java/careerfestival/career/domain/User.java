@@ -56,11 +56,8 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "INT")
     private int age;
 
-    /*
-
-    ------------관심 지역 들어갈 자리----------------
-
-    */
+    // 관심지역
+    private String addressLine;
 
     // 소속(회사/기관/학교명)
     @Column(length = 20, name = "company")
@@ -76,7 +73,7 @@ public class User extends BaseEntity {
 
 
     @Enumerated(EnumType.STRING)
-    private KeywordName keywordName;
+    private List<KeywordName> keyword = new ArrayList<>();
 
 
 
@@ -99,20 +96,19 @@ public class User extends BaseEntity {
     private List<Event> event = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-
-
     private List<Record> record = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-
-
     private List<Wish> wish = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Organizer> organizer = new ArrayList<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Organizer organizer;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ImageData imageData;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
@@ -120,10 +116,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 
-    public void addRecord(Record record){
+
+
+    public void addRecord(Record record) {
         records.add(record);
     }
-
 
     //--------------------------------update--------------------------------
 
@@ -167,9 +164,21 @@ public class User extends BaseEntity {
         this.position = position;
     }
 
-    public void updateKeyword(KeywordName keyword) {
+    public void updateKeyword(KeywordName[] keyword) {
         if(keyword==null) return;
-        this.keywordName = keyword;
+        if(this.keyword != null) {
+            this.keyword.clear();
+        }
+        else this.keyword = new ArrayList<>();
+
+        this.keyword.addAll(List.of(keyword));
+    }
+
+    public void updateAddressLine(String addressLine) {
+        if(addressLine==null) return;
+
+        this.addressLine = addressLine;
+
     }
 
     @Transactional

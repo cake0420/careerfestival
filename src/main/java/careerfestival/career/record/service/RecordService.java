@@ -37,8 +37,6 @@ public class RecordService {
                 .orElseThrow(()->new RuntimeException("User not found with id: " + userId));
 
         Record record = recordEtcDto.toEntity();
-        record.setCategory(recordEtcDto.getCategory());
-        record.setKeywordName(recordEtcDto.getKeywordName());
         record.setUser(user);
         recordRepository.save(record);
     }

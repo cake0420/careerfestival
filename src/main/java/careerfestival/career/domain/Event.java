@@ -46,16 +46,17 @@ public class Event extends BaseEntity {
     private String link;
     @Column(nullable = false, length = 200, name = "event_content")
     private String eventContent;
-
+    @Column(name = "favorites")
+    private boolean favorites;
     // 행사 정보이미지 들어가야함
 
     @Column(nullable = false, length = 40, name = "event_cost")
     private String eventCost;
 
     //행사 주소
-    @Column(nullable = false, length = 40, name ="address")
+    @Column(nullable = false, length = 40, name = "address")
     private String address;
-    @Column(nullable = false, length = 40, name ="spec_address")
+    @Column(nullable = false, length = 40, name = "spec_address")
     private String specAddress;
 
     @Column(nullable = false, length = 20, name = "manager_name")
@@ -85,4 +86,7 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
+
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
+    private ImageData imageData;
 }
