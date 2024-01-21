@@ -64,10 +64,4 @@ public class UserController {
 //        return new ResponseEntity<>(headers, HttpStatus.OK);
 //    }
 
-    @GetMapping("/")
-    @ResponseBody
-    public String home(){
-        return "home";
-
-    }
 }
