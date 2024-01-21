@@ -1,6 +1,5 @@
 package careerfestival.career.login.api;
 
-
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
@@ -69,6 +68,6 @@ public class UserController {
     @ResponseBody
     public String home(){
         return "home";
-    }
 
+    }
 }
