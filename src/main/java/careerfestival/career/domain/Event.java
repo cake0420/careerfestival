@@ -46,8 +46,7 @@ public class Event extends BaseEntity {
     private String link;
     @Column(nullable = false, length = 200, name = "event_content")
     private String eventContent;
-    @Column(name = "favorites")
-    private boolean favorites;
+
     // 행사 정보이미지 들어가야함
 
     @Column(nullable = false, length = 40, name = "event_cost")
