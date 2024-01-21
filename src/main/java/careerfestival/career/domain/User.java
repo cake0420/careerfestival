@@ -99,20 +99,19 @@ public class User extends BaseEntity {
     private List<Event> event = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-
-
     private List<Record> record = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-
-
     private List<Wish> wish = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Organizer> organizer = new ArrayList<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Organizer organizer;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ImageData imageData;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
@@ -120,10 +119,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 
-    public void addRecord(Record record){
+
+
+    public void addRecord(Record record) {
         records.add(record);
     }
-
 
     //--------------------------------update--------------------------------
 

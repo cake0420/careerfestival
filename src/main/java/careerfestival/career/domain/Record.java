@@ -3,6 +3,7 @@ package careerfestival.career.domain;
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.domain.mapping.ImageData;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,8 @@ public class Record extends BaseEntity {
     private String eventName;
     @Column(nullable = false, name = "event_date")
     private LocalDate eventDate;
-    @Column(nullable = false, length = 50, name = "event_title")
+    // 기록장에서 쓰이는 행사 타이틀 (나만의)
+    @Column(length = 50, name = "event_title")
     private String eventTitle;
     @Column(nullable = false, length = 300, name = "event_description")
     private String eventDescription;
@@ -40,12 +42,16 @@ public class Record extends BaseEntity {
     @Column(length = 300, name = "topic_detail")
     private String topicDetail;
 
+    @Enumerated(EnumType.STRING)
     private Category category;
     private List<KeywordName> keywordName;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
+    private ImageData imageData;
 
     public void user(Optional<User> user){
         //checkpoint

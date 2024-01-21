@@ -1,12 +1,9 @@
 package careerfestival.career.login.api;
 
-
 import careerfestival.career.login.dto.CustomUserDetails;
-import careerfestival.career.login.dto.UserSignInRequestDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -58,18 +55,11 @@ public class UserController {
         }
     }
 
-//    @PostMapping("/login")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity login() throws Exception {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Location", "/");
-//        return new ResponseEntity<>(headers, HttpStatus.OK);
-//    }
-
-    @GetMapping("/")
-    @ResponseBody
-    public String home(){
-        return "home";
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity login() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/");
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
-
 }
