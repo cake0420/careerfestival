@@ -23,14 +23,14 @@ public class WishController {
         String userEmail = "user@example.com"; // Replace this with the actual email
 
         try {
-            Long wishId = wishService.WishSave(userId, eventId, wishRequestDto);
+            boolean wishId = wishService.CheckWish(userId, eventId, wishRequestDto);
             // 리다이렉트를 위한 URL 생성
-            String redirectUrl = "/event/" + userId + "/" + eventId;
+            String redirectUrl = "/event/" + eventId + "/" + userId ;
 
             // ResponseEntity로 리다이렉트 응답 생성
             return ResponseEntity.status(HttpStatus.FOUND)
                     .header("Location", redirectUrl)
-                    .body(wishId);
+                    .build();
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {

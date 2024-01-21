@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class WishRequestDto {
     private Long userId;
     private Long eventId;
+
     @Builder
     public static WishRequestDto of(Long userId, Long eventId) {
         return WishRequestDto.builder()
