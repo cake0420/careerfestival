@@ -96,13 +96,9 @@ public class User extends BaseEntity {
     private List<Event> event = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-
-
     private List<Record> record = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-
-
     private List<Wish> wish = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
