@@ -56,6 +56,7 @@ public class RecordController {
             recordConferenceService.recordExhibition(memberId, request);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

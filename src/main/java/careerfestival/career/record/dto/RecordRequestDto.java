@@ -21,6 +21,7 @@ public class RecordRequestDto {
     private String eventName;
     private LocalDate eventDate;
     private KeywordName keywordName;
+<<<<<<< HEAD
     private List<String> detailEventName;
     private List<String> eventDescription;
     private List<String> networkingName;
@@ -37,6 +38,5 @@ public class RecordRequestDto {
                 .networkingName(networkingName.toString())
                 .networkingContact(networkingContact.toString())
                 .build();
-
     }
 }
