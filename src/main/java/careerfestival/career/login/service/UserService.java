@@ -11,6 +11,10 @@ import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +29,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final RegionRepository regionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JWTUtil jwtUtil;
 
     @Transactional
-    public String signUp(UserSignUpRequestDto userSignUpRequestDto) {
+    public User signUp(UserSignUpRequestDto userSignUpRequestDto) {
 
         // DB에 존재하는지 여부 (email로 판단)
         boolean exists = userRepository.existsByEmail(userSignUpRequestDto.getEmail());
@@ -41,16 +44,12 @@ public class UserService {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
 
-
-
         User user = userSignUpRequestDto.toEntity();
         user.updatePassword(bCryptPasswordEncoder.encode(userSignUpRequestDto.getPassword()));
 
         userRepository.save(user);
 
-        String joinJwt = jwtUtil.createJwt(user.getEmail(), String.valueOf(user.getRole()), 600000L);
-
-        return joinJwt;
+        return user;
     }
 
 
