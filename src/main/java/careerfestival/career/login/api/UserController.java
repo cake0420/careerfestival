@@ -77,12 +77,4 @@ public class UserController {
         }
     }
 
-
-    //화면 테스트용
-    @GetMapping("/login")
-    @ResponseBody
-    public String login() {
-        return "login page";
-    }
-
 }

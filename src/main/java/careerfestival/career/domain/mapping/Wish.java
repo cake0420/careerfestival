@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class Wish extends BaseEntity {
 
     @Id
@@ -25,6 +24,7 @@ public class Wish extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
+
 
     public Wish(User user, Event event) {
         this.user = user;

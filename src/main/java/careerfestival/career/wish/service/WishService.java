@@ -23,14 +23,28 @@ public class WishService {
     private final UserRepository userRepository;
     private final WishRepository wishRepository;
 
-    public Long WishSave(Long userId, Long eventId, WishRequestDto wishRequestDto){
-        Optional<User> user = userRepository.findById(userId);
-        Optional<Event> event = eventRepository.findById(eventId);
+    public boolean CheckWish(Long userId, Long eventId, WishRequestDto wishRequestDto){
+        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<Event> eventOptional = eventRepository.findById(eventId);
 
-        Wish wish = wishRequestDto.toEntity(user.orElse(null), event.orElse(null));
+        if (userOptional.isPresent() && eventOptional.isPresent()) {
+            User user = userOptional.get();
+            Event event = eventOptional.get();
 
-        wishRepository.save(wish);
-        return  wish.getId();
+            Wish check = wishRepository.findByUserIdAndEventId(user.getId(), event.getId()).orElse(null);
+            if (check == null) {
+
+                Wish newWish = wishRequestDto.toEntity(user, event);
+                wishRepository.save(newWish);
+                return true;
+            } else {
+                wishRepository.delete(check);
+                return false;
+            }
+        }else {
+            throw new UserOrEventNotFoundException("User or Event not found");
+        }
+
     }
 
     public List<WishResponseDto> getAllWishByEvent(Long userId, Long eventId) {
@@ -40,7 +54,7 @@ public class WishService {
             User user = userOptional.get();
             Event event = eventOptional.get();
 
-            List<Wish> wish = wishRepository.findByUserAndEvent(user, event);
+            Optional<Wish> wish = wishRepository.findByUserIdAndEventId(user.getId(), event.getId());
 
             return wish.stream()
                     .map(WishResponseDto::new)
