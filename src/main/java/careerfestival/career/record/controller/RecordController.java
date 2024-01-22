@@ -2,7 +2,10 @@ package careerfestival.career.record.controller;
 
 import careerfestival.career.record.dto.RecordEtcDto;
 import careerfestival.career.record.dto.RecordLectureSeminarDto;
+import careerfestival.career.record.dto.RecordRequestDto;
+import careerfestival.career.record.service.RecordConferenceExhibitionService;
 import careerfestival.career.record.service.RecordService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,7 @@ import java.util.List;
 @RequestMapping("/record")
 @RestController
 public class RecordController {
-
+    private final RecordConferenceExhibitionService recordConferenceService;
     private final RecordService recordService;
 
     @PostMapping("/lecture-seminar/{userId}")
@@ -37,16 +40,25 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    //기록장
-//    @PostMapping("/{memberId}")
-//    public ApiResponse<RecordResponseDto.AddRecordResponseDto>
-//    addRecordConference(@RequestBody @Valid RecordRequestDto.AddRecordConferenceRequestDto request
-//              ,@PathVariable Long memberId){
-//        Record record = recordCommandService.addRecord(request, memberId);
-//        return ApiResponse.onSuccess(RecordConverter.toAddRecordResponseDto(record));
-//    }
-
-
+    // conference 기록 추가
+    @PostMapping("/conference/{userId}")
+    public ResponseEntity<Void> addRecordConference(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long memberId) {
+        try {
+            recordConferenceService.recordConference(memberId, request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/exhibition/{memberId}")
+    public ResponseEntity<Void> addRecordExhibition(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long memberId) {
+        try {
+            recordConferenceService.recordExhibition(memberId, request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     // 메인페이지
     @GetMapping("/{userId}")

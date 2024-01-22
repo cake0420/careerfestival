@@ -41,6 +41,8 @@ public class Record extends BaseEntity {
     private String topic;
     @Column(length = 300, name = "topic_detail")
     private String topicDetail;
+    @Column
+    private String detailEventName;
 
     @Enumerated(EnumType.STRING)
     private Category category;
