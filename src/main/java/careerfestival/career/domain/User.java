@@ -7,7 +7,6 @@ import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
 import careerfestival.career.domain.mapping.*;
 import careerfestival.career.domain.mapping.Comment;
-import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.domain.mapping.Wish;
@@ -111,7 +110,7 @@ public class User extends BaseEntity {
     private ImageData imageData;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Follow> follow = new ArrayList<>();
+    private List<Subscribe> subscribe = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
