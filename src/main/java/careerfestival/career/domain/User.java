@@ -178,7 +178,6 @@ public class User extends BaseEntity {
         if(addressLine==null) return;
 
         this.addressLine = addressLine;
-
     }
 
     @Transactional
