@@ -11,11 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class WishResponseDto {
-    private Long userId;
     private Long eventId;
 
     public WishResponseDto(Wish wish) {
-        this.userId = wish.getUser().getId();
         this.eventId = wish.getEvent().getId();
     }
 

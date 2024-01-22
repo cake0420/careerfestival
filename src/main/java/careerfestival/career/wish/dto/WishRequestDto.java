@@ -13,13 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class WishRequestDto {
-    private Long userId;
+
     private Long eventId;
 
     @Builder
-    public static WishRequestDto of(Long userId, Long eventId) {
+    public static WishRequestDto of(Long eventId) {
         return WishRequestDto.builder()
-                .userId(userId)
                 .eventId(eventId)
                 .build();
     }

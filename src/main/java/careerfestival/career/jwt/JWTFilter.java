@@ -52,10 +52,12 @@ public class JWTFilter extends OncePerRequestFilter {
         //토큰에서 username, role 획득
         String email = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
+        Long id = jwtUtil.getUserId(token);
 
 
         //Member 엔티티 생성하여 값 세팅
         User user = User.builder()
+                .id(id)
                 .email(email)
                 .password("tempPassword")
                 .role(Role.valueOf(role))
