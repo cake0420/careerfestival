@@ -46,6 +46,7 @@ public class Record extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
     private List<KeywordName> keywordName;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,7 +1,6 @@
 package careerfestival.career.record.controller;
 
-import careerfestival.career.record.dto.RecordEtcRequestDto;
-import careerfestival.career.record.dto.RecordLectureSeminarRequestDto;
+import careerfestival.career.record.dto.*;
 import careerfestival.career.record.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import careerfestival.career.record.dto.RecordMainResponseDto;
 
 
 @RequiredArgsConstructor
@@ -40,6 +38,7 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     //기록장
 //    @PostMapping("/{memberId}")
 //    public ApiResponse<RecordResponseDto.AddRecordResponseDto>
@@ -59,6 +58,26 @@ public class RecordController {
             Page<RecordMainResponseDto> recordMainResponseDtos = recordService.recordList(userId, pageable);
             return ResponseEntity.ok(recordMainResponseDtos);
         } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/lecture-seminar")
+    public ResponseEntity<RecordLectureSeminarResponseDto> getRecordLectureSeminarByRecordId(@PathVariable("recordId") Long recordId){
+        try{
+            RecordLectureSeminarResponseDto recordLectureSeminarResponseDto = recordService.getLectureSeminar(recordId);
+            return ResponseEntity.ok(recordLectureSeminarResponseDto);
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/etc")
+    public ResponseEntity<RecordEtcResponseDto> getRecordEtcByRecordId(@PathVariable("recordId") Long recordId) {
+        try{
+            RecordEtcResponseDto recordEtcResponseDto = recordService.getEtc(recordId);
+            return ResponseEntity.ok(recordEtcResponseDto);
+        } catch (IllegalArgumentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

@@ -12,20 +12,20 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/mypage")
 @RequiredArgsConstructor
 public class MyPageController {
 
     private final UserService userService;
 
-    @GetMapping("/mypage")
+    @GetMapping("")
     @ResponseBody
     public User myPage (@AuthenticationPrincipal CustomUserDetails customUserDetails){
         return userService.findUserByCustomUserDetails(customUserDetails);
     }
 
 
-    @PatchMapping("/mypage/update")
+    @PatchMapping("/update")
     public ResponseEntity<Void> updateMember(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
         userService.findUserByEmailandUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
         HttpHeaders headers = new HttpHeaders();

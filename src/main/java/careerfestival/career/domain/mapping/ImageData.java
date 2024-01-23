@@ -7,14 +7,13 @@ import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Table(name = "imagedata")
 public class ImageData extends BaseEntity {
 
     @Id
@@ -22,44 +21,33 @@ public class ImageData extends BaseEntity {
     private Long id;
 
     // User 프로필 이미지 1개 업로드 가능
-    @Lob
-    @Column(name = "user_profile_image")
-    private byte[] userProfileImage;
+    @Column(name = "user_file_url")
+    private String userFileUrl;
 
-    // 주최자 프로필 이미지 1개 업로드 가능
-    @Lob
-    @Column(name = "organizer_profile_image")
-    private byte[] organizerProfileImage;
+    @Column(name = "organizer_file_url")
+    private String organizerFileUrl;
 
-    // 행사 메인 이미지 1개 업로드 가능
-    @Lob
-    @Column(name = "event_main_image")
-    private byte[] eventMainImage;
+    @Column(name = "event_main_file_url")
+    private String eventMainFileUrl;
 
     // 행사 정보 이미지 최소 3개 업로드 하도록
-    @Lob
-    @Column(name = "event_inform_image")
-    private List<byte[]> eventInformImage;
+    @Column(name = "event_inform_file_url")
+    private String eventInformFileUrl;
 
     // 기록장 강연/세미나 이미지 첨부 1개
-    @Lob
-    @Column(name = "record_lecture_seminar_image")
-    private byte[] recordLectureSeminarImage;
+    @Column(name = "record_lecture_seminar_file_url")
+    private String recordLectureSeminarFileUrl;
 
     // 기록장 학술대회 이미지 첨부 1개
-    @Lob
-    @Column(name = "record_conference_image")
-    private byte[] recordConferenceImage;
+    @Column(name = "record_conference_file_url")
+    private String recordConferenceFileUrl;
 
     // 기록장 전시/박람회 이미지 첨부 1개
-    @Lob
-    @Column(name = "record_exhibition_fair_image")
-    private byte[] recordExhibitionFairImage;
+    @Column(name = "record_exhibition_fair_file_url")
+    private String recordExhibitionFairFileUrl;
 
-    // 기록장 기타 이미지 첨부 1개
-    @Lob
-    @Column(name = "record_etc_image")
-    private byte[] recordEtcImage;
+    @Column(name = "record_etc_file_url")
+    private String recordEtcFileUrl;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

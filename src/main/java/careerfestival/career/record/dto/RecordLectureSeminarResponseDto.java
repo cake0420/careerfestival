@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 // 강연, 세미나 DTO
-public class RecordLectureSeminarRequestDto {
+public class RecordLectureSeminarResponseDto {
     private String eventName;
     private LocalDate eventDate;
     private String eventTitle;
@@ -28,15 +28,15 @@ public class RecordLectureSeminarRequestDto {
     private String networkingContact;
 
     @Builder
-    public Record toEntity() {
-        return Record.builder()
-                .eventName(eventName)
-                .eventTitle(eventTitle)
-                .eventDate(eventDate)
-                .keywordName(keywordName)
-                .eventDescription(eventDescription)
-                .networkingName(networkingName)
-                .networkingContact(networkingContact)
+    public static RecordLectureSeminarResponseDto fromEntity(Record record) {
+        return RecordLectureSeminarResponseDto.builder()
+                .eventName(record.getEventName())
+                .eventTitle(record.getEventTitle())
+                .eventDate(record.getEventDate())
+                .keywordName(record.getKeywordName())
+                .eventDescription(record.getEventDescription())
+                .networkingName(record.getNetworkingName())
+                .networkingContact(record.getNetworkingContact())
                 .build();
     }
 }

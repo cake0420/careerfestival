@@ -12,5 +12,5 @@ import java.util.List;
 public interface RecordRepository extends JpaRepository<Record, Long> {
     Page<Record> findByUserId(Long userId, Pageable pageable);
 
-
+    Record findRecordById(Long recordId);
 }

@@ -2,9 +2,7 @@ package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
-import careerfestival.career.record.dto.RecordEtcRequestDto;
-import careerfestival.career.record.dto.RecordLectureSeminarRequestDto;
-import careerfestival.career.record.dto.RecordMainResponseDto;
+import careerfestival.career.record.dto.*;
 import careerfestival.career.repository.RecordRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +28,6 @@ public class RecordService {
     }
 
     public void recordEtc(Long userId, RecordEtcRequestDto recordEtcRequestDto) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new RuntimeException("User not found with id: " + userId));
 
@@ -39,8 +36,23 @@ public class RecordService {
         recordRepository.save(record);
     }
 
+    // 사용자별 기록장 메인페이지 페이징 기법 적용해서 반환 (updated_at) 기준 내림차순 정렬
     public Page<RecordMainResponseDto> recordList(Long userId, Pageable pageable) {
         Page<Record> records = recordRepository.findByUserId(userId, pageable);
         return records.map(RecordMainResponseDto::fromEntity);
+    }
+
+    // 수정하기 버튼 누르기 전 사용자별 기록장(강연/세미나) 조회 및 반환
+    public RecordLectureSeminarResponseDto getLectureSeminar(Long recordId) {
+        Record record = recordRepository.findRecordById(recordId);
+        RecordLectureSeminarResponseDto responseDto = RecordLectureSeminarResponseDto.fromEntity(record);
+        return responseDto;
+    }
+
+    // 수정하기 버튼 누르기 전 사용자별 기록장(기타) 조회 및 반환
+    public RecordEtcResponseDto getEtc(Long recordId) {
+        Record record = recordRepository.findRecordById(recordId);
+        RecordEtcResponseDto responseDto = RecordEtcResponseDto.fromEntity(record);
+        return responseDto;
     }
 }
