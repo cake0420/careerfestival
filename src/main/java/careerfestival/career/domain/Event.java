@@ -2,6 +2,7 @@ package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
+import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -67,6 +68,9 @@ public class Event extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private KeywordName keywordName;
 
     @Column(length = 300, name = "event_etc_detail")
     private String eventEtcDetail;

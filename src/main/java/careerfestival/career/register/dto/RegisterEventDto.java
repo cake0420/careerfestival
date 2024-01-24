@@ -2,6 +2,7 @@ package careerfestival.career.register.dto;
 
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.enums.Category;
+import careerfestival.career.domain.enums.KeywordName;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class RegisterEventDto {
     private Category category;
+    private KeywordName keywordName;
 
     private LocalDateTime recruitmentStart;
     private LocalDateTime recruitmentEnd;
@@ -39,6 +41,7 @@ public class RegisterEventDto {
     public Event toEntity() {
         return Event.builder()
                 .category(category)
+                .keywordName(keywordName)
                 .recruitmentStart(recruitmentStart)
                 .recruitmentEnd(recruitmentEnd)
                 .eventName(eventName)
