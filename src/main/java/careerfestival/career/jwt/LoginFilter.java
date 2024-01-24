@@ -10,7 +10,6 @@ import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.json.JsonParser;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -68,7 +67,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = userSignInRequestDto.getUsername();
         String password = userSignInRequestDto.getPassword();
 
-
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야함
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
@@ -78,7 +76,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //로그인 성공
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -99,6 +97,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         System.out.println("Login Success");
         System.out.println("------------------------");
 
+        response.sendRedirect("/");
     }
 
     //로그인 실패

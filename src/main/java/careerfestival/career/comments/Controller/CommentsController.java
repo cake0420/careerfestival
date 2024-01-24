@@ -26,7 +26,7 @@ public class CommentsController {
         try {
             Long commentId = commentService.commentSave(userId, eventId, commentRequestDto);
             // 리다이렉트를 위한 URL 생성
-            String redirectUrl = "/event/" + userId + "/" + eventId;
+            String redirectUrl = "/event/" + eventId + "/" + userId;
 
             // ResponseEntity로 리다이렉트 응답 생성
             return ResponseEntity.status(HttpStatus.FOUND)
