@@ -38,7 +38,6 @@ public class S3Uploader {
         expTimeMillis += 1000 * 60 * 2; //2분
         expiration.setTime(expTimeMillis);
 
-
         try {
             GeneratePresignedUrlRequest generatePresignedUrlRequest =
                     new GeneratePresignedUrlRequest(bucket, fileName)
@@ -74,7 +73,7 @@ public class S3Uploader {
     }
 
     // 로컬에 파일 생성
-    private Optional<File> convert(MultipartFile file) throws IOException {
+    public Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(file.getOriginalFilename());
         if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {

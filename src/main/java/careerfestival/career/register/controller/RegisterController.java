@@ -54,11 +54,7 @@ public class RegisterController {
     public ResponseEntity regiserEventMainImage(@PathVariable("eventId") Long eventId,
                                             HttpServletRequest request,
                                             @RequestParam(value = "eventmainimage") MultipartFile eventmainimage){
-        try{
-            registerService.registerEventMainImage(eventId, eventmainimage);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        registerService.registerEventMainImage(eventId, eventmainimage);
         return new ResponseEntity(HttpStatus.OK);
     }
 

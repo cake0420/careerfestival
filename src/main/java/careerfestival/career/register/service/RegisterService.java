@@ -3,6 +3,7 @@ package careerfestival.career.register.service;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.mapping.Organizer;
+import careerfestival.career.global.ImageUtils;
 import careerfestival.career.global.S3Uploader;
 import careerfestival.career.register.dto.RegisterEventDto;
 import careerfestival.career.register.dto.RegisterMainResponseDto;
@@ -13,10 +14,13 @@ import careerfestival.career.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,15 +46,38 @@ public class RegisterService {
 
     // 행사 대표이미지 업로드
     @Transactional
-    public void registerEventMainImage(Long userId, MultipartFile eventmainimage) throws IOException{
+    public void registerEventMainImage(Long userId, MultipartFile eventMainImage) {
         Event event = eventRepository.findByUserId(userId);
+        try {
+            if (!eventMainImage.isEmpty()) {
+                // 이미지 리사이징
+                BufferedImage resizedImage = ImageUtils.resizeImage(eventMainImage, 600, 400);
 
-        if(!eventmainimage.isEmpty()){
-            String storedFileName = s3Uploader.upload(eventmainimage, "event_main");
-            event.setEventMainFileUrl(storedFileName);
+                // BufferedImage를 byte[]로 변환
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(resizedImage, getFileExtension(eventMainImage.getOriginalFilename()), baos);
+                byte[] resizedImageBytes = baos.toByteArray();
+
+                // byte[]를 MultipartFile로 변환
+                MultipartFile multipartFile = new MockMultipartFile(
+                        "resized_" + eventMainImage.getOriginalFilename(),
+                        eventMainImage.getOriginalFilename(),
+                        eventMainImage.getContentType(),
+                        resizedImageBytes
+                );
+
+                // S3에 업로드하고 URL 받기
+                String storedFileName = s3Uploader.upload(multipartFile, "event_main");
+
+                // 이벤트에 이미지 URL 설정하고 저장
+                event.setEventMainFileUrl(storedFileName);
+                eventRepository.save(event);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        eventRepository.save(event);
     }
+
 
     // 행사 정보 이미지 업로드 (수정 보완 필요)
     @Transactional
@@ -89,5 +116,13 @@ public class RegisterService {
         return events.stream()
                 .map(RegisterMainResponseDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    private static String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex >= 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1);
+        }
+        return "";
     }
 }

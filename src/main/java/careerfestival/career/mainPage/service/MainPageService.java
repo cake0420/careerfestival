@@ -8,6 +8,7 @@ import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.repository.EventRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
