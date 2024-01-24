@@ -6,10 +6,13 @@ import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class Comment extends BaseEntity {
     @Id
@@ -19,14 +22,11 @@ public class Comment extends BaseEntity {
     @Column(length = 300, name = "comment_content")
     private String commentContent;
 
-    @Column(length = 300, name = "parent_content")
-    private String parentContent;
+    @Column(columnDefinition = "LONG")
+    private Long orderNumber;
 
     @Column(columnDefinition = "INT")
-    private int depth; // 댓글 깊이
-
-    Boolean isCommentForComment; //대댓글 여부
-    Long orderNumber; //댓글의 순서
+    private int depth;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
@@ -37,30 +37,37 @@ public class Comment extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Comment parentComment;
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parent;
 
-    public Comment(User user, Event event, Comment parentComment, String commentContent){
+    @OneToMany(mappedBy = "parent")
+    private List<Comment> childComments;
+
+    public Comment(User user, Event event, Comment parent, Long orderNumber, int depth){
         this.user = user;
         this.event = event;
-        this.commentContent = commentContent;
-        this.parentComment = parentComment;
-        if(parentComment == null){ // 부모 댓글이 없을 때
-            this.isCommentForComment = false; // 대댓글이 아니다
-            this.depth = 0 ; // 깊이는 0
-            this.orderNumber = getId() ; //순서는 새롭게 지정
-        }else{ // 부모 댓글이 존재할 때
-            this.isCommentForComment = true; // 대댓글이 맞다
-            this.depth = parentComment.depth+1; // 깊이는 부모의 깊이+1
-            this.orderNumber = parentComment.getOrderNumber(); // 순서는 부모의 순서를 그대로 물려받는다.
-        }
+        this.parent = parent;
+        this.orderNumber = orderNumber;
+        if (parent != null) {
+            this.depth = parent.getDepth() + 1;
+        } else {
+            this.depth = 0;
+        }        this.childComments = new ArrayList<>();
+    }
+    public void addChildComment(Comment childComment) {
+        childComments.add(childComment);
+        childComment.setParent(this);
+    }
+    public void setParent(Comment parent) {
+        this.parent = parent;
+    }
+    public void setOrderNumber(Long orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
-//    public int getDepth() {
-//        return depth;
-//    }
-//
-//    public void setDepth(int depth) {
-//        this.depth = depth;
-//    }
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+
 }

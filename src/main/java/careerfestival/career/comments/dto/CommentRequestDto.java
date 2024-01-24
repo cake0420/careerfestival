@@ -16,38 +16,38 @@ public class CommentRequestDto {
 
     private Long userId;
     private Long eventId;
+    private Long parent;  // Updated to Long type
     private String commentContent;
-//    private Long parentCommentId;
-//    private int depth;
+    private  Long orderNumber;
+
+
 
     @Builder
-    public static CommentRequestDto of(Long userId, Long eventId, String commentContent) {
+    public static CommentRequestDto of(Long userId, Long eventId, String commentContent, Long parent, Long orderNumber) {
         return CommentRequestDto.builder()
                 .userId(userId)
                 .eventId(eventId)
                 .commentContent(commentContent)
-//                .parentCommentId(parentCommentId)
-//                .depth(depth)
+                .parent(parent)
+                .orderNumber(orderNumber)
                 .build();
     }
 
     public Comment toEntity(User user, Event event, String commentContent) {
-
-//        Comment parentComment = null;
-//        if (parentCommentId != null) {
-//            // 부모 댓글이 있는 경우
-//            parentComment = Comment.builder().id(parentCommentId).build();
-//        }
-
-        // toEntity 메서드를 통해 Comment 엔티티 생성
         return Comment.builder()
                 .user(user)
                 .event(event)
                 .commentContent(commentContent)
-//                .parentComment(parentComment)
-//                .depth(depth)
                 .build();
     }
 
-
+    public Comment toEntityWithParent(User user, Event event, String commentContent, Comment parent) {
+        return Comment.builder()
+                .user(user)
+                .event(event)
+                .commentContent(commentContent)
+                .parent(parent)
+                .depth(parent.getDepth() + 1)
+                .build();
+    }
 }

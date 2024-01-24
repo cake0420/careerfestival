@@ -3,6 +3,7 @@ package careerfestival.career.comments.Controller;
 import careerfestival.career.comments.Service.CommentService;
 import careerfestival.career.comments.dto.CommentRequestDto;
 import careerfestival.career.comments.dto.CommentResponseDto;
+import careerfestival.career.domain.mapping.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentsController {
     private final CommentService commentService;
-
     @PostMapping("/event/{eventId}/{userId}/comments")
     public ResponseEntity<Long> addComment(
             @RequestBody CommentRequestDto commentRequestDto,
@@ -40,6 +40,7 @@ public class CommentsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping("/event/{eventId}/{userId}/comments")
     public ResponseEntity<List<CommentResponseDto>> getAllCommentsByEvent(

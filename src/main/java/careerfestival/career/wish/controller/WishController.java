@@ -24,8 +24,7 @@ public class WishController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId,
             @RequestBody WishRequestDto wishRequestDto) {
-        // Assuming you have the authenticated user's email
-        String userEmail = "user@example.com"; // Replace this with the actual email
+
         Long userId = customUserDetails.getId();
 
         try {
@@ -49,8 +48,7 @@ public class WishController {
     public ResponseEntity<List<WishResponseDto>> getAllWishByEvent(
             @RequestHeader(name = "Authorization") String token, // Assuming the token is passed in the Authorization header
             @PathVariable("eventId") Long eventId) {
-        String userEmail = "user@example.com"; // Replace this with the actual email
-        String name = "test";
+
         Long userId = jwtUtil.getUserId(token);
 
 

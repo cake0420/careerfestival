@@ -18,4 +18,8 @@ public class Subscribe extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public Subscribe(User user){
+        this.user = user;
+    }
 }
