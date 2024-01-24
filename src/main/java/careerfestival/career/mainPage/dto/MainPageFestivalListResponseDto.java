@@ -1,33 +1,30 @@
 package careerfestival.career.mainPage.dto;
 
 import careerfestival.career.domain.Event;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class MainPageResponseDto {
+public class MainPageFestivalListResponseDto {
     private String eventMainFileUrl;
     private String eventName;
     private LocalDateTime recruitmentStart;
     private LocalDateTime recruitmentEnd;
     private String eventCost;
 
-
-    public static MainPageResponseDto fromEntity(Event event) {
-        return MainPageResponseDto.builder()
+    public static MainPageFestivalListResponseDto fromEntity(Event event){
+        return MainPageFestivalListResponseDto.builder()
                 .eventMainFileUrl(event.getEventMainFileUrl())
                 .eventName(event.getEventName())
                 .recruitmentStart(event.getRecruitmentStart())
                 .recruitmentEnd(event.getRecruitmentEnd())
-                .eventCost(event.getEventCost())
                 .build();
     }
 

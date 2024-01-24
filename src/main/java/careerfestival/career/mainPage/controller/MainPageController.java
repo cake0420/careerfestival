@@ -1,13 +1,14 @@
 package careerfestival.career.mainPage.controller;
 
+import careerfestival.career.domain.enums.Category;
+import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.mainPage.dto.MainPageFestivalListResponseDto;
 import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.mainPage.service.MainPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +28,9 @@ public class MainPageController {
             // 1. 조회수에 의한 이벤트명
             List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
             // 2. 조회수에 의한 정렬 리스트
-            List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEvents();
+            List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
             // 3. 랜덤에 의한 정렬 리스트
-            List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEvents();
+            List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEventsHitsRandom();
 
             Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
             mainPageResponseDtoObjectMap.put("eventrandom", mainPageResponseDtoRandom);
@@ -41,4 +42,20 @@ public class MainPageController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/festival-list")
+    public ResponseEntity<Map<String, Object>> getEventsFilter(@RequestParam("category") Category category,
+                                                               @RequestParam("keywordName") KeywordName keywordName){
+        try{
+            List<MainPageFestivalListResponseDto> mainPageFestivalListResponseDtos
+                    = mainPageService.getEventsFiltered(category, keywordName);
+
+            Map<String, Object> mainPageFestivalListResponseDtoObjectMap = new HashMap<>();
+            mainPageFestivalListResponseDtoObjectMap.put("eventFilter", mainPageFestivalListResponseDtos);
+            return ResponseEntity.ok().body(mainPageFestivalListResponseDtoObjectMap);
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

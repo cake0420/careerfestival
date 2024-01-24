@@ -19,7 +19,7 @@ public class RecordLectureSeminarRequestDto {
     private String eventName;
     private LocalDate eventDate;
     private String eventTitle;
-    private List<KeywordName> keywordName;
+    private KeywordName keywordName;
     private String eventDescription;
     /*
     ----이미지 첨부 관련 내용----
