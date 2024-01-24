@@ -56,11 +56,8 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "INT")
     private int age;
 
-    /*
-
-    ------------관심 지역 들어갈 자리----------------
-
-    */
+    // 관심지역
+    private String addressLine;
 
     // 소속(회사/기관/학교명)
     @Column(length = 20, name = "company")
@@ -76,7 +73,7 @@ public class User extends BaseEntity {
 
 
     @Enumerated(EnumType.STRING)
-    private KeywordName keywordName;
+    private List<KeywordName> keyword = new ArrayList<>();
 
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
@@ -166,9 +163,20 @@ public class User extends BaseEntity {
         this.position = position;
     }
 
-    public void updateKeyword(KeywordName keyword) {
+    public void updateKeyword(KeywordName[] keyword) {
         if(keyword==null) return;
-        this.keywordName = keyword;
+        if(this.keyword != null) {
+            this.keyword.clear();
+        }
+        else this.keyword = new ArrayList<>();
+
+        this.keyword.addAll(List.of(keyword));
+    }
+
+    public void updateAddressLine(String addressLine) {
+        if(addressLine==null) return;
+
+        this.addressLine = addressLine;
     }
 
     @Transactional
