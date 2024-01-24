@@ -20,6 +20,7 @@ public class MainPageResponseDto {
     private LocalDateTime recruitmentEnd;
     private String eventCost;
 
+
     public static MainPageResponseDto fromEntity(Event event) {
         return MainPageResponseDto.builder()
                 .eventName(event.getEventName())

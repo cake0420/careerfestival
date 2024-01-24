@@ -19,7 +19,7 @@ public class MainPageService {
     public List<MainPageResponseDto> getEvents() {
         // 조회수에 의한 정렬 처리 필요
         List<Event> events = eventRepository.findAll();
-
+        
         return events.stream()
                 .map(MainPageResponseDto::fromEntity)
                 .collect(Collectors.toList());

@@ -34,8 +34,8 @@ public class Event extends BaseEntity {
     private String eventName;
     @Column(nullable = false, length = 200, name = "description")
     private String description;
-    @Column(length = 300, name = "main_img")
-    private String mainImg;
+    @Column(name = "event_main_file_url")
+    private String eventMainFileUrl;
 
     // 행사 시작일, 행사 종료일, 행사 외부 사이트, 행사 정보, 행사 정보 이미지
     @Column(nullable = false, name = "event_start")
@@ -46,8 +46,8 @@ public class Event extends BaseEntity {
     private String link;
     @Column(nullable = false, length = 200, name = "event_content")
     private String eventContent;
-
-    // 행사 정보이미지 들어가야함
+    @Column(name = "event_inform_file_url")
+    private String eventInformFileUrl;
 
     @Column(nullable = false, length = 40, name = "event_cost")
     private String eventCost;

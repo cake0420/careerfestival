@@ -75,12 +75,11 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private List<KeywordName> keyword = new ArrayList<>();
 
-
-
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
      */
-
+    @Column(name = "file_url")
+    private String fileUrl;
 
     private Timestamp inactiveDate;
 

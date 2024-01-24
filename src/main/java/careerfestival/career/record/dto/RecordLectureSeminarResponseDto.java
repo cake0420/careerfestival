@@ -1,12 +1,12 @@
 package careerfestival.career.record.dto;
 
 import careerfestival.career.domain.Record;
-import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,13 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RecordEtcDto {
-    private Category category;
+// 강연, 세미나 DTO
+public class RecordLectureSeminarResponseDto {
     private String eventName;
     private LocalDate eventDate;
+    private String eventTitle;
     private List<KeywordName> keywordName;
-    private String topic;
-    private String topicDetail;
     private String eventDescription;
     /*
     ----이미지 첨부 관련 내용----
@@ -29,17 +28,15 @@ public class RecordEtcDto {
     private String networkingContact;
 
     @Builder
-    public Record toEntity() {
-        return Record.builder()
-                .category(category)
-                .eventName(eventName)
-                .eventDate(eventDate)
-                .keywordName(keywordName)
-                .topic(topic)
-                .topicDetail(topicDetail)
-                .eventDescription(eventDescription)
-                .networkingName(networkingName)
-                .networkingContact(networkingContact)
+    public static RecordLectureSeminarResponseDto fromEntity(Record record) {
+        return RecordLectureSeminarResponseDto.builder()
+                .eventName(record.getEventName())
+                .eventTitle(record.getEventTitle())
+                .eventDate(record.getEventDate())
+                .keywordName(record.getKeywordName())
+                .eventDescription(record.getEventDescription())
+                .networkingName(record.getNetworkingName())
+                .networkingContact(record.getNetworkingContact())
                 .build();
     }
 }

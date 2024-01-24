@@ -17,5 +17,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      5단계의 행사 목록 List 형태로 제시
      */
 
-    List<Event> findByUserId(Long userId);
+    List<Event> findAllByUserId(Long userId);
+
+    Event findByUserId(Long userId);
 }

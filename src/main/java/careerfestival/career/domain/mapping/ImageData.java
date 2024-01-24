@@ -7,51 +7,47 @@ import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
+@Table(name = "imagedata")
 public class ImageData extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
-    @Column(name = "user_profile_image")
-    private byte[] userProfileImage;
+    // User 프로필 이미지 1개 업로드 가능
+    @Column(name = "user_file_url")
+    private String userFileUrl;
 
-    @Lob
-    @Column(name = "organizer_profile_image")
-    private byte[] organizerProfileImage;
+    @Column(name = "organizer_file_url")
+    private String organizerFileUrl;
 
-    @Lob
-    @Column(name = "event_main_image")
-    private byte[] eventMainImage;
+    @Column(name = "event_main_file_url")
+    private String eventMainFileUrl;
 
-    @Lob
-    @Column(name = "event_inform_image")
-    private List<byte[]> eventInformImage;
+    // 행사 정보 이미지 최소 3개 업로드 하도록
+    @Column(name = "event_inform_file_url")
+    private String eventInformFileUrl;
 
-    @Lob
-    @Column(name = "register_lecture_seminar_image")
-    private List<byte[]> registerLectureSeminarImage;
+    // 기록장 강연/세미나 이미지 첨부 1개
+    @Column(name = "record_lecture_seminar_file_url")
+    private String recordLectureSeminarFileUrl;
 
-    @Lob
-    @Column(name = "register_conference_image")
-    private List<byte[]> registerConferenceImage;
+    // 기록장 학술대회 이미지 첨부 1개
+    @Column(name = "record_conference_file_url")
+    private String recordConferenceFileUrl;
 
-    @Lob
-    @Column(name = "register_exhibition_fair_image")
-    private List<byte[]> registerExhibitionFairImage;
+    // 기록장 전시/박람회 이미지 첨부 1개
+    @Column(name = "record_exhibition_fair_file_url")
+    private String recordExhibitionFairFileUrl;
 
-    @Lob
-    @Column(name = "register_etc_image")
-    private List<byte[]> registerEtcImage;
+    @Column(name = "record_etc_file_url")
+    private String recordEtcFileUrl;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -64,4 +60,8 @@ public class ImageData extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "record_id")
     private Record record;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizer_id")
+    private Organizer organizer;
 }

@@ -37,6 +37,8 @@ public class Record extends BaseEntity {
     private String networkingContact;
     @Column(length = 300, name = "record_etc_detail")
     private String recordEtcDetail;
+
+    // 기록장 (기타) 전용 topic, topicDetail
     @Column(length = 300, name = "topic")
     private String topic;
     @Column(length = 300, name = "topic_detail")
@@ -44,8 +46,8 @@ public class Record extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Category category;
-    private List<KeywordName> keywordName;
 
+    private List<KeywordName> keywordName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

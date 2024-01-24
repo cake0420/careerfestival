@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping
+@RequestMapping("/mypage")
 @RequiredArgsConstructor
 public class MyPageController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
 
-    @GetMapping("/mypage")
+    @GetMapping("")
     @ResponseBody
     public MyPageResponseDto myPage (@AuthenticationPrincipal CustomUserDetails customUserDetails){
         User findUser = userService.findUserByCustomUserDetails(customUserDetails);
@@ -30,7 +30,7 @@ public class MyPageController {
     }
 
 
-    @PatchMapping("/mypage/update")
+    @PatchMapping("/update")
     public ResponseEntity<Void> updateMember(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
         userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
 
