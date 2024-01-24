@@ -19,7 +19,7 @@ public class RecordMainResponseDto {
     private LocalDate eventDate;
     private String eventTitle;
     private String eventDescription;
-    private List<KeywordName> keywordName;
+    private KeywordName keywordName;
 
     public static RecordMainResponseDto fromEntity(Record record) {
         return RecordMainResponseDto.builder()

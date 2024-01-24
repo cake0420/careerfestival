@@ -2,14 +2,20 @@ package careerfestival.career.record.controller;
 
 import careerfestival.career.record.dto.*;
 import careerfestival.career.record.service.RecordService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.print.attribute.standard.Media;
+import java.io.IOException;
 
 
 @RequiredArgsConstructor
@@ -27,6 +33,30 @@ public class RecordController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping(value = "/lecture-seminar/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity recordLectureSeminarImage(@PathVariable("userId") Long userId,
+                                                    HttpServletRequest request,
+                                                    @RequestParam(value = "lectureseminarimage")MultipartFile lectureseminarimage){
+        try{
+            recordService.recordLectureSeminarImage(userId, lectureseminarimage);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/etc/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity recordEtcImage(@PathVariable("userId") Long userId,
+                                         HttpServletRequest request,
+                                         @RequestParam(value = "etcimage") MultipartFile etcimage){
+        try{
+            recordService.recordEtcImage(userId, etcimage);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/etc/{userId}")

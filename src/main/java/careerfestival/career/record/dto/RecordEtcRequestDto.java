@@ -16,7 +16,7 @@ import java.util.List;
 public class RecordEtcRequestDto {
     private String eventName;
     private LocalDate eventDate;
-    private List<KeywordName> keywordName;
+    private KeywordName keywordName;
     // 기타에만 있는 주제, 내용 칸을 위한 topic과 topicDetail
     private String topic;
     private String topicDetail;

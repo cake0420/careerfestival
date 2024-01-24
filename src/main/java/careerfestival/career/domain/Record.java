@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Entity
@@ -44,10 +43,17 @@ public class Record extends BaseEntity {
     @Column(length = 300, name = "topic_detail")
     private String topicDetail;
 
+    @Column(name = "record_lecture_seminar_file_url")
+    private String recordLectureSeminarFileUrl;
+
+    @Column(name = "record_etc_file_url")
+    private String recordEtcFileUrl;
+
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private List<KeywordName> keywordName;
+    @Enumerated(EnumType.STRING)
+    private KeywordName keywordName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
