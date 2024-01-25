@@ -81,6 +81,9 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Organizer organizer;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
 
@@ -89,7 +92,4 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
-
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    private ImageData imageData;
 }

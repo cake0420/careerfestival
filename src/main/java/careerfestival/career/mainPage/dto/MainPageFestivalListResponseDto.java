@@ -1,6 +1,7 @@
 package careerfestival.career.mainPage.dto;
 
 import careerfestival.career.domain.Event;
+import careerfestival.career.domain.mapping.Organizer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,18 +20,24 @@ public class MainPageFestivalListResponseDto {
     private LocalDateTime recruitmentEnd;
     private String eventCost;
 
-    public static MainPageFestivalListResponseDto fromEntity(Event event){
+    // 주최자 정보 조회 위함
+    private String organizerName;
+    private String organizerProfileFileUrl;
+
+    public static MainPageFestivalListResponseDto fromEventEntity(Event event){
         return MainPageFestivalListResponseDto.builder()
                 .eventMainFileUrl(event.getEventMainFileUrl())
                 .eventName(event.getEventName())
                 .recruitmentStart(event.getRecruitmentStart())
                 .recruitmentEnd(event.getRecruitmentEnd())
+                .eventCost(event.getEventCost())
                 .build();
     }
 
-    public static MainPageResponseDto fromEntityName(Event event) {
-        return MainPageResponseDto.builder()
-                .eventName(event.getEventName())
+    public static MainPageFestivalListResponseDto fromOrganizerEntity(Organizer organizer){
+        return MainPageFestivalListResponseDto.builder()
+                .organizerName(organizer.getOrganizerName())
+                .organizerProfileFileUrl(organizer.getOrganizerProfileFileUrl())
                 .build();
     }
 }

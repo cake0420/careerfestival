@@ -1,11 +1,11 @@
 package careerfestival.career.domain.mapping;
 
+import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,14 +22,14 @@ public class Organizer {
     @Column(nullable = false, length = 300, name = "organizer_name")
     private String organizerName;
 
-    @Column(name = "file_url")
-    private String fileUrl;
+    @Column(name = "organizer_profile_file_url")
+    private String organizerProfileFileUrl;
+
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
+    private List<Event> event = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToOne(mappedBy = "organizer", cascade = CascadeType.ALL)
-    private ImageData imageData;
 }
 

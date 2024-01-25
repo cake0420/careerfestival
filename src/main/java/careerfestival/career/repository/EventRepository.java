@@ -4,6 +4,7 @@ import careerfestival.career.domain.Event;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -29,5 +30,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT * FROM Event ORDER BY RAND() LIMIT ?1", nativeQuery = true)
     List<Event> findRandomEvents(int limit);
     @Query(value = "SELECT e FROM Event e WHERE e.category = ?1 AND e.keywordName = ?2")
-    List<Event> findAllByCategoryKeywordName(Category category, KeywordName keywordName);
+    Page<Event> findAllByCategoryKeywordName(Category category, KeywordName keywordName, Pageable pageable);
 }

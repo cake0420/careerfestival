@@ -23,13 +23,13 @@ public class RegisterController {
 
     private final RegisterService registerService;
 
-    // 행사등록하기 1, 2단계 통합
+    // 주최자 이름으로 회원가입
     @PostMapping("/organizer/{userId}")
     public ResponseEntity registerOrganizerName(@PathVariable("userId") Long userId, @RequestBody RegisterOrganizerDto registerOrganizerDto) {
         registerService.registerOrganizer(userId, registerOrganizerDto);
         return new ResponseEntity(HttpStatus.OK);
     }
-
+    // 주최자 프로필 이미지 업로드
     @PostMapping(value = "/organizer/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity registerOrganizerImage(@PathVariable("userId") Long userId,
                                                  HttpServletRequest request,
@@ -44,8 +44,10 @@ public class RegisterController {
 
     // 행사 등록하기 1, 행사 등록하기 2 통합
     @PostMapping("/register/{userId}")
-    public ResponseEntity registerEvent(@PathVariable("userId") Long userId, @RequestBody RegisterEventDto registerEventDto) {
-        registerService.registerEvent(userId, registerEventDto);
+    public ResponseEntity registerEvent(@PathVariable("userId") Long userId,
+                                        @RequestParam(value = "organizerId") Long organizerId,
+                                        @RequestBody RegisterEventDto registerEventDto) {
+        registerService.registerEvent(organizerId,registerEventDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 

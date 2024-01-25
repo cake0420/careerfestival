@@ -1,12 +1,10 @@
 package careerfestival.career.register.dto;
 
-import careerfestival.career.domain.mapping.ImageData;
 import careerfestival.career.domain.mapping.Organizer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor

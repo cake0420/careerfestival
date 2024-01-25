@@ -35,16 +35,18 @@ public class RegisterService {
     @Autowired
     private S3Uploader s3Uploader;
 
-    public void registerEvent(Long userId, RegisterEventDto registerEventDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id" + userId));
+    public void registerEvent(Long organizerId, RegisterEventDto registerEventDto) {
+
+        Organizer organizer = organizerRepository.findById(organizerId)
+                .orElseThrow(()-> new RuntimeException("Organizer not found with id" + organizerId));
+
         Event event = registerEventDto.toEntity();
-        event.setUser(user);
+        event.setOrganizer(organizer);
 
         eventRepository.save(event);
     }
 
-    // 행사 대표이미지 업로드
+    // 행사 대표이미지 업로드 (저장 픽셀 값 필요)
     @Transactional
     public void registerEventMainImage(Long userId, MultipartFile eventMainImage) {
         Event event = eventRepository.findByUserId(userId);
@@ -79,13 +81,32 @@ public class RegisterService {
     }
 
 
-    // 행사 정보 이미지 업로드 (수정 보완 필요)
+    // 행사 정보 이미지 업로드 (저장 픽셀 값 필요)
     @Transactional
-    public void registerEventInformImage(Long userId, MultipartFile eventinformimage) throws IOException{
+    public void registerEventInformImage(Long userId, MultipartFile eventInformImage) throws IOException{
         Event event = eventRepository.findByUserId(userId);
-        if(!eventinformimage.isEmpty()){
-            String storedFileName = s3Uploader.upload(eventinformimage, "event_inform");
-            event.setEventMainFileUrl(storedFileName);
+        try{
+            if(!eventInformImage.isEmpty()){
+                // 이미지 리사이징
+                BufferedImage resizedImage = ImageUtils.resizeImage(eventInformImage, 600, 400);
+
+                // BufferedImage를 byte[]로 변환
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(resizedImage, getFileExtension(eventInformImage.getOriginalFilename()), baos);
+                byte[] resizedImageBytes = baos.toByteArray();
+
+                MultipartFile multipartFile = new MockMultipartFile(
+                        "resized_" + eventInformImage.getOriginalFilename(),
+                        eventInformImage.getOriginalFilename(),
+                        eventInformImage.getContentType(),
+                        resizedImageBytes
+                );
+
+                String storedFileName = s3Uploader.upload(multipartFile, "event_main");
+                event.setEventInformFileUrl(storedFileName);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
         eventRepository.save(event);
     }
@@ -100,13 +121,32 @@ public class RegisterService {
         organizerRepository.save(organizer);
     }
     @Transactional
-    public void registerOrganizerImage(Long userId, MultipartFile image) throws IOException {
+    public void registerOrganizerImage(Long userId, MultipartFile organizerProfileImage) throws IOException {
         Organizer organizer = organizerRepository.findByUserId(userId);
 
-        if(!image.isEmpty()){
-                String storedFileName = s3Uploader.upload(image, "organizer_profile");
-                organizer.setFileUrl(storedFileName);
+        try{
+            if(!organizerProfileImage.isEmpty()){
+                BufferedImage resizedImage = ImageUtils.resizeImage(organizerProfileImage, 600, 400);
+
+                // BufferedImage를 byte[]로 변환
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(resizedImage, getFileExtension(organizerProfileImage.getOriginalFilename()), baos);
+                byte[] resizedImageBytes = baos.toByteArray();
+
+                MultipartFile multipartFile = new MockMultipartFile(
+                        "resized_" + organizerProfileImage.getOriginalFilename(),
+                        organizerProfileImage.getOriginalFilename(),
+                        organizerProfileImage.getContentType(),
+                        resizedImageBytes
+                );
+
+                String storedFileName = s3Uploader.upload(multipartFile, "event_main");
+                organizer.setOrganizerProfileFileUrl(storedFileName);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
         organizerRepository.save(organizer);
     }
 

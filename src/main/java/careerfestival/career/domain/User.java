@@ -78,8 +78,8 @@ public class User extends BaseEntity {
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
      */
-    @Column(name = "file_url")
-    private String fileUrl;
+    @Column(name = "user_profile_file_url")
+    private String userProfilefileUrl;
 
     private Timestamp inactiveDate;
 
@@ -105,9 +105,6 @@ public class User extends BaseEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Organizer organizer;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private ImageData imageData;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
