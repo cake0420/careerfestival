@@ -3,10 +3,13 @@ package careerfestival.career.comments.dto;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.mapping.Comment;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -19,17 +22,20 @@ public class CommentRequestDto {
     private Long parent;  // Updated to Long type
     private String commentContent;
     private  Long orderNumber;
-
-
+    private boolean isParent;
+    private LocalDateTime createdAt;
 
     @Builder
-    public static CommentRequestDto of(Long userId, Long eventId, String commentContent, Long parent, Long orderNumber) {
+    public static CommentRequestDto of(Long userId, Long eventId, String commentContent, Long parent, Long orderNumber, boolean isParent, LocalDateTime createdAt)
+ {
         return CommentRequestDto.builder()
                 .userId(userId)
                 .eventId(eventId)
                 .commentContent(commentContent)
                 .parent(parent)
                 .orderNumber(orderNumber)
+                .isParent(isParent)
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 
@@ -47,7 +53,7 @@ public class CommentRequestDto {
                 .event(event)
                 .commentContent(commentContent)
                 .parent(parent)
-                .depth(parent.getDepth() + 1)
+                .depth(parent.getDepth())
                 .build();
     }
 }

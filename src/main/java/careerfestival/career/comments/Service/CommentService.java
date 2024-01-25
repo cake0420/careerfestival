@@ -1,68 +1,79 @@
-package careerfestival.career.comments.Service;
+    package careerfestival.career.comments.Service;
 
-import careerfestival.career.comments.dto.CommentRequestDto;
-import careerfestival.career.comments.dto.CommentResponseDto;
-import careerfestival.career.domain.mapping.Comment;
-import careerfestival.career.domain.Event;
-import careerfestival.career.domain.User;
-import careerfestival.career.repository.CommentRepository;
-import careerfestival.career.repository.EventRepository;
-import careerfestival.career.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+    import careerfestival.career.comments.dto.CommentRequestDto;
+    import careerfestival.career.comments.dto.CommentResponseDto;
+    import careerfestival.career.domain.mapping.Comment;
+    import careerfestival.career.domain.Event;
+    import careerfestival.career.domain.User;
+    import careerfestival.career.repository.CommentRepository;
+    import careerfestival.career.repository.EventRepository;
+    import careerfestival.career.repository.UserRepository;
+    import lombok.RequiredArgsConstructor;
+    import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+    import java.time.LocalDateTime;
+    import java.util.List;
+    import java.util.Optional;
+    import java.util.stream.Collectors;
 
-@Service
-@RequiredArgsConstructor
-public class CommentService {
-    private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final EventRepository eventRepository;
+    @Service
+    @RequiredArgsConstructor
+    public class CommentService {
+        private final CommentRepository commentRepository;
+        private final UserRepository userRepository;
+        private final EventRepository eventRepository;
 
-    public Long commentSave(Long userId, Long eventId, CommentRequestDto commentRequestDto) {
-        Optional<User> user = userRepository.findById(userId);
-        Optional<Event> event = eventRepository.findById(eventId);
+        public Long commentSave(Long userId, Long eventId, CommentRequestDto commentRequestDto) {
+            Optional<User> user = userRepository.findById(userId);
+            Optional<Event> event = eventRepository.findById(eventId);
 
-        if (user.isPresent() && event.isPresent() && commentRequestDto.getCommentContent() != null) {
-            Comment comment = commentRequestDto.toEntity(user.orElse(null), event.orElse(null), commentRequestDto.getCommentContent());
+            if (user.isPresent() && event.isPresent() && commentRequestDto.getCommentContent() != null) {
+                if (commentRequestDto.getParent() != null) {
+                    // 대댓글인 경우
+                    List<Comment> parentComment = commentRepository.findByOrderNumber(commentRequestDto.getParent());
 
-            if (commentRequestDto.getParent() != null) {
-                // 대댓글인 경우
-                Optional<Comment> parentComment = commentRepository.findByOrderNumber(commentRequestDto.getParent());
+                    if (!parentComment.isEmpty()) {
+                        Comment lastParentComment = parentComment.get(parentComment.size() - 1); // 마지막 부모 댓글을 가져옴
+                        Comment comment = commentRequestDto.toEntityWithParent(user.orElse(null), event.orElse(null), commentRequestDto.getCommentContent(), lastParentComment);
 
-                if (parentComment.isPresent()) {
-                    comment.setOrderNumber(parentComment.get().getOrderNumber());
-                    comment.setDepth(parentComment.get().getDepth() + 1);
+                        // 대댓글이므로 isParent를 false로 설정
+                        comment.setIsParent(false);
+                        comment.setOrderNumber(lastParentComment.getOrderNumber());
+                        comment.setDepth(lastParentComment.getDepth() + 1);
+
+                        Comment savedComment = commentRepository.save(comment);
+                        return savedComment.getId();
+                    } else {
+                        // 부모 댓글이 없는 경우에는 예외 처리 또는 기본값 지정
+                        return null;
+                    }
                 } else {
-                    // 부모 댓글이 없는 경우에는 예외 처리 또는 기본값 지정
-                    return null;
+                    // 댓글인 경우
+                    Comment comment = commentRequestDto.toEntity(user.orElse(null), event.orElse(null), commentRequestDto.getCommentContent());
+
+                    // 기존 코드에서의 위치 변경 및 isParent 값 설정
+                    comment.setIsParent(true); // 댓글이므로 isParent를 true로 설정
+                    int maxOrderNumber = commentRepository.findMaxOrderNumber();
+                    comment.setOrderNumber((long) (maxOrderNumber + 1));
+                    comment.setDepth(0);
+
+                    Comment savedComment = commentRepository.save(comment);
+                    return savedComment.getId();
                 }
             } else {
-                // 댓글인 경우
-                int maxOrderNumber = commentRepository.findMaxOrderNumber();
-                comment.setOrderNumber((long) (maxOrderNumber + 1));
-                comment.setDepth(0);
+                return null;
             }
+        }
 
-            Comment savedComment = commentRepository.save(comment);
 
-            return savedComment.getId();
-        } else {
-            return null;
+        public List<CommentResponseDto> getAllCommentsByEvent(String comment, Long userId, Long eventId) {
+            List<Comment> comments = commentRepository.findCommentByCommentContent(comment);
+            Optional<User> userid = userRepository.findById(userId);
+            Optional<Event> event = eventRepository.findById(eventId);
+            return comments.stream()
+                    .map(CommentResponseDto::new)
+                    .collect(Collectors.toList());
         }
     }
-
-    public List<CommentResponseDto> getAllCommentsByEvent(String comment, Long userId, Long eventId) {
-        List<Comment> comments = commentRepository.findCommentByCommentContent(comment);
-        Optional<User> userid = userRepository.findById(userId);
-        Optional<Event> event = eventRepository.findById(eventId);
-        return comments.stream()
-                .map(CommentResponseDto::new)
-                .collect(Collectors.toList());
-    }
-}
 
 

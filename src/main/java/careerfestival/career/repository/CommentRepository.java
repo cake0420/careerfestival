@@ -14,16 +14,15 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findCommentByCommentContent(String contents);
 
-    Optional<Comment> findByOrderNumberAndEvent(Long orderNumber, Event event);
 
-    List<Comment> findByEventAndParentOrderByOrderNumber(Event event, Comment parent);
-    Optional<Comment> findByOrderNumber(Long orderNumber);
+    List<Comment> findByOrderNumber(Long orderNumber);
+
+    Optional<Comment> findByOrderNumberAndIsParent(Long orderNumber, boolean isParent);
     @Query("SELECT COALESCE(MAX(c.orderNumber), 0) FROM Comment c WHERE c.parent IS NULL")
     Integer findMaxOrderNumber();
 
 
-    @Query("SELECT COALESCE(MAX(c.orderNumber), 0) FROM Comment c WHERE c.parent = :parent")
-    Integer findMaxOrderNumberByParent(@Param("parent") Comment parent);
+
 
 
 }
