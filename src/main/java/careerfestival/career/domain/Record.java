@@ -62,24 +62,19 @@ public class Record extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public void user(Optional<User> user){
-        //checkpoint
-    /* Optional.ofNullable(this.user)
-                .ifPresent(oldUser -> oldUser.removeRecord(this));
-
-    @ElementCollection
-    @CollectionTable(name="record_details", joinColumns = @JoinColumn(name="record_id"))
-    @MapKeyColumn(name="record_key")
-    @Column(name = "record_value")
-        //RECORD MAPPING으로 수정
-        private Map<RecordDetail, RecordDetail> recordDetails;
-
-
-    @ElementCollection
-    @CollectionTable(name="record_contacts", joinColumns = @JoinColumn(name="record_id"))
-    @MapKeyColumn(name="contact_key")
-    @Column(name = "contact_value")
-    //RECORD MAPPING으로 수정
-    private Map<ContactDetail, ContactDetail> contactDetails;
+//    @ElementCollection
+//    @CollectionTable(name="record_details", joinColumns = @JoinColumn(name="record_id"))
+//    @MapKeyColumn(name="record_key")
+//    @Column(name = "record_value")
+//        //RECORD MAPPING으로 수정
+//        private Map<RecordDetail, RecordDetail> recordDetails;
+//
+//
+//    @ElementCollection
+//    @CollectionTable(name="record_contacts", joinColumns = @JoinColumn(name="record_id"))
+//    @MapKeyColumn(name="contact_key")
+//    @Column(name = "contact_value")
+//    //RECORD MAPPING으로 수정
+//    private Map<ContactDetail, ContactDetail> contactDetails;
 
 }

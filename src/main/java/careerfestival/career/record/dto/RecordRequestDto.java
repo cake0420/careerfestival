@@ -5,15 +5,12 @@ import careerfestival.career.domain.RecordDetail;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.Record;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,10 +47,10 @@ public class RecordRequestDto {
         Record.RecordBuilder recordBuilder = Record.builder()
                 .category(category)
                 .eventName(eventName)
-                .eventDate(eventDate)
-                .keywordName(keywordName)
-                .recordDetails((Map<RecordDetail, RecordDetail>) mapToRecordDetails(recordDetails))
-                .contactDetails((Map<ContactDetail, ContactDetail>) mapToContactDetails(contactDetails));
+                .eventDate(eventDate);
+//                .keywordName(keywordName)
+//                .recordDetails((Map<RecordDetail, RecordDetail>) mapToRecordDetails(recordDetails))
+//                .contactDetails((Map<ContactDetail, ContactDetail>) mapToContactDetails(contactDetails));
 
         return recordBuilder.build();
         // Checkpoint 글의 제목도 추가해저야함

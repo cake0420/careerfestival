@@ -1,13 +1,10 @@
 package careerfestival.career.record.controller;
 
-import careerfestival.career.record.dto.RecordEtcDto;
-import careerfestival.career.record.dto.RecordLectureSeminarDto;
 import careerfestival.career.record.dto.RecordRequestDto;
 import careerfestival.career.record.service.RecordConferenceExhibitionService;
 import careerfestival.career.record.service.RecordService;
 import jakarta.validation.Valid;
 import careerfestival.career.record.dto.*;
-import careerfestival.career.record.service.RecordService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -83,16 +80,16 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping("/exhibition/{memberId}")
-    public ResponseEntity<Void> addRecordExhibition(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long userId) {
-        try {
-            recordConferenceService.recordExhibition(userId, request);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @PostMapping("/exhibition/{memberId}")
+//    public ResponseEntity<Void> addRecordExhibition(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long userId) {
+//        try {
+//            recordConferenceService.recordExhibition(userId, request);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (IllegalArgumentException e) {
+//
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<Page<RecordMainResponseDto>> getRecordsByUserId(

@@ -2,32 +2,23 @@ package careerfestival.career.login.service;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
-import careerfestival.career.jwt.JWTUtil;
 import careerfestival.career.myPage.dto.MyPageResponseDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
-import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final RegionRepository regionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
@@ -62,9 +53,9 @@ public class UserService {
         if(city == null || addressLine == null){
             return;
         }
-        if (regionRepository.findRegionByCityAndAddressLine(city, addressLine) == null) {
-            return;
-        }
+//        if (regionRepository.findRegionByCityAndAddressLine(city, addressLine) == null) {
+//            return;
+//        }
         findUser.updateAddressLine(addressLine);
     }
 

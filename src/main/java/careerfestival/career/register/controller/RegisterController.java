@@ -60,6 +60,7 @@ public class RegisterController {
         registerService.registerEventMainImage(eventId, eventMainimage);
         return new ResponseEntity(HttpStatus.OK);
     }
+
     // 행사 정보 이미지 업로드 등록 -> 행사 대표 이미지 업로드 등로과 같음
     // requestparam에 무엇을 넣을지는 인가 완료후에 구현하기
     @PostMapping(value = "/event/register/{userId}/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
