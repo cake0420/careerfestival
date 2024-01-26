@@ -18,4 +18,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      */
 
     List<Event> findByUserId(Long userId);
+    List<Event> findByLink(String link);
 }

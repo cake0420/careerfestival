@@ -3,6 +3,7 @@ package careerfestival.career.participate.controller;
 import careerfestival.career.participate.dto.ParticipateRequestDto;
 import careerfestival.career.participate.dto.ParticipateResponseDto;
 import careerfestival.career.participate.service.ParticipateService;
+import careerfestival.career.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParticipateController {
     private final ParticipateService participateService;
-
-    @GetMapping("/event/1/2")
-    public String checkParticipate() {
-        // Assuming you have the authenticated user's email
-        return "2.html";
-    }
+    private final EventRepository eventRepository;
 
     @PostMapping("/event/{eventId}/{userId}/participate")
     public ResponseEntity<Long> addParticipate(
@@ -65,5 +61,27 @@ public class ParticipateController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/event/{eventId}/link")
+    public String getLink(
+            @PathVariable("eventId")  Long eventId){
+        try {
+            String link = participateService.getLink(eventId);
+            if (link != null) {
+                // 리다이렉트 구현
+                String redirectUrl = link;
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header("Location", redirectUrl)
+                        .body(link).toString();
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).toString();
+        } catch (Exception e) {
+            // 로그 남기기
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).toString();
+        }
+        return null;
     }
 }
