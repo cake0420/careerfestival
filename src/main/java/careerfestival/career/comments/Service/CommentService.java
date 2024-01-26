@@ -9,6 +9,8 @@
     import careerfestival.career.repository.EventRepository;
     import careerfestival.career.repository.UserRepository;
     import lombok.RequiredArgsConstructor;
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.Pageable;
     import org.springframework.stereotype.Service;
 
     import java.time.LocalDateTime;
@@ -65,15 +67,13 @@
             }
         }
 
-
-        public List<CommentResponseDto> getAllCommentsByEvent(String comment, Long userId, Long eventId) {
-            List<Comment> comments = commentRepository.findCommentByCommentContent(comment);
-            Optional<User> userid = userRepository.findById(userId);
-            Optional<Event> event = eventRepository.findById(eventId);
-            return comments.stream()
-                    .map(CommentResponseDto::new)
-                    .collect(Collectors.toList());
+        public Page<CommentResponseDto> getAllCommentsByEvent(Long eventId, Pageable pageable) {
+            Page<CommentResponseDto> comments = commentRepository
+                    .findAllByEventIdOrderByCommentContentDesc(eventId, pageable)
+                    .map(CommentResponseDto::new);
+            return comments;
         }
+
     }
 
 

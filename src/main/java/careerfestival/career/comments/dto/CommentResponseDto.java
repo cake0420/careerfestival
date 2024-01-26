@@ -17,11 +17,13 @@ public class CommentResponseDto {
     private Long parent;
 
 
+
     public CommentResponseDto(Comment comment) {
         this.userId = (comment.getUser() != null) ? comment.getUser().getId() : null;
         this.eventId = (comment.getEvent() != null) ? comment.getEvent().getId() : null;
         this.commentContent = comment.getCommentContent();
         this.parent = (comment.getParent() != null) ? comment.getParent().getId() : null;
+
     }
 
 }

@@ -2,14 +2,12 @@ package careerfestival.career.comments.Controller;
 
 import careerfestival.career.comments.Service.CommentService;
 import careerfestival.career.comments.dto.CommentRequestDto;
-import careerfestival.career.comments.dto.CommentResponseDto;
-import careerfestival.career.domain.mapping.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -42,21 +40,4 @@ public class CommentsController {
     }
 
 
-    @GetMapping("/event/{eventId}/{userId}/comments")
-    public ResponseEntity<List<CommentResponseDto>> getAllCommentsByEvent(
-            @PathVariable("userId") Long userId,
-            @PathVariable("eventId") Long eventId) {
-
-        String comment = "test";
-        try {
-            List<CommentResponseDto> comments = commentService.getAllCommentsByEvent(comment, userId, eventId);
-            return new ResponseEntity<>(comments, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            // Log the exception or return a more specific error response
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

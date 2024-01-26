@@ -31,13 +31,13 @@ public class RegisterController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity getRegisterByUserId(@PathVariable("userId") Long userId) {
-        try{
-            List<RegisterMainResponseDto> registerMainResponseDto = registerService.getRegisterByUserId(userId);
-            return ResponseEntity.ok(registerMainResponseDto);
-        } catch (IllegalArgumentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @GetMapping("/{userId}")
+//    public ResponseEntity getRegisterByUserId(@PathVariable("userId") Long userId) {
+//        try{
+//            List<RegisterMainResponseDto> registerMainResponseDto = registerService.getRegisterByUserId(userId);
+//            return ResponseEntity.ok(registerMainResponseDto);
+//        } catch (IllegalArgumentException e){
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }
