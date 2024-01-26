@@ -2,6 +2,7 @@ package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
+import careerfestival.career.global.ImageUtils;
 import careerfestival.career.global.S3Uploader;
 import careerfestival.career.record.dto.*;
 import careerfestival.career.repository.RecordRepository;
@@ -11,9 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 
@@ -36,12 +41,37 @@ public class RecordService {
         recordRepository.save(record);
     }
 
+    // 강연 및 세미나 이미지 라시이징 업로드 -> 과연 필요한가?
     @Transactional
-    public void recordLectureSeminarImage(Long userId, MultipartFile lectureseminarimage) throws IOException {
+    public void recordLectureSeminarImage(Long userId, MultipartFile lectureSeminarImage) throws IOException {
         Record record = recordRepository.findRecordByUserId(userId);
-        if(!lectureseminarimage.isEmpty()){
-            String storedFileName = s3Uploader.upload(lectureseminarimage, "lectureseminar_image");
-            record.setRecordLectureSeminarFileUrl(storedFileName);
+        try {
+            if (!lectureSeminarImage.isEmpty()) {
+                // 이미지 리사이징
+                BufferedImage resizedImage = ImageUtils.resizeImage(lectureSeminarImage, 600, 400);
+
+                // BufferedImage를 byte[]로 변환
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(resizedImage, getFileExtension(lectureSeminarImage.getOriginalFilename()), baos);
+                byte[] resizedImageBytes = baos.toByteArray();
+
+                // byte[]를 MultipartFile로 변환
+                MultipartFile multipartFile = new MockMultipartFile(
+                        "resized_" + lectureSeminarImage.getOriginalFilename(),
+                        lectureSeminarImage.getOriginalFilename(),
+                        lectureSeminarImage.getContentType(),
+                        resizedImageBytes
+                );
+
+                // S3에 업로드하고 URL 받기
+                String storedFileName = s3Uploader.upload(multipartFile, "lecture_seminar_image");
+
+                // 이벤트에 이미지 URL 설정하고 저장
+                record.setRecordLectureSeminarFileUrl(storedFileName);
+                recordRepository.save(record);
+                }
+            } catch (Exception e){
+                e.printStackTrace();
         }
         recordRepository.save(record);
     }
@@ -84,4 +114,11 @@ public class RecordService {
         return responseDto;
     }
 
+    private static String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex >= 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1);
+        }
+        return "";
+    }
 }

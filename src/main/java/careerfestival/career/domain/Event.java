@@ -72,6 +72,7 @@ public class Event extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private KeywordName keywordName;
 
+    // 커리어 키워드가 기타인 경우에만 입력 받음
     @Column(length = 300, name = "event_etc_detail")
     private String eventEtcDetail;
 
@@ -81,6 +82,9 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Organizer organizer;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
 
@@ -89,7 +93,4 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
-
-    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-    private ImageData imageData;
 }

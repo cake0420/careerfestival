@@ -3,7 +3,6 @@ package careerfestival.career.domain;
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.mapping.ImageData;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -57,9 +56,6 @@ public class Record extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-
-    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
-    private ImageData imageData;
 
     public void user(Optional<User> user){
         //checkpoint
