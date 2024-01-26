@@ -1,5 +1,11 @@
 package careerfestival.career.record.controller;
 
+import careerfestival.career.record.dto.RecordEtcDto;
+import careerfestival.career.record.dto.RecordLectureSeminarDto;
+import careerfestival.career.record.dto.RecordRequestDto;
+import careerfestival.career.record.service.RecordConferenceExhibitionService;
+import careerfestival.career.record.service.RecordService;
+import jakarta.validation.Valid;
 import careerfestival.career.record.dto.*;
 import careerfestival.career.record.service.RecordService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +26,7 @@ import java.io.IOException;
 @RequestMapping("/record")
 @RestController
 public class RecordController {
-
+    private final RecordConferenceExhibitionService recordConferenceService;
     private final RecordService recordService;
 
     @PostMapping("/lecture-seminar/{userId}")
@@ -66,18 +72,28 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+  
+    // conference 기록 추가
+    @PostMapping("/conference/{userId}")
+    public ResponseEntity<Void> addRecordConference(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long userId) {
+        try {
+            recordConferenceService.recordConference(userId,request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/exhibition/{memberId}")
+    public ResponseEntity<Void> addRecordExhibition(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long userId) {
+        try {
+            recordConferenceService.recordExhibition(userId, request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
 
-    //기록장
-//    @PostMapping("/{memberId}")
-//    public ApiResponse<RecordResponseDto.AddRecordResponseDto>
-//    addRecordConference(@RequestBody @Valid RecordRequestDto.AddRecordConferenceRequestDto request
-//              ,@PathVariable Long memberId){
-//        Record record = recordCommandService.addRecord(request, memberId);
-//        return ApiResponse.onSuccess(RecordConverter.toAddRecordResponseDto(record));
-//    }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
-
-    // 기록장 메인페이지 Record_Id 내림차순에 의한 정렬 반영, User_Id에 의한 Repository 접근
     @GetMapping("/{userId}")
     public ResponseEntity<Page<RecordMainResponseDto>> getRecordsByUserId(
             @PathVariable("userId") Long userId,
