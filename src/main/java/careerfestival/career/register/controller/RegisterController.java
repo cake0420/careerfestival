@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RequestMapping
@@ -81,7 +83,16 @@ public class RegisterController {
             @PathVariable("organizerId") Long organizerId,
             @PageableDefault(size = 4, sort = "updated_at", direction = Sort.Direction.DESC)Pageable pageable) {
         try{
-            Page<RegisterMainResponseDto> registerMainResponseDtos = registerService.getEventList(organizerId, pageable);
+            String organizerName = registerService.getOrganizerName(organizerId);
+            int CountRegisterEvent = registerService.countRegisterEvent(organizerId);
+            Page<RegisterMainResponseDto> registerMainResponseDtos
+                    = registerService.getEventList(organizerId, pageable);
+
+            Map<String, Object> registerMainResponseDtoObjectMap = new HashMap<>();
+            registerMainResponseDtoObjectMap.put("organizerName", organizerName);
+            // 구독자 관련 코드 추가 작성 필요
+            registerMainResponseDtoObjectMap.put("festivalList", registerMainResponseDtos);
+            registerMainResponseDtoObjectMap.put("festivalCount", CountRegisterEvent);
             return ResponseEntity.ok(registerMainResponseDtos);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

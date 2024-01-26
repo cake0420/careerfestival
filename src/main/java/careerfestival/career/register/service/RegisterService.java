@@ -179,4 +179,14 @@ public class RegisterService {
         Page<Event> events = eventRepository.findByOrganizerId(organizerId, pageable);
         return events.map(RegisterMainResponseDto::fromEntity);
     }
+
+    public int countRegisterEvent(Long organizerId) {
+        int countRegisterEvent = eventRepository.countEventsByOrganizerId(organizerId);
+        return countRegisterEvent;
+    }
+
+    public String getOrganizerName(Long organizerId) {
+        String organizerName = organizerRepository.findOrganizerNameByOrganizerId(organizerId);
+        return organizerName;
+    }
 }

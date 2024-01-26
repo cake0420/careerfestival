@@ -34,4 +34,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Query(value = "SELECT e FROM Event e WHERE e.organizer.id =: organizerId")
     Page<Event> findByOrganizerId(Long organizerId, Pageable pageable);
+
+    @Query("SELECT COUNT(e) FROM Event e WHERE e.organizer.id = ?1")
+    int countEventsByOrganizerId(Long organizerId);
 }
