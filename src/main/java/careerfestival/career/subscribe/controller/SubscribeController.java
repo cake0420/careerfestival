@@ -29,7 +29,7 @@ public class SubscribeController {
 
         try {
             boolean subsId = subscribeService.addRemove(subscribeRequestDto);
-            String redirectUrl = "/profile" + fromUserId;
+            String redirectUrl = "/profile/" + fromUserId;
             return ResponseEntity.status(HttpStatus.FOUND)
                     .header("Location", redirectUrl)
                     .build();

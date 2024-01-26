@@ -63,7 +63,7 @@ public class ParticipateController {
         }
     }
 
-    @PostMapping("/event/{eventId}/link")
+    @GetMapping("/event/{eventId}/link")
     public String getLink(
             @PathVariable("eventId")  Long eventId){
         try {
@@ -75,6 +75,11 @@ public class ParticipateController {
                         .header("Location", redirectUrl)
                         .body(link).toString();
             }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .header("Location", "/event/" + eventId)
+                        .body("Link is Null").toString();
+            }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).toString();
         } catch (Exception e) {
@@ -82,6 +87,5 @@ public class ParticipateController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).toString();
         }
-        return null;
     }
 }
