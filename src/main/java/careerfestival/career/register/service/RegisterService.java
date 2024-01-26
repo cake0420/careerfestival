@@ -15,6 +15,8 @@ import careerfestival.career.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -171,5 +173,10 @@ public class RegisterService {
             return fileName.substring(dotIndex + 1);
         }
         return "";
+    }
+
+    public Page<RegisterMainResponseDto> getEventList(Long organizerId, Pageable pageable) {
+        Page<Event> events = eventRepository.findByOrganizerId(organizerId, pageable);
+        return events.map(RegisterMainResponseDto::fromEntity);
     }
 }
