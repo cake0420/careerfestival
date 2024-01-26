@@ -58,8 +58,8 @@ public class RegisterController {
     @PostMapping(value = "/event/register/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity regiserEventMainImage(@PathVariable("eventId") Long eventId,
                                             HttpServletRequest request,
-                                            @RequestParam(value = "eventMainimage") MultipartFile eventMainimage){
-        registerService.registerEventMainImage(eventId, eventMainimage);
+                                            @RequestParam(value = "eventMainImage") MultipartFile eventMainImage){
+        registerService.registerEventMainImage(eventId, eventMainImage);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -68,9 +68,9 @@ public class RegisterController {
     @PostMapping(value = "/event/register/{userId}/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity regiserEventInformImage(@PathVariable("userId") Long userId,
                                                   HttpServletRequest request,
-                                                  @RequestParam(value = "eventInformimage") MultipartFile eventInformimage){
+                                                  @RequestParam(value = "eventInformImage") MultipartFile eventInformImage){
         try{
-            registerService.registerEventInformImage(userId, eventInformimage);
+            registerService.registerEventInformImage(userId, eventInformImage);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class RegisterController {
     @GetMapping("profile/register/{organizerId}")
     public ResponseEntity<Page<RegisterMainResponseDto>> getRegisterByOrganizerId(
             @PathVariable("organizerId") Long organizerId,
-            @PageableDefault(size = 4, sort = "updated_at", direction = Sort.Direction.DESC)Pageable pageable) {
+            @PageableDefault(size = 4, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         try{
             String organizerName = registerService.getOrganizerName(organizerId);
             int CountRegisterEvent = registerService.countRegisterEvent(organizerId);

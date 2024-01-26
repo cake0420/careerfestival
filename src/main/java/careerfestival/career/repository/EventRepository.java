@@ -32,7 +32,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT e FROM Event e WHERE e.category = ?1 AND e.keywordName = ?2")
     Page<Event> findAllByCategoryKeywordName(Category category, KeywordName keywordName, Pageable pageable);
 
-    @Query(value = "SELECT e FROM Event e WHERE e.organizer.id =: organizerId")
     Page<Event> findByOrganizerId(Long organizerId, Pageable pageable);
 
     @Query("SELECT COUNT(e) FROM Event e WHERE e.organizer.id = ?1")

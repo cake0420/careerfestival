@@ -18,7 +18,7 @@ public class RegisterMainResponseDto {
     private LocalDateTime recruitmentStart;
     private LocalDateTime recruitmentEnd;
     private String eventCost;
-
+    private String organizerProfileFileUrl;
 
     public static RegisterMainResponseDto fromEntity(Event event) {
         return RegisterMainResponseDto.builder()
@@ -27,6 +27,7 @@ public class RegisterMainResponseDto {
                 .recruitmentStart(event.getRecruitmentStart())
                 .recruitmentEnd(event.getRecruitmentEnd())
                 .eventCost(event.getEventCost())
+                .organizerProfileFileUrl(event.getOrganizer().getOrganizerProfileFileUrl())
                 .build();
     }
 }
