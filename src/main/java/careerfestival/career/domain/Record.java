@@ -3,7 +3,6 @@ package careerfestival.career.domain;
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.mapping.ImageData;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +38,8 @@ public class Record extends BaseEntity {
     private String networkingContact;
     @Column(length = 300, name = "record_etc_detail")
     private String recordEtcDetail;
+
+    // 기록장 (기타) 전용 topic, topicDetail
     @Column(length = 300, name = "topic")
     private String topic;
     @Column(length = 300, name = "topic_detail")
@@ -46,16 +47,25 @@ public class Record extends BaseEntity {
     @Column
     private String detailEventName;
 
+    @Column(name = "record_lecture_seminar_file_url")
+    private String recordLectureSeminarFileUrl;
+
+    @Column(name = "record_etc_file_url")
+    private String recordEtcFileUrl;
+
     @Enumerated(EnumType.STRING)
     private Category category;
-    private List<KeywordName> keywordName;
 
+    @Enumerated(EnumType.STRING)
+    private KeywordName keywordName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
-    private ImageData imageData;
 
+    public void user(Optional<User> user){
+        //checkpoint
+    /* Optional.ofNullable(this.user)
+                .ifPresent(oldUser -> oldUser.removeRecord(this));
 
     @ElementCollection
     @CollectionTable(name="record_details", joinColumns = @JoinColumn(name="record_id"))

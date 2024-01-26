@@ -14,20 +14,29 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RecordMainResponseDto {
+// 강연, 세미나 DTO
+public class RecordLectureSeminarResponseDto {
     private String eventName;
     private LocalDate eventDate;
     private String eventTitle;
-    private String eventDescription;
     private KeywordName keywordName;
+    private String eventDescription;
+    /*
+    ----이미지 첨부 관련 내용----
+     */
+    private String networkingName;
+    private String networkingContact;
 
-    public static RecordMainResponseDto fromEntity(Record record) {
-        return RecordMainResponseDto.builder()
+    @Builder
+    public static RecordLectureSeminarResponseDto fromEntity(Record record) {
+        return RecordLectureSeminarResponseDto.builder()
                 .eventName(record.getEventName())
-                .eventDate(record.getEventDate())
                 .eventTitle(record.getEventTitle())
-                .eventDescription(record.getEventDescription())
+                .eventDate(record.getEventDate())
                 .keywordName(record.getKeywordName())
+                .eventDescription(record.getEventDescription())
+                .networkingName(record.getNetworkingName())
+                .networkingContact(record.getNetworkingContact())
                 .build();
     }
 }
