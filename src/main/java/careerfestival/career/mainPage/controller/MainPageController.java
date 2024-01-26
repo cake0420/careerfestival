@@ -27,7 +27,6 @@ import java.util.Map;
 public class MainPageController {
     private final MainPageService mainPageService;
 
-
     // 로그인 이전 화면 Authorization 이전
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> getEvents(){
@@ -64,7 +63,6 @@ public class MainPageController {
                     = mainPageService.getEventsFiltered(category, keywordName, pageable);
             // 조회수에 의한 이벤트명
             List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
-
 
             Map<String, Object> mainPageFestivalListResponseDtoObjectMap = new HashMap<>();
             mainPageFestivalListResponseDtoObjectMap.put("eventFilter", mainPageFestivalListResponseDtos);

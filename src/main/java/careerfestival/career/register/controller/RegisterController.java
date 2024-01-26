@@ -11,8 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,13 +20,14 @@ import java.util.List;
 public class RegisterController {
 
     private final RegisterService registerService;
-
+    // 주최자가 행사 등록
     // 주최자 이름으로 회원가입
     @PostMapping("/organizer/{userId}")
     public ResponseEntity registerOrganizerName(@PathVariable("userId") Long userId, @RequestBody RegisterOrganizerDto registerOrganizerDto) {
         registerService.registerOrganizer(userId, registerOrganizerDto);
         return new ResponseEntity(HttpStatus.OK);
     }
+
     // 주최자 프로필 이미지 업로드
     @PostMapping(value = "/organizer/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity registerOrganizerImage(@PathVariable("userId") Long userId,
@@ -36,16 +35,15 @@ public class RegisterController {
                                                  @RequestParam(value = "image") MultipartFile image){
         try{
             registerService.registerOrganizerImage(userId, image);
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
         return new ResponseEntity(HttpStatus.OK);
     }
 
     // 행사 등록하기 1, 행사 등록하기 2 통합
-    @PostMapping("/register/{userId}")
-    public ResponseEntity registerEvent(@PathVariable("userId") Long userId,
-                                        @RequestParam(value = "organizerId") Long organizerId,
+    @PostMapping("/register/{organizerId}")
+    public ResponseEntity registerEvent(@PathVariable("organizerId") Long organizerId,
                                         @RequestBody RegisterEventDto registerEventDto) {
         registerService.registerEvent(organizerId,registerEventDto);
         return new ResponseEntity(HttpStatus.OK);

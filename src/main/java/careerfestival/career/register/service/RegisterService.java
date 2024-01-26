@@ -2,6 +2,7 @@ package careerfestival.career.register.service;
 
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.global.ImageUtils;
 import careerfestival.career.global.S3Uploader;
@@ -39,10 +40,12 @@ public class RegisterService {
 
         Organizer organizer = organizerRepository.findById(organizerId)
                 .orElseThrow(()-> new RuntimeException("Organizer not found with id" + organizerId));
+        User user = userRepository.findById(organizer.getUser().getId())
+                .orElseThrow(()-> new RuntimeException("User not found with id" + organizer.getUser().getId()));
 
         Event event = registerEventDto.toEntity();
         event.setOrganizer(organizer);
-
+        event.setUser(user);
         eventRepository.save(event);
     }
 
@@ -114,11 +117,15 @@ public class RegisterService {
     public void registerOrganizer(Long userId, RegisterOrganizerDto registerOrganizerDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id" + userId));
+        try {
+            if (user.getRole() == Role.ROLE_ORGANIZER);
+            Organizer organizer = registerOrganizerDto.toEntity();
+            organizer.setUser(user);
 
-        Organizer organizer = registerOrganizerDto.toEntity();
-        organizer.setUser(user);
-
-        organizerRepository.save(organizer);
+            organizerRepository.save(organizer);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
     @Transactional
     public void registerOrganizerImage(Long userId, MultipartFile organizerProfileImage) throws IOException {
@@ -143,7 +150,7 @@ public class RegisterService {
                 String storedFileName = s3Uploader.upload(multipartFile, "event_main");
                 organizer.setOrganizerProfileFileUrl(storedFileName);
             }
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
 
