@@ -54,6 +54,7 @@ public class CommentRequestDto {
                 .commentContent(commentContent)
                 .parent(parent)
                 .depth(parent.getDepth())
+                .orderNumber(parent.getOrderNumber())
                 .build();
     }
 }

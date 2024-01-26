@@ -23,7 +23,7 @@ public class EventPageResponseDto {
     private String eventCost;
 
     private String commentContent;
-    private int orderNumber;
+    private Long orderNumber;
     private int depth;
     private boolean isParent;
     public static EventPageResponseDto fromEntity(Event event){
@@ -38,7 +38,7 @@ public class EventPageResponseDto {
     public static EventPageResponseDto fromEntityComment(Comment comment){
         return EventPageResponseDto.builder()
                 .commentContent(comment.getCommentContent())
-                .orderNumber(Math.toIntExact(comment.getOrderNumber()))
+                .orderNumber((comment.getOrderNumber()))
                 .depth(comment.getDepth())
                 .isParent(comment.isParent())
                 .build();

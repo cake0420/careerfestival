@@ -22,7 +22,6 @@ public class Comment extends BaseEntity {
     @Column(length = 300, name = "comment_content")
     private String commentContent;
 
-    @Column(columnDefinition = "LONG")
     private Long orderNumber;
 
     @Column(columnDefinition = "INT")
@@ -49,40 +48,31 @@ public class Comment extends BaseEntity {
         this.user = user;
         this.event = event;
         this.parent = parent;
+        this.orderNumber = orderNumber;
         if (parent == null){
             this.isParent = false;
             this.depth = 0;
-            this.orderNumber = orderNumber;
         }
         else {
             this.isParent = true;
             this.depth = parent.getDepth();
-            this.orderNumber = getOrderNumber();
+
         }
 
     }
 
-    public void setParent(Comment parent) {
-        this.parent = parent;
-    }
     public void  setIsParent(boolean isParent){
         this.isParent = isParent;
     }
     public void setOrderNumber(Long orderNumber) {
+
         this.orderNumber = orderNumber;
     }
 
     public void setDepth(int depth) {
         this.depth = depth;
     }
-    public Long findOrderNumber() {
-        if (parent == null) {
-            return orderNumber;
-        } else {
-            // 부모로부터 orderNumber를 재귀적으로 가져와 현재 orderNumber와 연결
-            return Long.parseLong(parent.findOrderNumber() + String.format("%02d", orderNumber));
-        }
-    }
+
 
 
 }

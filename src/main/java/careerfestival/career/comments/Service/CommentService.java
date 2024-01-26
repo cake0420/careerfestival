@@ -55,8 +55,7 @@
 
                     // 기존 코드에서의 위치 변경 및 isParent 값 설정
                     comment.setIsParent(true); // 댓글이므로 isParent를 true로 설정
-                    int maxOrderNumber = commentRepository.findMaxOrderNumber();
-                    comment.setOrderNumber((long) (maxOrderNumber + 1));
+                    comment.setOrderNumber( (commentRepository.findMaxOrderNumber() + 1));
                     comment.setDepth(0);
 
                     Comment savedComment = commentRepository.save(comment);
