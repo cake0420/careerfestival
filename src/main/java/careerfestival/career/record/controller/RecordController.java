@@ -42,18 +42,18 @@ public class RecordController {
     }
     // conference 기록 추가
     @PostMapping("/conference/{userId}")
-    public ResponseEntity<Void> addRecordConference(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long memberId) {
+    public ResponseEntity<Void> addRecordConference(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long userId) {
         try {
-            recordConferenceService.recordConference(memberId, request);
+            recordConferenceService.recordConference(userId,request);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     @PostMapping("/exhibition/{memberId}")
-    public ResponseEntity<Void> addRecordExhibition(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long memberId) {
+    public ResponseEntity<Void> addRecordExhibition(@RequestBody @Valid RecordRequestDto request, @PathVariable("userId") Long userId) {
         try {
-            recordConferenceService.recordExhibition(memberId, request);
+            recordConferenceService.recordExhibition(userId, request);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
 

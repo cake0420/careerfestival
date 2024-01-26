@@ -8,7 +8,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Entity
@@ -53,5 +55,21 @@ public class Record extends BaseEntity {
     private User user;
     @OneToOne(mappedBy = "record", cascade = CascadeType.ALL)
     private ImageData imageData;
+
+
+    @ElementCollection
+    @CollectionTable(name="record_details", joinColumns = @JoinColumn(name="record_id"))
+    @MapKeyColumn(name="record_key")
+    @Column(name = "record_value")
+        //RECORD MAPPING으로 수정
+        private Map<RecordDetail, RecordDetail> recordDetails;
+
+
+    @ElementCollection
+    @CollectionTable(name="record_contacts", joinColumns = @JoinColumn(name="record_id"))
+    @MapKeyColumn(name="contact_key")
+    @Column(name = "contact_value")
+    //RECORD MAPPING으로 수정
+    private Map<ContactDetail, ContactDetail> contactDetails;
 
 }
