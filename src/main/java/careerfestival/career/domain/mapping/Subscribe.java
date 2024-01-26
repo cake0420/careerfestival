@@ -8,18 +8,33 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Subscribe extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @ManyToOne  // default EAGER
+    @JoinColumn(name = "to_user")
+    private User toUser;
 
-    public Subscribe(User user){
-        this.user = user;
+    @ManyToOne
+    @JoinColumn(name = "from_user")
+    private User fromUser;
+
+    public Subscribe(User toUser, User fromUser){
+
+        this.toUser = toUser;
+        this.fromUser = fromUser;
     }
+    public Long getFromUser() {
+        return fromUser.getId();
+    }
+
+    public Long getToUser() {
+        return toUser.getId();
+    }
+
 }
