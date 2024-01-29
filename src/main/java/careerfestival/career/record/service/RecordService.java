@@ -2,6 +2,7 @@ package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.mapping.RecordDetail;
 import careerfestival.career.global.ImageUtils;
 import careerfestival.career.global.S3Uploader;
 import careerfestival.career.record.dto.*;
@@ -20,6 +21,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 
 @Service
@@ -38,6 +40,12 @@ public class RecordService {
 
         Record record = recordLectureSeminarRequestDto.toEntity();
         record.setUser(user);
+
+        if (recordLectureSeminarRequestDto.getRecordDetails() != null) {
+            for (RecordDetail detail : recordLectureSeminarRequestDto.getRecordDetails()) {
+                detail.setRecord(record); // RecordDetail에 Record 설정
+            }
+        }
         recordRepository.save(record);
     }
 

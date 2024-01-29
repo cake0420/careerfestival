@@ -3,14 +3,13 @@ package careerfestival.career.domain;
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.domain.mapping.NetworkDetail;
+import careerfestival.career.domain.mapping.RecordDetail;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
 @Getter
@@ -32,10 +31,8 @@ public class Record extends BaseEntity {
     private String eventTitle;
     @Column(nullable = false, length = 300, name = "event_description")
     private String eventDescription;
-    @Column(length = 300, name = "networking_name")
-    private String networkingName;
-    @Column(length = 300, name = "networking_contact")
-    private String networkingContact;
+
+    // 기타인 경우
     @Column(length = 300, name = "record_etc_detail")
     private String recordEtcDetail;
 
@@ -76,10 +73,18 @@ public class Record extends BaseEntity {
 //    @Column(name = "contact_value")
 //    //RECORD MAPPING으로 수정
 //    private Map<ContactDetail, ContactDetail> contactDetails;
+//
+//    @ElementCollection
+//    @CollectionTable(name = "record_detail", joinColumns = @JoinColumn(name = "record_id"))
+//    @MapKeyColumn(name = "detail_record_name")
+//    @Column(name = "record_description")
+//    private Map<String, String> recordDetail = new HashMap<>();
 
     @ElementCollection
-    @CollectionTable(name = "networking_info", joinColumns = @JoinColumn(name = "record_id"))
-    @MapKeyColumn(name = "networking_name")
-    @Column(name = "networking_contact")
-    private Map<String, String> networkingInfo = new HashMap<>();
+    @CollectionTable(name = "network_detail", joinColumns = @JoinColumn(name = "network_detail_id"))
+    private List<NetworkDetail> networkDetails = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "record_detail", joinColumns = @JoinColumn(name = "record_detail_id"))
+    private List<RecordDetail> recordDetails = new ArrayList<>();
 }

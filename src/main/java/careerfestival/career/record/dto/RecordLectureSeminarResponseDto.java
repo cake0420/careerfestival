@@ -21,11 +21,7 @@ public class RecordLectureSeminarResponseDto {
     private String eventTitle;
     private KeywordName keywordName;
     private String eventDescription;
-    /*
-    ----이미지 첨부 관련 내용----
-     */
-    private String networkingName;
-    private String networkingContact;
+
 
     @Builder
     public static RecordLectureSeminarResponseDto fromEntity(Record record) {
@@ -35,8 +31,6 @@ public class RecordLectureSeminarResponseDto {
                 .eventDate(record.getEventDate())
                 .keywordName(record.getKeywordName())
                 .eventDescription(record.getEventDescription())
-                .networkingName(record.getNetworkingName())
-                .networkingContact(record.getNetworkingContact())
                 .build();
     }
 }

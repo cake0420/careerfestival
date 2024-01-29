@@ -2,6 +2,7 @@ package careerfestival.career.record.dto;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.domain.mapping.RecordDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,11 +22,7 @@ public class RecordLectureSeminarRequestDto {
     private String eventTitle;
     private KeywordName keywordName;
     private String eventDescription;
-    /*
-    ----이미지 첨부 관련 내용----
-     */
-    private String networkingName;
-    private String networkingContact;
+    private List<RecordDetail> recordDetails;
 
     @Builder
     public Record toEntity() {
@@ -35,8 +32,7 @@ public class RecordLectureSeminarRequestDto {
                 .eventDate(eventDate)
                 .keywordName(keywordName)
                 .eventDescription(eventDescription)
-                .networkingName(networkingName)
-                .networkingContact(networkingContact)
+                .recordDetails(recordDetails)
                 .build();
     }
 }

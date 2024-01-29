@@ -1,7 +1,7 @@
 package careerfestival.career.record.dto;
 
-import careerfestival.career.domain.ContactDetail;
-import careerfestival.career.domain.RecordDetail;
+import careerfestival.career.domain.mapping.NetworkDetail;
+import careerfestival.career.domain.mapping.RecordDetail;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.Record;
@@ -26,7 +26,7 @@ public class RecordRequestDto {
     private LocalDate eventDate;
     private List<KeywordName> keywordName;
     private List<Map<RecordDetail, RecordDetail>> recordDetails;
-    private List<Map<ContactDetail, ContactDetail>> contactDetails;
+    private List<Map<NetworkDetail, NetworkDetail>> contactDetails;
 
     @Getter
     @NoArgsConstructor
@@ -68,15 +68,15 @@ public class RecordRequestDto {
             .collect(Collectors.toList());
     }
 
-    private  List<ContactDetail> mapToContactDetails(List<Map<ContactDetail, ContactDetail>> contactDetails) {
+    private  List<NetworkDetail> mapToContactDetails(List<Map<NetworkDetail, NetworkDetail>> contactDetails) {
 
         return contactDetails.stream()
                 .map(detailDto -> {
-                    ContactDetail contactDetail = ContactDetail.builder()
+                    NetworkDetail networkDetail = NetworkDetail.builder()
                             .networkingName(detailDto.keySet().iterator().next().getNetworkingName())
                             .networkingContact(detailDto.values().iterator().next().getNetworkingContact())
                             .build();
-                    return contactDetail;
+                    return networkDetail;
                 })
                 .collect(Collectors.toList());
     }

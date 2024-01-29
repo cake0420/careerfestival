@@ -23,11 +23,7 @@ public class RecordEtcRequestDto {
 
     private String eventTitle;
     private String eventDescription;
-    /*
-    ----이미지 첨부 관련 내용----
-     */
-    private String networkingName;
-    private String networkingContact;
+
 
     @Builder
     public Record toEntity() {
@@ -39,8 +35,6 @@ public class RecordEtcRequestDto {
                 .topicDetail(topicDetail)
                 .eventTitle(eventTitle)
                 .eventDescription(eventDescription)
-                .networkingName(networkingName)
-                .networkingContact(networkingContact)
                 .build();
     }
 }

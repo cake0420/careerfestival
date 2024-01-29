@@ -40,8 +40,6 @@ public class RecordEtcResponseDto {
                 .topic(record.getTopic())
                 .topicDetail(record.getTopicDetail())
                 .eventDescription(record.getEventDescription())
-                .networkingName(record.getNetworkingName())
-                .networkingContact(record.getNetworkingContact())
                 .build();
     }
 }
