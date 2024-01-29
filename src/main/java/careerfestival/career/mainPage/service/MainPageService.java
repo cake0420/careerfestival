@@ -4,10 +4,12 @@ import careerfestival.career.domain.Event;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.Organizer;
+import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.mainPage.dto.MainPageFestivalListResponseDto;
 import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.repository.EventRepository;
 import careerfestival.career.repository.OrganizerRepository;
+import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ public class MainPageService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final OrganizerRepository organizerRepository;
+    private final RegionRepository regionRepository;
 
     public List<MainPageResponseDto> getEventsHitsDesc() {
         // 조회수에 의한 내림차순 정렬한 events
@@ -50,10 +53,12 @@ public class MainPageService {
                 .collect(Collectors.toList());
     }
 
-    public Page<MainPageFestivalListResponseDto> getEventsFiltered(Category category,
-                                                                   KeywordName keywordName,
+    public Page<MainPageFestivalListResponseDto> getEventsFiltered(List<Category> category,
+                                                                   List<KeywordName> keywordName,
+                                                                   Region region,
                                                                    Pageable pageable) {
-        Page<Event> events = eventRepository.findAllByCategoryKeywordName(category, keywordName, pageable);
+        Long regionId = regionRepository.findRegionByCityAndAddressLine(region.getCity(), region.getAddressLine()).getId();
+        Page<Event> events = eventRepository.findAllByCategoryKeywordName(category, keywordName, regionId, pageable);
         return events.map(MainPageFestivalListResponseDto::fromEventEntity);
     }
 

@@ -85,10 +85,10 @@ public class RecordService {
         recordRepository.save(record);
     }
 
-    public void recordEtcImage(Long userId, MultipartFile etcimage) throws IOException{
+    public void recordEtcImage(Long userId, MultipartFile etcImage) throws IOException{
         Record record = recordRepository.findRecordByUserId(userId);
-        if(!etcimage.isEmpty()){
-            String storedFileName = s3Uploader.upload(etcimage, "etc_image");
+        if(!etcImage.isEmpty()){
+            String storedFileName = s3Uploader.upload(etcImage, "etc_image");
             record.setRecordEtcFileUrl(storedFileName);
         }
         recordRepository.save(record);

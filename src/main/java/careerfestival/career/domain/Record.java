@@ -77,4 +77,9 @@ public class Record extends BaseEntity {
 //    //RECORD MAPPING으로 수정
 //    private Map<ContactDetail, ContactDetail> contactDetails;
 
+    @ElementCollection
+    @CollectionTable(name = "networking_info", joinColumns = @JoinColumn(name = "record_id"))
+    @MapKeyColumn(name = "networking_name")
+    @Column(name = "networking_contact")
+    private Map<String, String> networkingInfo = new HashMap<>();
 }

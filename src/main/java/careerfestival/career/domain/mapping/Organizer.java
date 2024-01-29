@@ -19,7 +19,7 @@ public class Organizer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 300, name = "organizer_name")
+    @Column(unique = true, nullable = false, length = 300, name = "organizer_name")
     private String organizerName;
 
     @Column(name = "organizer_profile_file_url")

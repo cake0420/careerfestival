@@ -4,6 +4,7 @@ import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Organizer;
+import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.global.ImageUtils;
 import careerfestival.career.global.S3Uploader;
 import careerfestival.career.register.dto.RegisterEventDto;
@@ -11,6 +12,7 @@ import careerfestival.career.register.dto.RegisterMainResponseDto;
 import careerfestival.career.register.dto.RegisterOrganizerDto;
 import careerfestival.career.repository.EventRepository;
 import careerfestival.career.repository.OrganizerRepository;
+import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +36,12 @@ public class RegisterService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final OrganizerRepository organizerRepository;
+    private final RegionRepository regionRepository;
 
     @Autowired
     private S3Uploader s3Uploader;
 
+    // 행사 등록하기 1, 2단계 기능 구현
     public void registerEvent(Long organizerId, RegisterEventDto registerEventDto) {
 
         Organizer organizer = organizerRepository.findById(organizerId)
@@ -45,9 +49,12 @@ public class RegisterService {
         User user = userRepository.findById(organizer.getUser().getId())
                 .orElseThrow(()-> new RuntimeException("User not found with id" + organizer.getUser().getId()));
 
-        Event event = registerEventDto.toEntity();
+        Event event = registerEventDto.toEventEntity();
+        Region region = registerEventDto.toRegionEntity();
+        event.setRegion(regionRepository.findRegionByCityAndAddressLine(region.getCity(), region.getAddressLine()));
         event.setOrganizer(organizer);
         event.setUser(user);
+
         eventRepository.save(event);
     }
 
@@ -116,6 +123,7 @@ public class RegisterService {
         eventRepository.save(event);
     }
 
+    // 주최자 이름 등록
     public void registerOrganizer(Long userId, RegisterOrganizerDto registerOrganizerDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id" + userId));
@@ -129,6 +137,8 @@ public class RegisterService {
             e.printStackTrace();
         }
     }
+
+    // 주최자 프로필 등록
     @Transactional
     public void registerOrganizerImage(Long userId, MultipartFile organizerProfileImage) throws IOException {
         Organizer organizer = organizerRepository.findByUserId(userId);
@@ -159,13 +169,29 @@ public class RegisterService {
         organizerRepository.save(organizer);
     }
 
-    public List<RegisterMainResponseDto> getRegisterByUserId(Long userId) {
-        List<Event> events = eventRepository.findAllByUserId(userId);
-
-        return events.stream()
-                .map(RegisterMainResponseDto::fromEntity)
-                .collect(Collectors.toList());
+    // 주최자가 등록한 행사 목록 반환
+    public Page<RegisterMainResponseDto> getEventList(Long organizerId, Pageable pageable) {
+        Page<Event> events = eventRepository.findByOrganizerId(organizerId, pageable);
+        return events.map(RegisterMainResponseDto::fromEntity);
     }
+
+    // 주최자의 등록행사 개수 counting
+    public int countRegisterEvent(Long organizerId) {
+        int countRegisterEvent = eventRepository.countEventsByOrganizerId(organizerId);
+        return countRegisterEvent;
+    }
+
+    // 주최자 이름 반환
+    public String getOrganizerName(Long organizerId) {
+        String organizerName = organizerRepository.findOrganizerNameByOrganizerId(organizerId);
+        return organizerName;
+    }
+
+    /*
+
+    구독자 명수 반환 구현 필요
+
+    */
 
     private static String getFileExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf('.');
@@ -173,20 +199,5 @@ public class RegisterService {
             return fileName.substring(dotIndex + 1);
         }
         return "";
-    }
-
-    public Page<RegisterMainResponseDto> getEventList(Long organizerId, Pageable pageable) {
-        Page<Event> events = eventRepository.findByOrganizerId(organizerId, pageable);
-        return events.map(RegisterMainResponseDto::fromEntity);
-    }
-
-    public int countRegisterEvent(Long organizerId) {
-        int countRegisterEvent = eventRepository.countEventsByOrganizerId(organizerId);
-        return countRegisterEvent;
-    }
-
-    public String getOrganizerName(Long organizerId) {
-        String organizerName = organizerRepository.findOrganizerNameByOrganizerId(organizerId);
-        return organizerName;
     }
 }

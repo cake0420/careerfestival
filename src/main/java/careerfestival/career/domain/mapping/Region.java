@@ -1,12 +1,10 @@
 package careerfestival.career.domain.mapping;
 
 import careerfestival.career.domain.Event;
+import careerfestival.career.domain.User;
 import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class Region extends BaseEntity {
 
     @Id
@@ -27,6 +26,9 @@ public class Region extends BaseEntity {
     @Column(nullable = false, name = "address_line")
     private String addressLine;
 
-    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
-    private List<Event> event = new ArrayList<>();
+    @OneToOne(mappedBy = "region", cascade = CascadeType.ALL)
+    private Event event;
+
+    @OneToOne(mappedBy = "region", cascade = CascadeType.ALL)
+    private User user;
 }

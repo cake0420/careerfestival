@@ -76,7 +76,8 @@ public class Event extends BaseEntity {
     @Column(length = 300, name = "event_etc_detail")
     private String eventEtcDetail;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
     private Region region;
 
     @ManyToOne(fetch = FetchType.LAZY)

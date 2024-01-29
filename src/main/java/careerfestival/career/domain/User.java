@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     private String password;
 
     @Email
-    @Column(nullable = false, length = 300, name = "email")
+    @Column(unique = true, nullable = false, length = 300, name = "email")
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -106,13 +106,15 @@ public class User extends BaseEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Organizer organizer;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    private Region region;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
-
-
 
     public void addRecord(Record record) {
         records.add(record);

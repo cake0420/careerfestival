@@ -51,9 +51,9 @@ public class RecordController {
     @PostMapping(value = "/etc/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity recordEtcImage(@PathVariable("userId") Long userId,
                                          HttpServletRequest request,
-                                         @RequestParam(value = "etcimage") MultipartFile etcimage){
+                                         @RequestParam(value = "etcImage") MultipartFile etcImage){
         try{
-            recordService.recordEtcImage(userId, etcimage);
+            recordService.recordEtcImage(userId, etcImage);
         } catch (IOException e){
             e.printStackTrace();
         }

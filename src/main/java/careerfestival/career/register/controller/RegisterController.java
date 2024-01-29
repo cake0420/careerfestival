@@ -25,7 +25,7 @@ import java.util.Map;
 public class RegisterController {
     private final RegisterService registerService;
 
-    // 주최자가 행사 등록 (행사 등록하기 1단계)
+    // 주최자 프로필 형성 (행사 등록하기 1단계)
     @PostMapping("/event/organizer/{userId}")
     public ResponseEntity registerOrganizerName(@PathVariable("userId") Long userId, @RequestBody RegisterOrganizerDto registerOrganizerDto) {
         registerService.registerOrganizer(userId, registerOrganizerDto);
@@ -88,11 +88,16 @@ public class RegisterController {
             Page<RegisterMainResponseDto> registerMainResponseDtos
                     = registerService.getEventList(organizerId, pageable);
 
+            /*
+            주최자를 구독하는 사람들의 인원수 반환 필요
+             */
+
             Map<String, Object> registerMainResponseDtoObjectMap = new HashMap<>();
             registerMainResponseDtoObjectMap.put("organizerName", organizerName);
             // 구독자 관련 코드 추가 작성 필요
             registerMainResponseDtoObjectMap.put("festivalList", registerMainResponseDtos);
             registerMainResponseDtoObjectMap.put("festivalCount", CountRegisterEvent);
+
             return ResponseEntity.ok(registerMainResponseDtos);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
