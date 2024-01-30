@@ -76,7 +76,7 @@ public class UserService {
         myPageResponseDto.setDepartment(user.getDepartment());
         myPageResponseDto.setPosition(user.getPosition());
         myPageResponseDto.setAddressLine(user.getAddressLine());
-        List<KeywordName> keyword = user.getKeyword();
+        List<KeywordName> keyword = user.getKeywordName();
         myPageResponseDto.setKeywordName(keyword);
         return myPageResponseDto;
     }

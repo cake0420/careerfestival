@@ -71,9 +71,9 @@ public class User extends BaseEntity {
     @Column(length = 20, name = "position")
     private String position;
 
-
+    @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<KeywordName> keyword = new ArrayList<>();
+    private List<KeywordName> keywordName = new ArrayList<>();
 
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
@@ -162,14 +162,14 @@ public class User extends BaseEntity {
         this.position = position;
     }
 
-    public void updateKeyword(KeywordName[] keyword) {
-        if(keyword==null) return;
-        if(this.keyword != null) {
-            this.keyword.clear();
+    public void updateKeywordName(KeywordName[] keywordName) {
+        if(keywordName==null) return;
+        if(this.keywordName != null) {
+            this.keywordName.clear();
         }
-        else this.keyword = new ArrayList<>();
+        else this.keywordName = new ArrayList<>();
 
-        this.keyword.addAll(List.of(keyword));
+        this.keywordName.addAll(List.of(keywordName));
     }
 
     public void updateAddressLine(String addressLine) {
@@ -187,7 +187,7 @@ public class User extends BaseEntity {
         this.updateCompany(updateMypageResponseDto.getCompany());
         this.updateDepartment(updateMypageResponseDto.getDepartment());
         this.updatePosition(updateMypageResponseDto.getPosition());
-        this.updateKeyword(updateMypageResponseDto.getKeywordName());
+        this.updateKeywordName(updateMypageResponseDto.getKeywordName());
     }
 }
 

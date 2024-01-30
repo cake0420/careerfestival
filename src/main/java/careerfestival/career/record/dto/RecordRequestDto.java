@@ -21,13 +21,29 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 public class RecordRequestDto {
+    // Record에 공통
     private Category category;
     private String eventName;
+    private String eventTitle;
     private LocalDate eventDate;
-    private List<KeywordName> keywordName;
-    private List<Map<RecordDetail, RecordDetail>> recordDetails;
-    private List<Map<NetworkDetail, NetworkDetail>> contactDetails;
 
+    private List<KeywordName> keywordName;
+
+    private List<RecordDetail> recordDetails;
+    private List<NetworkDetail> networkDetails;
+
+    @Builder
+    public Record toEntity() {
+        return Record.builder()
+                .category(category)
+                .eventName(eventName)
+                .eventTitle(eventTitle)
+                .eventDate(eventDate)
+                .keywordName(keywordName)
+                .recordDetails(recordDetails)
+                .networkDetails(networkDetails)
+                .build();
+    }
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
@@ -42,19 +58,8 @@ public class RecordRequestDto {
         private String networkingName;
         private String networkingContact;
     }
-    @Builder
-    public Record toEntity() {
-        Record.RecordBuilder recordBuilder = Record.builder()
-                .category(category)
-                .eventName(eventName)
-                .eventDate(eventDate);
-//                .keywordName(keywordName)
-//                .recordDetails((Map<RecordDetail, RecordDetail>) mapToRecordDetails(recordDetails))
-//                .contactDetails((Map<ContactDetail, ContactDetail>) mapToContactDetails(contactDetails));
 
-        return recordBuilder.build();
-        // Checkpoint 글의 제목도 추가해저야함
-    }
+
     private  List<RecordDetail> mapToRecordDetails(List<Map<RecordDetail, RecordDetail>> recordDetails) {
 
                 return recordDetails.stream()
