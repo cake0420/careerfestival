@@ -10,6 +10,8 @@
     import careerfestival.career.repository.UserRepository;
     import lombok.RequiredArgsConstructor;
     import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.PageImpl;
+    import org.springframework.data.domain.PageRequest;
     import org.springframework.data.domain.Pageable;
     import org.springframework.stereotype.Service;
 
@@ -66,12 +68,18 @@
             }
         }
 
-        public Page<CommentResponseDto> getAllCommentsByEvent(Long eventId, Pageable pageable) {
-            Page<CommentResponseDto> comments = commentRepository
-                    .findAllByEventIdOrderByCommentContentDesc(eventId, pageable)
-                    .map(CommentResponseDto::new);
-            return comments;
-        }
+        public Page<CommentResponseDto> getAllCommentsByEvent(Long eventId, int pageSize, int offset) {
+            List<Comment> comments = commentRepository.findAllLimitedParentCommentsWithRepliesByEventId(eventId, pageSize, offset);
+
+            Page<CommentResponseDto> page = new PageImpl<>(
+                    comments.stream()
+                            .map(CommentResponseDto::new)
+                            .collect(Collectors.toList()),
+                    PageRequest.of(offset, pageSize),
+                    comments.size()
+            );
+
+            return page;        }
 
     }
 

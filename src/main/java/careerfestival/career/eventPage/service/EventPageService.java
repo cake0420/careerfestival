@@ -1,7 +1,6 @@
 package careerfestival.career.eventPage.service;
 
 import careerfestival.career.domain.Event;
-import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.eventPage.dto.EventPageResponseDto;
 import careerfestival.career.repository.CommentRepository;
 import careerfestival.career.repository.EventRepository;
