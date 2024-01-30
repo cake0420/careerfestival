@@ -35,14 +35,6 @@ public class EventPageResponseDto {
                 .eventCost(event.getEventCost())
                 .build();
     }
-    public static EventPageResponseDto fromEntityComment(Comment comment){
-        return EventPageResponseDto.builder()
-                .commentContent(comment.getCommentContent())
-                .orderNumber((comment.getOrderNumber()))
-                .depth(comment.getDepth())
-                .isParent(comment.isParent())
-                .build();
-    }
 
 
 

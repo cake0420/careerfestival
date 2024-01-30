@@ -1,8 +1,6 @@
 package careerfestival.career.repository;
 
 import careerfestival.career.domain.mapping.Comment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,13 +32,12 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "    FROM comment c " +
             "    WHERE c.event_id = :eventId " +
             "    AND c.is_parent = 1 " +
-            ") " +
-            "ORDER BY c.order_number ASC, c.created_at ASC " +
-            "LIMIT :pageSize OFFSET :offset) " +
-            "ORDER BY order_number ASC, created_at ASC",
+            ")) " +
+            "ORDER BY order_number ASC, created_at ASC", // 수정된 부분
             nativeQuery = true)
     List<Comment> findAllLimitedParentCommentsWithRepliesByEventId(
-            Long eventId,
+            @Param("eventId") Long eventId,
             @Param("pageSize") int pageSize,
             @Param("offset") int offset);
+
 }

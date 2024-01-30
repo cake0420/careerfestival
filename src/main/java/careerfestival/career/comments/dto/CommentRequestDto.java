@@ -3,7 +3,6 @@ package careerfestival.career.comments.dto;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.mapping.Comment;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,9 +23,10 @@ public class CommentRequestDto {
     private  Long orderNumber;
     private boolean isParent;
     private LocalDateTime createdAt;
+    private String Name;
 
     @Builder
-    public static CommentRequestDto of(Long userId, Long eventId, String commentContent, Long parent, Long orderNumber, boolean isParent, LocalDateTime createdAt)
+    public static CommentRequestDto of(Long userId, Long eventId, String commentContent, Long parent, Long orderNumber, boolean isParent, LocalDateTime createdAt, String name)
  {
         return CommentRequestDto.builder()
                 .userId(userId)
@@ -36,6 +36,7 @@ public class CommentRequestDto {
                 .orderNumber(orderNumber)
                 .isParent(isParent)
                 .createdAt(LocalDateTime.now())
+                .Name(name)
                 .build();
     }
 

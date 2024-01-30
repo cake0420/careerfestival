@@ -15,7 +15,7 @@ public class CommentResponseDto {
     private Long eventId;
     private String commentContent;
     private Long parent;
-
+    private String Name;
 
 
     public CommentResponseDto(Comment comment) {
@@ -23,7 +23,7 @@ public class CommentResponseDto {
         this.eventId = (comment.getEvent() != null) ? comment.getEvent().getId() : null;
         this.commentContent = comment.getCommentContent();
         this.parent = (comment.getParent() != null) ? comment.getParent().getId() : null;
-
+        this.Name = getName();
     }
 
 }

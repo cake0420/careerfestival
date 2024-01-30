@@ -29,6 +29,9 @@ public class Comment extends BaseEntity {
 
     private boolean isParent;
 
+    @Column(length = 300, name = "name")
+    private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
@@ -44,11 +47,12 @@ public class Comment extends BaseEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Comment> childComments;
 
-    public Comment(User user, Event event, Comment parent, Long orderNumber, int depth){
+    public Comment(User user, Event event, Comment parent, Long orderNumber, int depth, String name){
         this.user = user;
         this.event = event;
         this.parent = parent;
         this.orderNumber = orderNumber;
+        this.name = name;
         if (parent == null){
             this.isParent = false;
             this.depth = 0;
@@ -73,6 +77,8 @@ public class Comment extends BaseEntity {
         this.depth = depth;
     }
 
-
+    public void  setName(String name){
+        this.name = name;
+    }
 
 }
