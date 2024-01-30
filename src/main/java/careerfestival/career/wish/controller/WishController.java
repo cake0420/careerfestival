@@ -33,7 +33,7 @@ public class WishController {
             String redirectUrl = "/event/" + eventId;
 
             // ResponseEntity로 리다이렉트 응답 생성
-            return ResponseEntity.status(HttpStatus.FOUND)
+            return ResponseEntity.ok()
                     .header("Location", redirectUrl)
                     .build();
         } catch (IllegalArgumentException e) {

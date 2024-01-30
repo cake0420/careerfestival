@@ -30,7 +30,7 @@ public class SubscribeController {
         try {
             boolean subsId = subscribeService.addRemove(subscribeRequestDto);
             String redirectUrl = "/profile/" + fromUserId;
-            return ResponseEntity.status(HttpStatus.FOUND)
+            return ResponseEntity.ok()
                     .header("Location", redirectUrl)
                     .build();
         } catch (IllegalArgumentException e) {

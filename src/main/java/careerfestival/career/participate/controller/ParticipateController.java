@@ -30,7 +30,7 @@ public class ParticipateController {
             String redirectUrl = "/event/" + userId + "/" + eventId;
 
             // ResponseEntity로 리다이렉트 응답 생성
-            return ResponseEntity.status(HttpStatus.FOUND)
+            return ResponseEntity.ok()
                     .header("Location", redirectUrl)
                     .body(participateId);
         } catch (IllegalArgumentException e) {
@@ -71,7 +71,7 @@ public class ParticipateController {
             if (link != null) {
                 // 리다이렉트 구현
                 String redirectUrl = link;
-                return ResponseEntity.status(HttpStatus.FOUND)
+                return ResponseEntity.ok()
                         .header("Location", redirectUrl)
                         .body(link).toString();
             }
