@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class CommentRequestDto {
-
+    private Long id;
     private Long userId;
     private Long eventId;
     private Long parent;  // Updated to Long type
@@ -26,9 +26,10 @@ public class CommentRequestDto {
     private String Name;
 
     @Builder
-    public static CommentRequestDto of(Long userId, Long eventId, String commentContent, Long parent, Long orderNumber, boolean isParent, LocalDateTime createdAt, String name)
+    public static CommentRequestDto of(Long id, Long userId, Long eventId, String commentContent, Long parent, Long orderNumber, boolean isParent, LocalDateTime createdAt, String name)
  {
         return CommentRequestDto.builder()
+                .id(id)
                 .userId(userId)
                 .eventId(eventId)
                 .commentContent(commentContent)

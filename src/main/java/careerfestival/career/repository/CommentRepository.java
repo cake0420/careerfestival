@@ -20,7 +20,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "FROM comment c " +
             "WHERE c.event_id = :eventId " +
             "AND c.is_parent = 1 " +
-            "ORDER BY c.order_number ASC, c.created_at ASC " +
+            "ORDER BY c.order_number DESC , c.created_at DESC " +
             "LIMIT :pageSize OFFSET :offset) " +
             "UNION ALL " +
             "(SELECT c.* " +
@@ -32,8 +32,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "    FROM comment c " +
             "    WHERE c.event_id = :eventId " +
             "    AND c.is_parent = 1 " +
+            "ORDER BY order_number ASC, created_at ASC" +
             ")) " +
-            "ORDER BY order_number ASC, created_at ASC", // 수정된 부분
+            "ORDER BY order_number DESC ", // 수정된 부분
             nativeQuery = true)
     List<Comment> findAllLimitedParentCommentsWithRepliesByEventId(
             @Param("eventId") Long eventId,

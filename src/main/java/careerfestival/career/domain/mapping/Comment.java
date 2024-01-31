@@ -6,6 +6,7 @@ import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,6 +30,9 @@ public class Comment extends BaseEntity {
 
     private boolean isParent;
 
+    @Column(name = "total_like_count", columnDefinition = "int default 0")
+    private Integer totalLikeCount;
+
     @Column(length = 300, name = "name")
     private String name;
 
@@ -47,7 +51,10 @@ public class Comment extends BaseEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Comment> childComments;
 
-    public Comment(User user, Event event, Comment parent, Long orderNumber, int depth, String name){
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLike> like = new ArrayList<>();
+
+    public Comment(User user, Event event, Comment parent, Long orderNumber, int depth, String name, Integer totalLikeCount){
         this.user = user;
         this.event = event;
         this.parent = parent;
@@ -62,6 +69,7 @@ public class Comment extends BaseEntity {
             this.depth = parent.getDepth();
 
         }
+        this.totalLikeCount = totalLikeCount;
 
     }
 

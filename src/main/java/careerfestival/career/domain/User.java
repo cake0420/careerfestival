@@ -115,7 +115,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CommentLike> commentLike = new ArrayList<>();
 
     public void addRecord(Record record) {
         records.add(record);

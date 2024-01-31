@@ -5,6 +5,7 @@
     import careerfestival.career.domain.mapping.Comment;
     import careerfestival.career.domain.Event;
     import careerfestival.career.domain.User;
+    import careerfestival.career.repository.CommentLikeRepository;
     import careerfestival.career.repository.CommentRepository;
     import careerfestival.career.repository.EventRepository;
     import careerfestival.career.repository.UserRepository;
@@ -25,11 +26,13 @@
         private final CommentRepository commentRepository;
         private final UserRepository userRepository;
         private final EventRepository eventRepository;
+        private final CommentLikeRepository commentLikeRepository;
 
         public Long commentSave(Long userId, Long eventId, CommentRequestDto commentRequestDto) {
             Optional<User> user = userRepository.findById(userId);
             Optional<Event> event = eventRepository.findById(eventId);
             String name = user.get().getName();
+            Long commentId = commentRequestDto.getId();
             if (user.isPresent() && event.isPresent() && commentRequestDto.getCommentContent() != null) {
                 if (commentRequestDto.getParent() != null) {
                     // 대댓글인 경우
@@ -87,7 +90,7 @@
 
             Page<CommentResponseDto> page = new PageImpl<>(
                     commentsWithReplies.stream()
-                            .map(CommentResponseDto::new)
+                            .map(comment -> new CommentResponseDto(comment, commentLikeRepository))
                             .collect(Collectors.toList()),
                     PageRequest.of(offset, pageSize),
                     commentsWithReplies.size()
