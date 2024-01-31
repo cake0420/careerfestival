@@ -44,7 +44,5 @@ public class MyPageController {
 
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
-
-
 }
 

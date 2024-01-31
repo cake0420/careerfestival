@@ -1,7 +1,7 @@
 package careerfestival.career.record.dto;
 
-import careerfestival.career.domain.ContactDetail;
-import careerfestival.career.domain.RecordDetail;
+import careerfestival.career.domain.mapping.NetworkDetail;
+import careerfestival.career.domain.mapping.RecordDetail;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.Record;
@@ -21,13 +21,29 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 public class RecordRequestDto {
+    // Record에 공통
     private Category category;
     private String eventName;
+    private String eventTitle;
     private LocalDate eventDate;
-    private List<KeywordName> keywordName;
-    private List<Map<RecordDetail, RecordDetail>> recordDetails;
-    private List<Map<ContactDetail, ContactDetail>> contactDetails;
 
+    private List<KeywordName> keywordName;
+
+    private List<RecordDetail> recordDetails;
+    private List<NetworkDetail> networkDetails;
+
+    @Builder
+    public Record toEntity() {
+        return Record.builder()
+                .category(category)
+                .eventName(eventName)
+                .eventTitle(eventTitle)
+                .eventDate(eventDate)
+                .keywordName(keywordName)
+                .recordDetails(recordDetails)
+                .networkDetails(networkDetails)
+                .build();
+    }
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
@@ -42,19 +58,8 @@ public class RecordRequestDto {
         private String networkingName;
         private String networkingContact;
     }
-    @Builder
-    public Record toEntity() {
-        Record.RecordBuilder recordBuilder = Record.builder()
-                .category(category)
-                .eventName(eventName)
-                .eventDate(eventDate);
-//                .keywordName(keywordName)
-//                .recordDetails((Map<RecordDetail, RecordDetail>) mapToRecordDetails(recordDetails))
-//                .contactDetails((Map<ContactDetail, ContactDetail>) mapToContactDetails(contactDetails));
 
-        return recordBuilder.build();
-        // Checkpoint 글의 제목도 추가해저야함
-    }
+
     private  List<RecordDetail> mapToRecordDetails(List<Map<RecordDetail, RecordDetail>> recordDetails) {
 
                 return recordDetails.stream()
@@ -68,15 +73,15 @@ public class RecordRequestDto {
             .collect(Collectors.toList());
     }
 
-    private  List<ContactDetail> mapToContactDetails(List<Map<ContactDetail, ContactDetail>> contactDetails) {
+    private  List<NetworkDetail> mapToContactDetails(List<Map<NetworkDetail, NetworkDetail>> contactDetails) {
 
         return contactDetails.stream()
                 .map(detailDto -> {
-                    ContactDetail contactDetail = ContactDetail.builder()
+                    NetworkDetail networkDetail = NetworkDetail.builder()
                             .networkingName(detailDto.keySet().iterator().next().getNetworkingName())
                             .networkingContact(detailDto.values().iterator().next().getNetworkingContact())
                             .build();
-                    return contactDetail;
+                    return networkDetail;
                 })
                 .collect(Collectors.toList());
     }

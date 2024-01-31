@@ -2,7 +2,8 @@ package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
-import careerfestival.career.global.ImageUtils;
+import careerfestival.career.domain.mapping.NetworkDetail;
+import careerfestival.career.domain.mapping.RecordDetail;
 import careerfestival.career.global.S3Uploader;
 import careerfestival.career.record.dto.*;
 import careerfestival.career.repository.RecordRepository;
@@ -12,14 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 
 @Service
@@ -31,87 +29,188 @@ public class RecordService {
     @Autowired
     private S3Uploader s3Uploader;
 
-    public void recordLectureSeminar(Long userId, RecordLectureSeminarRequestDto recordLectureSeminarRequestDto) {
+    // 게시판 등록
+    @Transactional
+    public void recordLectureSeminar(Long userId, RecordRequestDto recordRequestDto) {
         // 이미지 첨부 및 글자 수 제한 적용 필요
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        Record record = recordLectureSeminarRequestDto.toEntity();
+        Record record = recordRequestDto.toEntity();
         record.setUser(user);
-        recordRepository.save(record);
-    }
 
-    // 강연 및 세미나 이미지 라시이징 업로드 -> 과연 필요한가?
-    @Transactional
-    public void recordLectureSeminarImage(Long userId, MultipartFile lectureSeminarImage) throws IOException {
-        Record record = recordRepository.findRecordByUserId(userId);
-        try {
-            if (!lectureSeminarImage.isEmpty()) {
-                // 이미지 리사이징
-                BufferedImage resizedImage = ImageUtils.resizeImage(lectureSeminarImage, 600, 400);
+        if(recordRequestDto.getRecordDetails() != null){
+            for(RecordDetail recordDetail : recordRequestDto.getRecordDetails()){
+                recordDetail.setRecord(record); // RecordDetail에 Record 설정
+            }
+        }
 
-                // BufferedImage를 byte[]로 변환
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(resizedImage, getFileExtension(lectureSeminarImage.getOriginalFilename()), baos);
-                byte[] resizedImageBytes = baos.toByteArray();
-
-                // byte[]를 MultipartFile로 변환
-                MultipartFile multipartFile = new MockMultipartFile(
-                        "resized_" + lectureSeminarImage.getOriginalFilename(),
-                        lectureSeminarImage.getOriginalFilename(),
-                        lectureSeminarImage.getContentType(),
-                        resizedImageBytes
-                );
-
-                // S3에 업로드하고 URL 받기
-                String storedFileName = s3Uploader.upload(multipartFile, "lecture_seminar_image");
-
-                // 이벤트에 이미지 URL 설정하고 저장
-                record.setRecordLectureSeminarFileUrl(storedFileName);
-                recordRepository.save(record);
-                }
-            } catch (Exception e){
-                e.printStackTrace();
+        if (recordRequestDto.getNetworkDetails() != null) {
+            for (NetworkDetail networkDetail : recordRequestDto.getNetworkDetails()) {
+                networkDetail.setRecord(record); // NetworkDetail에 Record 설정
+            }
         }
         recordRepository.save(record);
     }
+    @Transactional
+    public void recordConference(Long userId, RecordRequestDto recordRequestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-    public void recordEtc(Long userId, RecordEtcRequestDto recordEtcRequestDto) {
+        Record record = recordRequestDto.toEntity();
+        record.setUser(user);
+
+        if(recordRequestDto.getRecordDetails() != null){
+            for(RecordDetail recordDetail : recordRequestDto.getRecordDetails()){
+                recordDetail.setRecord(record); // RecordDetail에 Record 설정
+            }
+        }
+
+        if (recordRequestDto.getNetworkDetails() != null) {
+            for (NetworkDetail networkDetail : recordRequestDto.getNetworkDetails()) {
+                networkDetail.setRecord(record); // NetworkDetail에 Record 설정
+            }
+        }
+        recordRepository.save(record);
+    }
+    @Transactional
+    public void recordExhibition(Long userId, RecordRequestDto recordRequestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        Record record = recordRequestDto.toEntity();
+        record.setUser(user);
+
+        if(recordRequestDto.getRecordDetails() != null){
+            for(RecordDetail recordDetail : recordRequestDto.getRecordDetails()){
+                recordDetail.setRecord(record); // RecordDetail에 Record 설정
+            }
+        }
+
+        if (recordRequestDto.getNetworkDetails() != null) {
+            for (NetworkDetail networkDetail : recordRequestDto.getNetworkDetails()) {
+                networkDetail.setRecord(record); // NetworkDetail에 Record 설정
+            }
+        }
+        recordRepository.save(record);
+    }
+    @Transactional
+    public void recordEtc(Long userId, RecordRequestDto recordRequestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new RuntimeException("User not found with id: " + userId));
 
-        Record record = recordEtcRequestDto.toEntity();
+        Record record = recordRequestDto.toEntity();
         record.setUser(user);
-        recordRepository.save(record);
-    }
 
-    public void recordEtcImage(Long userId, MultipartFile etcimage) throws IOException{
-        Record record = recordRepository.findRecordByUserId(userId);
-        if(!etcimage.isEmpty()){
-            String storedFileName = s3Uploader.upload(etcimage, "etc_image");
-            record.setRecordEtcFileUrl(storedFileName);
+        if(recordRequestDto.getRecordDetails() != null){
+            for(RecordDetail recordDetail : recordRequestDto.getRecordDetails()){
+                recordDetail.setRecord(record); // RecordDetail에 Record 설정
+            }
+        }
+
+        if (recordRequestDto.getNetworkDetails() != null) {
+            for (NetworkDetail networkDetail : recordRequestDto.getNetworkDetails()) {
+                networkDetail.setRecord(record); // NetworkDetail에 Record 설정
+            }
         }
         recordRepository.save(record);
     }
 
-    // 사용자별 기록장 메인페이지 페이징 기법 적용해서 반환 (updated_at) 기준 내림차순 정렬
-    public Page<RecordMainResponseDto> recordList(Long userId, Pageable pageable) {
+
+
+
+
+
+
+
+    // 기록장 이미지 업로드 구현
+    @Transactional
+    public void recordLectureSeminarImage(Long recordId, MultipartFile lectureSeminarImage) throws IOException {
+        try {
+            if (!lectureSeminarImage.isEmpty()) {
+                String storedFileName = s3Uploader.upload(lectureSeminarImage, "lecture_seminar_image");
+                for(RecordDetail recordDetail : recordRepository.findRecordById(recordId).getRecordDetails()){
+                    recordDetail.setDescriptionFileUrl(storedFileName);
+                }
+            }
+        } catch (Exception e){
+                e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void recordConferenceImage(Long recordId, List<MultipartFile> conferenceImage) throws IOException{
+        try{
+            if(!conferenceImage.isEmpty()){
+                List<String> storedFileNames = s3Uploader.upload(conferenceImage, "conference_image");
+                List<RecordDetail> recordDetails = recordRepository.findRecordById(recordId).getRecordDetails();
+
+                int numberofDetails = recordDetails.size();
+                for(int i = 0; i < numberofDetails; i++){
+                    if (i < storedFileNames.size()){
+                        RecordDetail recordDetail = recordDetails.get(i);
+                        recordDetail.setDescriptionFileUrl(storedFileNames.get(i));
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void recordExhibitionImage(Long recordId, List<MultipartFile> exhibitionImage) throws IOException{
+        try{
+            if(!exhibitionImage.isEmpty()){
+                List<String> storedFileNames = s3Uploader.upload(exhibitionImage, "exhibition_image");
+                List<RecordDetail> recordDetails = recordRepository.findRecordById(recordId).getRecordDetails();
+
+                int numberofDetails = recordDetails.size();
+                for(int i = 0; i < numberofDetails; i++){
+                    if (i < storedFileNames.size()){
+                        RecordDetail recordDetail = recordDetails.get(i);
+                        recordDetail.setDescriptionFileUrl(storedFileNames.get(i));
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    @Transactional
+    public void recordEtcImage(Long recordId, MultipartFile etcImage) throws IOException{
+        try{
+            if(!etcImage.isEmpty()){
+                String storedFileName = s3Uploader.upload(etcImage, "etc_image");
+                for(RecordDetail recordDetail : recordRepository.findRecordById(recordId).getRecordDetails()){
+                    recordDetail.setDescriptionFileUrl(storedFileName);
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+    // 사용자별 기록장 메인페이지 페이징 기법 적용해서 반환 (updatedAt) 기준 내림차순 정렬
+    public Page<RecordResponseDto> recordList(Long userId, Pageable pageable) {
         Page<Record> records = recordRepository.findByUserId(userId, pageable);
-        return records.map(RecordMainResponseDto::fromEntity);
+        return records.map(RecordResponseDto::mainFromEntity);
     }
 
-    // 수정하기 버튼 누르기 전 사용자별 기록장(강연/세미나) 조회 및 반환
-    public RecordLectureSeminarResponseDto getLectureSeminar(Long recordId) {
+    // 기록한 전체 레코드 반환 (찾고자 하는 기록장에 대해서)
+    public RecordResponseDto getRecord(Long recordId) {
         Record record = recordRepository.findRecordById(recordId);
-        RecordLectureSeminarResponseDto responseDto = RecordLectureSeminarResponseDto.fromEntity(record);
-        return responseDto;
-    }
-
-    // 수정하기 버튼 누르기 전 사용자별 기록장(기타) 조회 및 반환
-    public RecordEtcResponseDto getEtc(Long recordId) {
-        Record record = recordRepository.findRecordById(recordId);
-        RecordEtcResponseDto responseDto = RecordEtcResponseDto.fromEntity(record);
-        return responseDto;
+        return RecordResponseDto.recordFromEntity(record);
     }
 
     private static String getFileExtension(String fileName) {

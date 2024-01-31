@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     private String password;
 
     @Email
-    @Column(nullable = false, length = 300, name = "email")
+    @Column(unique = true, nullable = false, length = 300, name = "email")
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -71,9 +71,9 @@ public class User extends BaseEntity {
     @Column(length = 20, name = "position")
     private String position;
 
-
+    @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<KeywordName> keyword = new ArrayList<>();
+    private List<KeywordName> keywordName = new ArrayList<>();
 
     /*
     ----------위에는 회원가입에 직접 사용되는 값들----------------
@@ -106,13 +106,15 @@ public class User extends BaseEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Organizer organizer;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    private Region region;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Follow> follow = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
-
-
 
     public void addRecord(Record record) {
         records.add(record);
@@ -160,14 +162,14 @@ public class User extends BaseEntity {
         this.position = position;
     }
 
-    public void updateKeyword(KeywordName[] keyword) {
-        if(keyword==null) return;
-        if(this.keyword != null) {
-            this.keyword.clear();
+    public void updateKeywordName(KeywordName[] keywordName) {
+        if(keywordName==null) return;
+        if(this.keywordName != null) {
+            this.keywordName.clear();
         }
-        else this.keyword = new ArrayList<>();
+        else this.keywordName = new ArrayList<>();
 
-        this.keyword.addAll(List.of(keyword));
+        this.keywordName.addAll(List.of(keywordName));
     }
 
     public void updateAddressLine(String addressLine) {
@@ -185,7 +187,7 @@ public class User extends BaseEntity {
         this.updateCompany(updateMypageResponseDto.getCompany());
         this.updateDepartment(updateMypageResponseDto.getDepartment());
         this.updatePosition(updateMypageResponseDto.getPosition());
-        this.updateKeyword(updateMypageResponseDto.getKeywordName());
+        this.updateKeywordName(updateMypageResponseDto.getKeywordName());
     }
 }
 

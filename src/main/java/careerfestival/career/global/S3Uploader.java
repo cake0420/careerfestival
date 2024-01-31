@@ -59,6 +59,15 @@ public class S3Uploader {
         return preSignedURL;
     }
 
+    public List<String> upload(List<MultipartFile> multipartFiles, String dirName) throws IOException{
+        List<String> urlList = new ArrayList<>();
+        for(MultipartFile multipartFile : multipartFiles) {
+            File uploadFile = convert(multipartFile).orElseThrow(() -> new IllegalArgumentException("파일 전환 실패"));
+            urlList.add(upload(uploadFile, dirName));
+        }
+        return urlList;
+    }
+
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));

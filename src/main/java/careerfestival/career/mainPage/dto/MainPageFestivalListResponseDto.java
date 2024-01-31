@@ -2,6 +2,7 @@ package careerfestival.career.mainPage.dto;
 
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.mapping.Organizer;
+import careerfestival.career.domain.mapping.Region;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,10 @@ public class MainPageFestivalListResponseDto {
     // 주최자 정보 조회 위함
     private String organizerName;
     private String organizerProfileFileUrl;
+
+    // 지역 필터링 위함
+    private String city;
+    private String addressLine;
 
     public static MainPageFestivalListResponseDto fromEventEntity(Event event){
         return MainPageFestivalListResponseDto.builder()

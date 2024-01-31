@@ -1,4 +1,3 @@
-/*
 package careerfestival.career.repository;
 
 import careerfestival.career.domain.mapping.Region;
@@ -9,4 +8,3 @@ import org.springframework.stereotype.Repository;
 public interface RegionRepository extends JpaRepository<Region, Long> {
     Region findRegionByCityAndAddressLine(String city, String addressLine);
 }
-*/
