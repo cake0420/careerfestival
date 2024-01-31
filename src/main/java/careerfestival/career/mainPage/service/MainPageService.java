@@ -1,10 +1,12 @@
 package careerfestival.career.mainPage.service;
 
 import careerfestival.career.domain.Event;
+import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Region;
+import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.mainPage.dto.MainPageFestivalListResponseDto;
 import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.repository.EventRepository;
@@ -38,7 +40,7 @@ public class MainPageService {
 
     public List<MainPageResponseDto> getEventNames() {
         // 조회수에 의한 정렬 처리 필요
-        List<Event> eventNames = eventRepository.findAll();
+        List<Event> eventNames = eventRepository.findAllByOrderByHitsDesc();
 
         return eventNames.stream()
                 .map(MainPageResponseDto::fromEntityName)
@@ -67,5 +69,9 @@ public class MainPageService {
                                                                        Pageable pageable){
         Page<Organizer> organizers = organizerRepository.findAllByCategoryKeywordName(category, keywordName, pageable);
         return organizers.map(MainPageFestivalListResponseDto::fromOrganizerEntity);
+    }
+
+    public boolean findExistUserByCustomUserDetails(CustomUserDetails customUserDetails) {
+        return userRepository.existsByEmail(customUserDetails.getUsername());
     }
 }

@@ -65,12 +65,12 @@ public class RegisterController {
 
     // 행사 정보 이미지 업로드 등록 -> 행사 대표 이미지 업로드 등로과 같음
     // requestparam에 무엇을 넣을지는 인가 완료후에 구현하기
-    @PostMapping(value = "/event/register/{userId}/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity regiserEventInformImage(@PathVariable("userId") Long userId,
+    @PostMapping(value = "/event/register/{organizerId}/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity regiserEventInformImage(@PathVariable("organizerId") Long organizerId,
                                                   HttpServletRequest request,
                                                   @RequestParam(value = "eventInformImage") MultipartFile eventInformImage){
         try{
-            registerService.registerEventInformImage(userId, eventInformImage);
+            registerService.registerEventInformImage(organizerId, eventInformImage);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class RegisterController {
 
     // 주최자가 자신의 프로필을 확인할 수 있음 (행사 등록하기 5단계) 바로
     @GetMapping("profile/register/{organizerId}")
-    public ResponseEntity<Page<RegisterMainResponseDto>> getRegisterByOrganizerId(
+    public ResponseEntity<Map<String, Object>> getRegisterByOrganizerId(
             @PathVariable("organizerId") Long organizerId,
             @PageableDefault(size = 4, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         try{
@@ -98,7 +98,7 @@ public class RegisterController {
             registerMainResponseDtoObjectMap.put("festivalList", registerMainResponseDtos);
             registerMainResponseDtoObjectMap.put("festivalCount", CountRegisterEvent);
 
-            return ResponseEntity.ok(registerMainResponseDtos);
+            return ResponseEntity.ok().body(registerMainResponseDtoObjectMap);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

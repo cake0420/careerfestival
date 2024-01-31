@@ -2,6 +2,7 @@ package careerfestival.career.register.service;
 
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Region;
@@ -21,12 +22,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,8 +99,8 @@ public class RegisterService {
 
     // 행사 정보 이미지 업로드 (저장 픽셀 값 필요)
     @Transactional
-    public void registerEventInformImage(Long userId, MultipartFile eventInformImage) throws IOException{
-        Event event = eventRepository.findByUserId(userId);
+    public void registerEventInformImage(Long organizerId, MultipartFile eventInformImage) throws IOException{
+        Event event = eventRepository.findByOrganizerId(organizerId);
         try{
             if(!eventInformImage.isEmpty()){
                 // 이미지 리사이징
@@ -159,19 +163,27 @@ public class RegisterService {
                         resizedImageBytes
                 );
 
-                String storedFileName = s3Uploader.upload(multipartFile, "event_main");
+                String storedFileName = s3Uploader.upload(multipartFile, "organizer_profile");
                 organizer.setOrganizerProfileFileUrl(storedFileName);
+            }
+            else{
+                Gender organizerGender = organizer.getUser().getGender();
+                if(Gender.남성.equals(organizerGender)){
+                    organizer.setOrganizerProfileFileUrl("classpath:Male_Profile.png");
+                }
+                else{
+                    organizer.setOrganizerProfileFileUrl("classpath:Female_Profile.png");
+                }
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-
         organizerRepository.save(organizer);
     }
 
     // 주최자가 등록한 행사 목록 반환
     public Page<RegisterMainResponseDto> getEventList(Long organizerId, Pageable pageable) {
-        Page<Event> events = eventRepository.findByOrganizerId(organizerId, pageable);
+        Page<Event> events = eventRepository.findPageByOrganizerId(organizerId, pageable);
         return events.map(RegisterMainResponseDto::fromEntity);
     }
 

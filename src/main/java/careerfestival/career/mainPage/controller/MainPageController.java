@@ -7,11 +7,13 @@ import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.mainPage.dto.MainPageFestivalListResponseDto;
 import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.mainPage.service.MainPageService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +34,7 @@ public class MainPageController {
     private final MainPageService mainPageService;
 
     // 로그인 이전 화면 Authorization 이전
+    @Transactional
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> getEvents(){
         try{
@@ -52,11 +56,39 @@ public class MainPageController {
         }
     }
 
+//    @Transactional
 //    @GetMapping("")
 //    public ResponseEntity<Map<String, Object>> getEvents(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+//        boolean exists = mainPageService.findExistUserByCustomUserDetails(customUserDetails);
 //        try{
+//            if(exists){
+//                try{
+//                    // 1. 조회수에 의한 이벤트명
+//                    // 1. 조회수에 의한 이벤트명
+//                    List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
+//                    // 2. 조회수에 의한 정렬 리스트
+//                    List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
+//                    // 3. 랜덤에 의한 정렬 리스트
+//                    List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEventsHitsRandom();
 //
-//            // 1. 조회수에 의한 이벤트명
+//                    Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
+//                    mainPageResponseDtoObjectMap.put("eventRandom", mainPageResponseDtoRandom);
+//                    mainPageResponseDtoObjectMap.put("eventViews", mainPageResponseDtoViews);
+//                    mainPageResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
+//
+//                    return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
+//                } catch (IllegalArgumentException e){
+//                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//                }
+//            } else{
+//                String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                        .path("")
+//                        .toUriString();
+//
+//                HttpHeaders headers = new HttpHeaders();
+//                headers.add("Location", redirectUrl);
+//                return new ResponseEntity<>(headers, HttpStatus.FOUND);
+//            }
 //        } catch (IllegalArgumentException e){
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //        }
