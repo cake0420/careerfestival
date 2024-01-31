@@ -24,6 +24,7 @@ public class WishService {
     private final WishRepository wishRepository;
 
     public boolean CheckWish(Long userId, Long eventId, WishRequestDto wishRequestDto){
+
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Event> eventOptional = eventRepository.findById(eventId);
 

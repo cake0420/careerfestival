@@ -48,7 +48,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        String joinJwt = jwtUtil.createJwt(user.getId(), user.getEmail(), String.valueOf(user.getRole()), 600000L);
+        String joinJwt = jwtUtil.createJwt(user.getEmail(), String.valueOf(user.getRole()), 600000L);
 
         return joinJwt;
     }
