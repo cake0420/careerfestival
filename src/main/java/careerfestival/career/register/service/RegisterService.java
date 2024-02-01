@@ -46,10 +46,9 @@ public class RegisterService {
     private S3Uploader s3Uploader;
 
     // 행사 등록하기 1, 2단계 기능 구현
-    public void registerEvent(Long organizerId, RegisterEventDto registerEventDto) {
+    public void registerEvent(String email, RegisterEventDto registerEventDto) {
 
-        Organizer organizer = organizerRepository.findById(organizerId)
-                .orElseThrow(()-> new RuntimeException("Organizer not found with id" + organizerId));
+        Organizer organizer = organizerRepository.findByEmail(email);
         User user = userRepository.findById(organizer.getUser().getId())
                 .orElseThrow(()-> new RuntimeException("User not found with id" + organizer.getUser().getId()));
 
@@ -64,8 +63,8 @@ public class RegisterService {
 
     // 행사 대표이미지 업로드 (저장 픽셀 값 필요)
     @Transactional
-    public void registerEventMainImage(Long userId, MultipartFile eventMainImage) {
-        Event event = eventRepository.findEventByUserId(userId);
+    public void registerEventMainImage(Long eventId, MultipartFile eventMainImage) {
+        Event event = eventRepository.findByEventId(eventId);
         try {
             if (!eventMainImage.isEmpty()) {
                 // 이미지 리사이징
@@ -99,8 +98,8 @@ public class RegisterService {
 
     // 행사 정보 이미지 업로드 (저장 픽셀 값 필요)
     @Transactional
-    public void registerEventInformImage(Long organizerId, MultipartFile eventInformImage) throws IOException{
-        Event event = eventRepository.findByOrganizerId(organizerId);
+    public void registerEventInformImage(Long eventId, MultipartFile eventInformImage) throws IOException{
+        Event event = eventRepository.findByEventId(eventId);
         try{
             if(!eventInformImage.isEmpty()){
                 // 이미지 리사이징
@@ -128,9 +127,8 @@ public class RegisterService {
     }
 
     // 주최자 이름 등록
-    public void registerOrganizer(Long userId, RegisterOrganizerDto registerOrganizerDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id" + userId));
+    public void registerOrganizer(String email, RegisterOrganizerDto registerOrganizerDto) {
+        User user = userRepository.findByEmail(email);
         try {
             if (user.getRole() == Role.ROLE_ORGANIZER);
             Organizer organizer = registerOrganizerDto.toEntity();
@@ -144,8 +142,8 @@ public class RegisterService {
 
     // 주최자 프로필 등록
     @Transactional
-    public void registerOrganizerImage(Long userId, MultipartFile organizerProfileImage) throws IOException {
-        Organizer organizer = organizerRepository.findByUserId(userId);
+    public void registerOrganizerImage(String email, MultipartFile organizerProfileImage) throws IOException {
+        Organizer organizer = organizerRepository.findByEmail(email);
 
         try{
             if(!organizerProfileImage.isEmpty()){
@@ -196,6 +194,7 @@ public class RegisterService {
     // 주최자 이름 반환
     public String getOrganizerName(Long organizerId) {
         String organizerName = organizerRepository.findOrganizerNameByOrganizerId(organizerId);
+//        Organizer findOrganizer = organizerRepository.findByEmail(email);
         return organizerName;
     }
 
