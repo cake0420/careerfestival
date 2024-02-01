@@ -6,10 +6,14 @@ import careerfestival.career.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 public class Comment extends BaseEntity {
     @Id
@@ -19,14 +23,18 @@ public class Comment extends BaseEntity {
     @Column(length = 300, name = "comment_content")
     private String commentContent;
 
-    @Column(length = 300, name = "parent_content")
-    private String parentContent;
+    private Long orderNumber;
 
     @Column(columnDefinition = "INT")
-    private int depth; // 댓글 깊이
+    private int depth;
 
-    Boolean isCommentForComment; //대댓글 여부
-    Long orderNumber; //댓글의 순서
+    private boolean isParent;
+
+    @Column(name = "total_like_count", columnDefinition = "int default 0")
+    private Integer totalLikeCount;
+
+    @Column(length = 300, name = "name")
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
@@ -37,30 +45,48 @@ public class Comment extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Comment parentComment;
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parent;
 
-    public Comment(User user, Event event, Comment parentComment, String commentContent){
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private List<Comment> childComments;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLike> like = new ArrayList<>();
+
+    public Comment(User user, Event event, Comment parent, Long orderNumber, int depth, String name, Integer totalLikeCount){
         this.user = user;
         this.event = event;
-        this.commentContent = commentContent;
-        this.parentComment = parentComment;
-        if(parentComment == null){ // 부모 댓글이 없을 때
-            this.isCommentForComment = false; // 대댓글이 아니다
-            this.depth = 0 ; // 깊이는 0
-            this.orderNumber = getId() ; //순서는 새롭게 지정
-        }else{ // 부모 댓글이 존재할 때
-            this.isCommentForComment = true; // 대댓글이 맞다
-            this.depth = parentComment.depth+1; // 깊이는 부모의 깊이+1
-            this.orderNumber = parentComment.getOrderNumber(); // 순서는 부모의 순서를 그대로 물려받는다.
+        this.parent = parent;
+        this.orderNumber = orderNumber;
+        this.name = name;
+        if (parent == null){
+            this.isParent = false;
+            this.depth = 0;
         }
+        else {
+            this.isParent = true;
+            this.depth = parent.getDepth();
+
+        }
+        this.totalLikeCount = totalLikeCount;
+
     }
 
-//    public int getDepth() {
-//        return depth;
-//    }
-//
-//    public void setDepth(int depth) {
-//        this.depth = depth;
-//    }
+    public void  setIsParent(boolean isParent){
+        this.isParent = isParent;
+    }
+    public void setOrderNumber(Long orderNumber) {
+
+        this.orderNumber = orderNumber;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public void  setName(String name){
+        this.name = name;
+    }
+
 }

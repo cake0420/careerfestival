@@ -86,7 +86,7 @@ public class Event extends BaseEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Organizer organizer;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)

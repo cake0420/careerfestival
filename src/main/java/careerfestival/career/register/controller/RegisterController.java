@@ -52,7 +52,7 @@ public class RegisterController {
         registerService.registerEvent(organizerId,registerEventDto);
         return new ResponseEntity(HttpStatus.OK);
     }
-
+  
     // 행사 대표 이미지 업로드 등록 -> 추후에 어떤 주최자가 개설한 특정 행사에 대해서 사진을 업로드하는 로직을 추가
     // requestparam에 무엇을 넣을지는 인가 완료후에 구현하기
     @PostMapping(value = "/event/register/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

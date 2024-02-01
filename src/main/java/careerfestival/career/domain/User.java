@@ -7,7 +7,6 @@ import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
 import careerfestival.career.domain.mapping.*;
 import careerfestival.career.domain.mapping.Comment;
-import careerfestival.career.domain.mapping.Follow;
 import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.domain.mapping.Wish;
@@ -110,12 +109,16 @@ public class User extends BaseEntity {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Follow> follow = new ArrayList<>();
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
+    private List<Subscribe> subscribe = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CommentLike> commentLike = new ArrayList<>();
+  
     public void addRecord(Record record) {
         records.add(record);
     }

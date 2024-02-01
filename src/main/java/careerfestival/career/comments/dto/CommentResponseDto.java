@@ -1,10 +1,8 @@
 package careerfestival.career.comments.dto;
 
 import careerfestival.career.domain.mapping.Comment;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import careerfestival.career.repository.CommentLikeRepository;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
@@ -14,13 +12,17 @@ public class CommentResponseDto {
     private Long userId;
     private Long eventId;
     private String commentContent;
-    //    private String parentContent;
-//    private int depth;
-    public CommentResponseDto(Comment comment) {
-        this.userId = comment.getUser().getId();
-        this.eventId = comment.getEvent().getId();
+    private Long parent;
+    private String Name;
+    private Integer totalLikeCount;
+
+
+    public CommentResponseDto(Comment comment, CommentLikeRepository commentLikeRepository) {
+        this.userId = (comment.getUser() != null) ? comment.getUser().getId() : null;
+        this.eventId = (comment.getEvent() != null) ? comment.getEvent().getId() : null;
         this.commentContent = comment.getCommentContent();
-//        this.parentContent = (comment.getParentComment() != null) ? comment.getParentComment().getCommentContent() : null;
-//        this.depth = comment.getDepth();
+        this.parent = (comment.getParent() != null) ? comment.getParent().getId() : null;
+        this.Name = comment.getName();
+        this.totalLikeCount = commentLikeRepository.countByCommentId(comment.getId());
     }
 }

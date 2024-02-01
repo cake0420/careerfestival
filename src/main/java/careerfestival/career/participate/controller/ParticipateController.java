@@ -3,6 +3,7 @@ package careerfestival.career.participate.controller;
 import careerfestival.career.participate.dto.ParticipateRequestDto;
 import careerfestival.career.participate.dto.ParticipateResponseDto;
 import careerfestival.career.participate.service.ParticipateService;
+import careerfestival.career.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParticipateController {
     private final ParticipateService participateService;
-
-    @GetMapping("/event/1/2")
-    public String checkParticipate() {
-        // Assuming you have the authenticated user's email
-        return "2.html";
-    }
+    private final EventRepository eventRepository;
 
     @PostMapping("/event/{eventId}/{userId}/participate")
     public ResponseEntity<Long> addParticipate(
@@ -34,7 +30,7 @@ public class ParticipateController {
             String redirectUrl = "/event/" + userId + "/" + eventId;
 
             // ResponseEntity로 리다이렉트 응답 생성
-            return ResponseEntity.status(HttpStatus.FOUND)
+            return ResponseEntity.ok()
                     .header("Location", redirectUrl)
                     .body(participateId);
         } catch (IllegalArgumentException e) {
@@ -64,6 +60,32 @@ public class ParticipateController {
             // Log the exception or return a more specific error response
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/event/{eventId}/link")
+    public String getLink(
+            @PathVariable("eventId")  Long eventId){
+        try {
+            String link = participateService.getLink(eventId);
+            if (link != null) {
+                // 리다이렉트 구현
+                String redirectUrl = link;
+                return ResponseEntity.ok()
+                        .header("Location", redirectUrl)
+                        .body(link).toString();
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .header("Location", "/event/" + eventId)
+                        .body("Link is Null").toString();
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).toString();
+        } catch (Exception e) {
+            // 로그 남기기
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).toString();
         }
     }
 }

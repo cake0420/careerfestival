@@ -8,10 +8,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@RequiredArgsConstructor
+
 public class CustomUserDetails implements UserDetails {
 
     private final User user;
+
+    public CustomUserDetails(User user) {
+        this.user = user;
+    }
+
+    // Add a method to get the user ID
+    public Long getId() {
+        return user.getId();
+    }
+
 
     //role 반환
     @Override

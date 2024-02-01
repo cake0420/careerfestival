@@ -24,6 +24,7 @@ public class WishService {
     private final WishRepository wishRepository;
 
     public boolean CheckWish(Long userId, Long eventId, WishRequestDto wishRequestDto){
+
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Event> eventOptional = eventRepository.findById(eventId);
 
@@ -54,7 +55,7 @@ public class WishService {
             User user = userOptional.get();
             Event event = eventOptional.get();
 
-            Optional<Wish> wish = wishRepository.findByUserIdAndEventId(user.getId(), event.getId());
+            List<Wish> wish = wishRepository.findByUser_IdAndEvent_Id(user.getId(), event.getId());
 
             return wish.stream()
                     .map(WishResponseDto::new)
