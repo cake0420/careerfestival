@@ -42,7 +42,7 @@ public class MyPageController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", redirectUrl);
 
-        return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 }
 

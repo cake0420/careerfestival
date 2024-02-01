@@ -31,10 +31,9 @@ public class RecordService {
 
     // 게시판 등록
     @Transactional
-    public void recordLectureSeminar(Long userId, RecordRequestDto recordRequestDto) {
+    public void recordLectureSeminar(String email, RecordRequestDto recordRequestDto) {
         // 이미지 첨부 및 글자 수 제한 적용 필요
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        User user = userRepository.findByEmail(email);
 
         Record record = recordRequestDto.toEntity();
         record.setUser(user);
@@ -53,9 +52,8 @@ public class RecordService {
         recordRepository.save(record);
     }
     @Transactional
-    public void recordConference(Long userId, RecordRequestDto recordRequestDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+    public void recordConference(String email, RecordRequestDto recordRequestDto) {
+        User user = userRepository.findByEmail(email);
 
         Record record = recordRequestDto.toEntity();
         record.setUser(user);
