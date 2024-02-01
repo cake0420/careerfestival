@@ -1,5 +1,6 @@
 package careerfestival.career.record.controller;
 
+import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.record.dto.RecordRequestDto;
 import careerfestival.career.record.service.RecordService;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -25,11 +27,11 @@ public class RecordController {
     private final RecordService recordService;
 
     // 사용자가 기록장(강연/세미나) 게시하는 경우 - 처음 게시하는 작업이니까 userId로 접근하기
-    @PostMapping("/lecture-seminar/{userId}")
-    public ResponseEntity<Void> recordLectureSeminar(@PathVariable("userId") Long userId,
+    @PostMapping("/lecture-seminar")
+    public ResponseEntity<Void> recordLectureSeminar(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                      @RequestBody RecordRequestDto recordRequestDto) {
         try {
-            recordService.recordLectureSeminar(userId, recordRequestDto);
+            recordService.recordLectureSeminar(customUserDetails.getUsername(), recordRequestDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -37,11 +39,11 @@ public class RecordController {
     }
 
     // conference 기록 추가
-    @PostMapping("/conference/{userId}")
-    public ResponseEntity<Void> recordConference(@PathVariable("userId") Long userId,
+    @PostMapping("/conference")
+    public ResponseEntity<Void> recordConference(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  @RequestBody @Valid RecordRequestDto request){
         try {
-            recordService.recordConference(userId,request);
+            recordService.recordConference(customUserDetails.getUsername(), request);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
