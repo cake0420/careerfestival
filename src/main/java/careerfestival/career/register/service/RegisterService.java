@@ -65,7 +65,7 @@ public class RegisterService {
     // 행사 대표이미지 업로드 (저장 픽셀 값 필요)
     @Transactional
     public void registerEventMainImage(Long userId, MultipartFile eventMainImage) {
-        Event event = eventRepository.findByUserId(userId);
+        Event event = eventRepository.findEventByUserId(userId);
         try {
             if (!eventMainImage.isEmpty()) {
                 // 이미지 리사이징
