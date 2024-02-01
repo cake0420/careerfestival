@@ -72,9 +72,9 @@ public class RecordService {
         recordRepository.save(record);
     }
     @Transactional
-    public void recordExhibition(Long userId, RecordRequestDto recordRequestDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+    public void recordExhibition(String email, RecordRequestDto recordRequestDto) {
+        User user = userRepository.findByEmail(email);
+
         Record record = recordRequestDto.toEntity();
         record.setUser(user);
 
@@ -92,9 +92,8 @@ public class RecordService {
         recordRepository.save(record);
     }
     @Transactional
-    public void recordEtc(Long userId, RecordRequestDto recordRequestDto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->new RuntimeException("User not found with id: " + userId));
+    public void recordEtc(String email, RecordRequestDto recordRequestDto) {
+        User user = userRepository.findByEmail(email);
 
         Record record = recordRequestDto.toEntity();
         record.setUser(user);

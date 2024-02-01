@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -50,11 +51,11 @@ public class RecordController {
         }
     }
 
-    @PostMapping("/exhibition/{userId}")
-    public ResponseEntity<Void> recordExhibition(@PathVariable("userId") Long userId,
+    @PostMapping("/exhibition")
+    public ResponseEntity<Void> recordExhibition(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                  @RequestBody @Valid RecordRequestDto request){
         try {
-            recordService.recordExhibition(userId,request);
+            recordService.recordExhibition(customUserDetails.getUsername(),request);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -62,11 +63,11 @@ public class RecordController {
     }
 
 
-    @PostMapping("/etc/{userId}")
-    public ResponseEntity<Void> recordEtc(@PathVariable("userId") Long userId,
+    @PostMapping("/etc")
+    public ResponseEntity<Void> recordEtc(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                           @RequestBody RecordRequestDto recordRequestDto) {
         try {
-            recordService.recordEtc(userId, recordRequestDto);
+            recordService.recordEtc(customUserDetails.getUsername(), recordRequestDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
