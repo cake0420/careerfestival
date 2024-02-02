@@ -3,7 +3,6 @@ package careerfestival.career.repository;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.mapping.Region;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,6 +39,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                              Pageable pageable);
     Page<Event> findPageByOrganizerId(Long organizerId, Pageable pageable);
     Event findByOrganizerId(Long organizerId);
-    @Query("SELECT COUNT(e) FROM Event e WHERE e.organizer.id = ?1")
-    int countEventsByOrganizerId(Long organizerId);
+
+    void getCountEventsByOrganizerId(Long organizerId);
 }

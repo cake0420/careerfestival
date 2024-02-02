@@ -2,7 +2,6 @@ package careerfestival.career.myPage.dto;
 
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.mapping.Region;
 import lombok.*;
 
 @Getter

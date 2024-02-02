@@ -102,8 +102,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Organizer organizer;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Organizer> organizer = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
