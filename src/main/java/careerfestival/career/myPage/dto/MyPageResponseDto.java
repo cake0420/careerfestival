@@ -1,14 +1,9 @@
 package careerfestival.career.myPage.dto;
 
-import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.enums.Role;
-import careerfestival.career.domain.mapping.Region;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 

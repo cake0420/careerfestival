@@ -120,6 +120,7 @@ public class RegisterService {
 
                 // 이벤트에 이미지 URL 설정하고 저장
                 event.setEventMainFileUrl(storedFileName);
+                organizer.updateCountEvent();
                 eventRepository.save(event);
             }
         } catch (Exception e) {
@@ -149,9 +150,9 @@ public class RegisterService {
     }
 
     // 주최자의 등록행사 개수 counting
-    public int countRegisterEvent(Long organizerId) {
-        int countRegisterEvent = eventRepository.countEventsByOrganizerId(organizerId);
-        return countRegisterEvent;
+    public int getCountRegisterEvent(Long organizerId) {
+        Organizer organizer = organizerRepository.findByUserId(organizerId);
+        return organizer.getCountEvent();
     }
 
     // 주최자 이름 반환

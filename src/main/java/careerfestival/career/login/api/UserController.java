@@ -24,7 +24,7 @@ public class UserController {
     private final JWTUtil jwtUtil;
 
     // 회원가입 1, 2 (이름, 이메일, 비밀번호, 비밀번호 확인, role)
-    @PostMapping("/join")
+    @PostMapping("/signup")
     @Transactional
     public ResponseEntity<Void> signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) {
         User user = userService.signUp(userSignUpRequestDto);
@@ -44,17 +44,9 @@ public class UserController {
     }
 
 
-    //화면 테스트용
-    @GetMapping("/join/detail")
-    @ResponseBody
-    public String detail() {
-        return "join detail";
-    }
-
-
     //회원가입3
     @Transactional
-    @PatchMapping("/join/detail")
+    @PatchMapping("/signup/detail")
     public ResponseEntity<Void> updateDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
         try {
             userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
@@ -66,7 +58,7 @@ public class UserController {
 
             HttpHeaders headers = new HttpHeaders();
             headers.add("Location", redirectUrl);
-            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+            return new ResponseEntity<>(headers, HttpStatus.OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
