@@ -12,12 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,62 +27,51 @@ public class RegisterController {
 
     // 주최자 프로필 형성 (행사 등록하기 1단계)
     @PostMapping("/event/organizer")
-    public ResponseEntity registerOrganizerName(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody RegisterOrganizerDto registerOrganizerDto) {
-        registerService.registerOrganizer(customUserDetails.getUsername(), registerOrganizerDto);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    // 주최자 프로필 이미지 업로드 (행사 등록하기 2단계)
-    @PostMapping(value = "/event/organizer", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity registerOrganizerImage(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                 HttpServletRequest request,
-                                                 @RequestParam(value = "organizerProfileImage") MultipartFile organizerProfileImage){
+    public ResponseEntity<Void>  registerOrganizer(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                HttpServletRequest request,
+                                                @RequestPart("organizerProfileImage") MultipartFile organizerProfileImage,
+                                                @RequestPart("registerOrganizerDto") RegisterOrganizerDto registerOrganizerDto) {
         try{
-            registerService.registerOrganizerImage(customUserDetails.getUsername(), organizerProfileImage);
-        } catch (IOException e){
-            e.printStackTrace();
+            registerService.registerOrganizer(customUserDetails.getUsername(), organizerProfileImage, registerOrganizerDto);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     // 행사 등록하기 1, 행사 등록하기 2 통합
     @PostMapping("/event/register")
-    public ResponseEntity registerEvent(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+    public ResponseEntity<Void> registerEvent(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                        HttpServletRequest request,
+                                        @RequestPart("eventMainImage") MultipartFile eventMainImage,
+                                        @RequestPart("eventInformImage") MultipartFile eventInformImage,
                                         @RequestBody RegisterEventDto registerEventDto) {
-        registerService.registerEvent(customUserDetails.getUsername(),registerEventDto);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-  
-    // 행사 대표 이미지 업로드 등록 -> 추후에 어떤 주최자가 개설한 특정 행사에 대해서 사진을 업로드하는 로직을 추가
-    // requestparam에 무엇을 넣을지는 인가 완료후에 구현하기
-    @PostMapping(value = "/event/register/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity regiserEventMainImage(@PathVariable("eventId") Long eventId,
-                                            HttpServletRequest request,
-                                            @RequestParam(value = "eventMainImage") MultipartFile eventMainImage){
-        registerService.registerEventMainImage(eventId, eventMainImage);
-        return new ResponseEntity(HttpStatus.OK);
+        try{
+            registerService.registerEvent(customUserDetails.getUsername(), eventMainImage, eventInformImage, registerEventDto);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    // 행사 정보 이미지 업로드 등록 -> 행사 대표 이미지 업로드 등로과 같음
-    // requestparam에 무엇을 넣을지는 인가 완료후에 구현하기
-    @PostMapping(value = "/event/register/{organizerId}/{eventId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity regiserEventInformImage(@PathVariable("organizerId") Long organizerId,
-                                                  HttpServletRequest request,
-                                                  @RequestParam(value = "eventInformImage") MultipartFile eventInformImage){
-        try{
-            registerService.registerEventInformImage(organizerId, eventInformImage);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return new ResponseEntity(HttpStatus.OK);
-    }
+
+
+
+
+
+
+
 
     // 주최자가 자신의 프로필을 확인할 수 있음 (행사 등록하기 5단계) 바로
     @GetMapping("profile/register/{organizerId}")
     public ResponseEntity<Map<String, Object>> getRegisterByOrganizerId(
-            @PathVariable("organizerId") Long organizerId,
+
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+
             @PageableDefault(size = 4, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         try{
+            Long organizerId = registerService.getOrganizerId(customUserDetails.getUsername());
+
             String organizerName = registerService.getOrganizerName(organizerId);
             int CountRegisterEvent = registerService.countRegisterEvent(organizerId);
             Page<RegisterMainResponseDto> registerMainResponseDtos

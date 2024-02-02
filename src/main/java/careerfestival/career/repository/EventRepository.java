@@ -27,12 +27,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByUserId(Long userId);
     List<Event> findAllById(Long eventId);
 
-    //이벤트Id로 해당 이벤트 찾기
-    Event findByEventId(Long eventId);
-
     List<Event> findAllByUserId(Long userId);
 
-    Event findEventByEmail(String email);
     @Query("SELECT e FROM Event e ORDER BY e.hits DESC")
     List<Event> findAllByOrderByHitsDesc();
     @Query(value = "SELECT * FROM Event ORDER BY RAND() LIMIT ?1", nativeQuery = true)
