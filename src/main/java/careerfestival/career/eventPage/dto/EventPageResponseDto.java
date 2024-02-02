@@ -22,10 +22,6 @@ public class EventPageResponseDto {
     private LocalDateTime recruitmentEnd;
     private String eventCost;
 
-    private String commentContent;
-    private Long orderNumber;
-    private int depth;
-    private boolean isParent;
     public static EventPageResponseDto fromEntity(Event event){
         return EventPageResponseDto.builder()
                 .eventId(event.getId())

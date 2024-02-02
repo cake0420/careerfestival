@@ -21,6 +21,10 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	springVersion = '6.1.2' // springVersion 변수 정의
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -47,6 +51,11 @@ dependencies {
 
 	/* 이미지 리사이징을 위한 라이브러리 */
 	implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+
+	implementation "org.springframework:spring-test:${springVersion}"
+
+	implementation "org.springframework:spring-core:${springVersion}"
+
 }
 
 tasks.named('test') {
