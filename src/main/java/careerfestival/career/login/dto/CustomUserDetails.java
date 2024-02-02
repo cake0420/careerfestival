@@ -1,7 +1,6 @@
 package careerfestival.career.login.dto;
 
 import careerfestival.career.domain.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
