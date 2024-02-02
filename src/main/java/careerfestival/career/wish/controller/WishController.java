@@ -53,11 +53,11 @@ public class WishController {
             @PathVariable("eventId") Long eventId) {
 
         String username = jwtUtil.getUsername(token);
-        Long userId = userRepository.findByEmail(username).getId();
+        String email = userRepository.findByEmail(username).getEmail();
 
 
         try {
-            List<WishResponseDto> wishlist = wishService.getAllWishByEvent(userId, eventId);
+            List<WishResponseDto> wishlist = wishService.getAllWishByEvent(email, eventId);
             return new ResponseEntity<>(wishlist, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

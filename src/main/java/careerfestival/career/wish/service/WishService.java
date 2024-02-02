@@ -48,11 +48,11 @@ public class WishService {
 
     }
 
-    public List<WishResponseDto> getAllWishByEvent(Long userId, Long eventId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public List<WishResponseDto> getAllWishByEvent(String email, Long eventId) {
+        User userOptional = userRepository.findByEmail(email);
         Optional<Event> eventOptional = eventRepository.findById(eventId);
-        if (userOptional.isPresent() && eventOptional.isPresent()) {
-            User user = userOptional.get();
+        if (userOptional != null && eventOptional.isPresent()) {
+            User user = userOptional;
             Event event = eventOptional.get();
 
             List<Wish> wish = wishRepository.findByUser_IdAndEvent_Id(user.getId(), event.getId());

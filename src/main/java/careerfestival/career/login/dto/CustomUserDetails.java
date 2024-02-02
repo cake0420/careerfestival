@@ -1,7 +1,6 @@
 package careerfestival.career.login.dto;
 
 import careerfestival.career.domain.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,12 +15,6 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(User user) {
         this.user = user;
     }
-
-    // Add a method to get the user ID
-    public Long getId() {
-        return user.getId();
-    }
-
 
     //role 반환
     @Override
