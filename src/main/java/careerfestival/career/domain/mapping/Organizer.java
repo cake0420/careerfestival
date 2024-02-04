@@ -25,11 +25,18 @@ public class Organizer {
     @Column(name = "organizer_profile_file_url")
     private String organizerProfileFileUrl;
 
+    @Column(columnDefinition = "INT DEFAULT 0", name = "count_event")
+    private int countEvent;
+
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
     private List<Event> event = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateCountEvent() {
+        this.countEvent += 1;
+    }
 }
 

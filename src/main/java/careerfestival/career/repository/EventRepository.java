@@ -1,9 +1,10 @@
 package careerfestival.career.repository;
 
 import careerfestival.career.domain.Event;
+import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.mapping.Region;
+import careerfestival.career.domain.mapping.Participate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,8 +26,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllById(Long eventId);
 
 
-    @Query("SELECT e FROM Event e ORDER BY e.hits DESC")
-    List<Event> findAllByOrderByHitsDesc();
+    @Query(value = "SELECT * FROM event ORDER BY hits DESC LIMIT ?1", nativeQuery = true)
+    List<Event> findAllByOrderByHitsDesc(int limit);
     @Query(value = "SELECT * FROM Event ORDER BY RAND() LIMIT ?1", nativeQuery = true)
     List<Event> findRandomEvents(int limit);
     @Query(value = "SELECT e FROM Event e WHERE e.category IN (?1) AND e.keywordName IN (?2) AND e.region.id = ?3")
@@ -34,8 +35,14 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                              List<KeywordName> keywordName,
                                              Long regionId,
                                              Pageable pageable);
+
+    @Query("SELECT e FROM Event e WHERE e.region.id = :regionId ORDER BY e.hits DESC")
+    List<Event> findRegionEvents(Long regionId);
+
     Page<Event> findPageByOrganizerId(Long organizerId, Pageable pageable);
     Event findByOrganizerId(Long organizerId);
-    @Query("SELECT COUNT(e) FROM Event e WHERE e.organizer.id = ?1")
-    int countEventsByOrganizerId(Long organizerId);
+
+    //마이페이지 주최자 용
+    @Query(value = "SELECT e FROM Event e WHERE e.user IN (?1)")
+    Page<Event> findAllByUserOrderByCreatedAtDesc(User user, Pageable pageable);
 }

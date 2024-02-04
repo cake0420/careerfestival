@@ -45,7 +45,7 @@ public class RegisterController {
                                         HttpServletRequest request,
                                         @RequestPart("eventMainImage") MultipartFile eventMainImage,
                                         @RequestPart("eventInformImage") MultipartFile eventInformImage,
-                                        @RequestBody RegisterEventDto registerEventDto) {
+                                        @RequestPart("registerEventDto") RegisterEventDto registerEventDto) {
         try{
             registerService.registerEvent(customUserDetails.getUsername(), eventMainImage, eventInformImage, registerEventDto);
             return new ResponseEntity(HttpStatus.OK);
@@ -62,18 +62,16 @@ public class RegisterController {
 
 
 
+
     // 주최자가 자신의 프로필을 확인할 수 있음 (행사 등록하기 5단계) 바로
-    @GetMapping("profile/register/{organizerId}")
+    @GetMapping("profile/register")
     public ResponseEntity<Map<String, Object>> getRegisterByOrganizerId(
-
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-
             @PageableDefault(size = 4, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         try{
             Long organizerId = registerService.getOrganizerId(customUserDetails.getUsername());
-
             String organizerName = registerService.getOrganizerName(organizerId);
-            int CountRegisterEvent = registerService.countRegisterEvent(organizerId);
+            int getEventCount = registerService.getCountRegisterEvent(organizerId);
             Page<RegisterMainResponseDto> registerMainResponseDtos
                     = registerService.getEventList(organizerId, pageable);
 
@@ -85,7 +83,7 @@ public class RegisterController {
             registerMainResponseDtoObjectMap.put("organizerName", organizerName);
             // 구독자 관련 코드 추가 작성 필요
             registerMainResponseDtoObjectMap.put("festivalList", registerMainResponseDtos);
-            registerMainResponseDtoObjectMap.put("festivalCount", CountRegisterEvent);
+            registerMainResponseDtoObjectMap.put("festivalCount", getEventCount);
 
             return ResponseEntity.ok().body(registerMainResponseDtoObjectMap);
         } catch (IllegalArgumentException e){

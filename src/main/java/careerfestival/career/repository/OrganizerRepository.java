@@ -1,5 +1,6 @@
 package careerfestival.career.repository;
 
+import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.Organizer;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface OrganizerRepository extends JpaRepository<Organizer, Long> {
     Organizer findByUserId(Long userId);
@@ -19,4 +22,6 @@ public interface OrganizerRepository extends JpaRepository<Organizer, Long> {
 
     @Query("SELECT o.organizerName FROM Organizer o WHERE o.id = :organizerId")
     String findOrganizerNameByOrganizerId(@Param("organizerId") Long organizerId);
+
+    List<Organizer> findAllByUser(User user);
 }

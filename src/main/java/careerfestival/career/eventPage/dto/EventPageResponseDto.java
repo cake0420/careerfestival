@@ -1,7 +1,6 @@
 package careerfestival.career.eventPage.dto;
 
 import careerfestival.career.domain.Event;
-import careerfestival.career.domain.mapping.Comment;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +30,4 @@ public class EventPageResponseDto {
                 .eventCost(event.getEventCost())
                 .build();
     }
-
-
-
 }
