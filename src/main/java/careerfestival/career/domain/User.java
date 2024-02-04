@@ -52,20 +52,13 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "INT")
     private int age;
 
-    // 관심지역
-    private String addressLine;
-
-    // 소속(회사/기관/학교명)
+    // 소속
     @Column(length = 20, name = "company")
     private String company;
 
     // 부서 및 학과
     @Column(length = 20, name = "department")
     private String department;
-
-    // 직급
-    @Column(length = 20, name = "position")
-    private String position;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
@@ -78,7 +71,7 @@ public class User extends BaseEntity {
 
     // status와 inactivedate는 회원 탈퇴, 게시글 삭제 시 필요 기능
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
+    @Column(name = "user_status")
     private UserStatus userStatus;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -109,12 +102,14 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CommentLike> commentLike = new ArrayList<>();
   
     public void addRecord(Record record) {
         records.add(record);
+    }
+    public void setUserStatus() {
+        this.userStatus = UserStatus.ACTIVE;
     }
 
     //--------------------------------update--------------------------------
@@ -154,10 +149,6 @@ public class User extends BaseEntity {
         if(department==null) return;
         this.department = department;
     }
-    public void updatePosition(String position) {
-        if(position==null) return;
-        this.position = position;
-    }
 
     public void updateKeywordName(KeywordName[] keywordName) {
         if(keywordName==null) return;
@@ -169,15 +160,14 @@ public class User extends BaseEntity {
         this.keywordName.addAll(List.of(keywordName));
     }
 
-    public void updateAddressLine(String addressLine) {
-        if(addressLine==null) return;
-
-        this.addressLine = addressLine;
-    }
-
     public void updateUserProfileFileUrl(String userProfilefileUrl){
         if(userProfilefileUrl==null) return;
         this.userProfilefileUrl = userProfilefileUrl;
+    }
+
+    public void updateRegion(Region region){
+        if(region == null) return;
+        this.region = region;
     }
 
     @Transactional
@@ -188,7 +178,6 @@ public class User extends BaseEntity {
         this.updatePhoneNumber(updateMypageResponseDto.getPhoneNumber());
         this.updateCompany(updateMypageResponseDto.getCompany());
         this.updateDepartment(updateMypageResponseDto.getDepartment());
-        this.updatePosition(updateMypageResponseDto.getPosition());
         this.updateKeywordName(updateMypageResponseDto.getKeywordName());
         this.updateUserProfileFileUrl(updateMypageResponseDto.getUserProfileFileUrl());
     }

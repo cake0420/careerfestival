@@ -28,8 +28,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findAllByUserId(Long userId);
 
-    @Query("SELECT e FROM Event e ORDER BY e.hits DESC")
-    List<Event> findAllByOrderByHitsDesc();
+    @Query(value = "SELECT * FROM event ORDER BY hits DESC LIMIT ?1", nativeQuery = true)
+    List<Event> findAllByOrderByHitsDesc(int limit);
     @Query(value = "SELECT * FROM Event ORDER BY RAND() LIMIT ?1", nativeQuery = true)
     List<Event> findRandomEvents(int limit);
     @Query(value = "SELECT e FROM Event e WHERE e.category IN (?1) AND e.keywordName IN (?2) AND e.region.id = ?3")
@@ -37,8 +37,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                              List<KeywordName> keywordName,
                                              Long regionId,
                                              Pageable pageable);
+
+    @Query("SELECT e FROM Event e WHERE e.region.id = :regionId ORDER BY e.hits DESC")
+    List<Event> findRegionEvents(Long regionId);
+
     Page<Event> findPageByOrganizerId(Long organizerId, Pageable pageable);
     Event findByOrganizerId(Long organizerId);
-
-    void getCountEventsByOrganizerId(Long organizerId);
 }
