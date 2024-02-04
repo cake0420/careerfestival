@@ -22,7 +22,7 @@ public class UpdateMypageResponseDto {
 
     private String phoneNumber;
 
-    //소속, 부서/학과
+    //소속, 부서/학과, 직급
     private String company;
     private String department;
 

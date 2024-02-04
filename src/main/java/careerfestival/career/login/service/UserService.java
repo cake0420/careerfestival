@@ -6,7 +6,7 @@ import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
-import careerfestival.career.myPage.dto.MyPageResponseDto;
+import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
@@ -71,18 +71,20 @@ public class UserService {
     }
 
     @Transactional
-    public MyPageResponseDto fillMyPage(User user) {
-        MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
-        myPageResponseDto.setName(user.getName());
-        myPageResponseDto.setEmail(user.getEmail());
-        myPageResponseDto.setAge(user.getAge());
-        myPageResponseDto.setGender(user.getGender());
-        myPageResponseDto.setPhoneNumber(user.getPhoneNumber());
-        myPageResponseDto.setCompany(user.getCompany());
-        myPageResponseDto.setDepartment(user.getDepartment());
-        List<KeywordName> keyword = user.getKeywordName();
-        myPageResponseDto.setKeywordName(keyword);
-        return myPageResponseDto;
+    public MyPageUserInfoResponseDto fillMyPage(User user) {
+        MyPageUserInfoResponseDto myPageUserInfoResponseDto = MyPageUserInfoResponseDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .age(user.getAge())
+                .gender(user.getGender())
+                .phoneNumber(user.getPhoneNumber())
+                .company(user.getCompany())
+                .department(user.getDepartment())
+                .addressLine(user.getRegion().getAddressLine())
+                .keywordNameList(user.getKeywordName())
+                .userProfilefileUrl(user.getUserProfilefileUrl())
+                .build();
+        return myPageUserInfoResponseDto;
     }
 
 }
