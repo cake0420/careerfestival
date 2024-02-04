@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MyPageResponseDto {
+public class MyPageUserInfoResponseDto {
 
     private String name;
 
