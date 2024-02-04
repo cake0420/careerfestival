@@ -31,55 +31,101 @@ import java.util.Map;
 public class MainPageController {
     private final MainPageService mainPageService;
 
-    // 로그인 이전 화면 Authorization 이전
+    // 로그인 이후 리다이렉트 메인화면
     @Transactional
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> mainPage(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam(value = "region") Region region){
         if (customUserDetails != null){         // 로그인된 사용자일 때
-            try{
-                // 1. 사용자 이름
-                String userName = mainPageService.getUserName(customUserDetails.getUsername());
-                // 2. 조회수에 의한 이벤트명
-                List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
-                // 3. 조회수에 의한 정렬 리스트
-                List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
-                // 4. 랜덤에 의한 정렬 리스트
-                List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEventsHitsRandom();
+            if(region != null){
+                try{
+                    // 1. 사용자 이름
+                    String userName = mainPageService.getUserName(customUserDetails.getUsername());
+                    // 2. 조회수에 의한 이벤트명
+                    List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
+                    // 3. 조회수에 의한 정렬 리스트
+                    List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
+                    // 4. 지역 선택에 의한 행사 반환
+                    List<MainPageResponseDto> mainPageResponseDtoRegions = mainPageService.getEventsRegion(region);
 
+                    Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
 
-                Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
-                mainPageResponseDtoObjectMap.put("userName", userName);
-                mainPageResponseDtoObjectMap.put("eventRandom", mainPageResponseDtoRandom);
-                mainPageResponseDtoObjectMap.put("eventViews", mainPageResponseDtoViews);
-                mainPageResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
+                    mainPageResponseDtoObjectMap.put("userName", userName);
+                    mainPageResponseDtoObjectMap.put("eventRegions", mainPageResponseDtoRegions);
+                    mainPageResponseDtoObjectMap.put("eventViews", mainPageResponseDtoViews);
+                    mainPageResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
 
-                return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
-            } catch (IllegalArgumentException e){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
+                } catch (IllegalArgumentException e){
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            }
+            else{
+                try{
+                    // 1. 사용자 이름
+                    String userName = mainPageService.getUserName(customUserDetails.getUsername());
+                    // 2. 조회수에 의한 이벤트명
+                    List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
+                    // 3. 조회수에 의한 정렬 리스트
+                    List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
+                    // 4. 랜덤에 의한 정렬 리스트
+                    List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEventsHitsRandom();
+
+                    Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
+                    mainPageResponseDtoObjectMap.put("userName", userName);
+                    mainPageResponseDtoObjectMap.put("eventRandom", mainPageResponseDtoRandom);
+                    mainPageResponseDtoObjectMap.put("eventViews", mainPageResponseDtoViews);
+                    mainPageResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
+
+                    return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
+                } catch (IllegalArgumentException e){
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
             }
         } else {                                // 로그인되지 않은 사용자일 때
-            try{
-                // 1. 조회수에 의한 이벤트명
-                List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
-                // 2. 조회수에 의한 정렬 리스트
-                List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
-                // 3. 랜덤에 의한 정렬 리스트
-                List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEventsHitsRandom();
+            if(region != null){
+                try{
+                    // 1. 조회수에 의한 이벤트명
+                    List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
+                    // 2. 조회수에 의한 정렬 리스트
+                    List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
+                    // 3. 지역 선택에 의한 행사 반환
+                    List<MainPageResponseDto> mainPageResponseDtoRegions = mainPageService.getEventsRegion(region);
 
 
-                Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
-                mainPageResponseDtoObjectMap.put("eventRandom", mainPageResponseDtoRandom);
-                mainPageResponseDtoObjectMap.put("eventViews", mainPageResponseDtoViews);
-                mainPageResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
+                    Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
+                    mainPageResponseDtoObjectMap.put("eventRegions", mainPageResponseDtoRegions);
+                    mainPageResponseDtoObjectMap.put("eventViews", mainPageResponseDtoViews);
+                    mainPageResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
 
-                return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
-            } catch (IllegalArgumentException e){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
+                } catch (IllegalArgumentException e){
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            }
+            else{
+                try{
+                    // 1. 조회수에 의한 이벤트명
+                    List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
+                    // 2. 조회수에 의한 정렬 리스트
+                    List<MainPageResponseDto> mainPageResponseDtoViews = mainPageService.getEventsHitsDesc();
+                    // 3. 랜덤에 의한 정렬 리스트
+                    List<MainPageResponseDto> mainPageResponseDtoRandom = mainPageService.getEventsHitsRandom();
+
+                    Map<String, Object> mainPageResponseDtoObjectMap = new HashMap<>();
+                    mainPageResponseDtoObjectMap.put("eventRandom", mainPageResponseDtoRandom);
+                    mainPageResponseDtoObjectMap.put("eventViews", mainPageResponseDtoViews);
+                    mainPageResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
+
+                    return ResponseEntity.ok().body(mainPageResponseDtoObjectMap);
+                } catch (IllegalArgumentException e){
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
             }
         }
-
     }
+
 
     // 메인페이지에서 행사 목록 클릭 시 보여지는 화면
     // Category와 keywordName에 의해서 필터링되고 페이징 적용
