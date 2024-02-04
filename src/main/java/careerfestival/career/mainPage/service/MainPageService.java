@@ -74,4 +74,14 @@ public class MainPageService {
     public boolean findExistUserByCustomUserDetails(CustomUserDetails customUserDetails) {
         return userRepository.existsByEmail(customUserDetails.getUsername());
     }
+
+    public String getUserName(String email) {
+        User user = userRepository.findByEmail(email);
+        Organizer organizer = organizerRepository.findByUserId(user.getId());
+        if(organizer != null){
+            return organizer.getOrganizerName();
+        } else{
+            return user.getName();
+        }
+    }
 }

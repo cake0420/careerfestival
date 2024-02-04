@@ -45,7 +45,7 @@ public class RegisterController {
                                         HttpServletRequest request,
                                         @RequestPart("eventMainImage") MultipartFile eventMainImage,
                                         @RequestPart("eventInformImage") MultipartFile eventInformImage,
-                                        @RequestBody RegisterEventDto registerEventDto) {
+                                        @RequestPart("registerEventDto") RegisterEventDto registerEventDto) {
         try{
             registerService.registerEvent(customUserDetails.getUsername(), eventMainImage, eventInformImage, registerEventDto);
             return new ResponseEntity(HttpStatus.OK);
@@ -53,6 +53,7 @@ public class RegisterController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
 

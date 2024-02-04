@@ -1,6 +1,7 @@
 package careerfestival.career.login.service;
 
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.myPage.dto.MyPageResponseDto;
@@ -53,9 +54,14 @@ public class UserService {
         if(city == null || addressLine == null){
             return;
         }
-//        if (regionRepository.findRegionByCityAndAddressLine(city, addressLine) == null) {
-//            return;
-//        }
+        Gender gender = findUser.getGender();
+
+        if(Gender.남성.equals(gender)){
+            findUser.updateUserProfileFileUrl("classpath:Male_Profile.png");
+        } else{
+            findUser.updateUserProfileFileUrl("classpath:Female_Profile.png");
+        }
+
         findUser.updateAddressLine(addressLine);
     }
 

@@ -6,10 +6,7 @@ import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.enums.UserStatus;
 import careerfestival.career.domain.mapping.*;
-import careerfestival.career.domain.mapping.Comment;
-import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
-import careerfestival.career.domain.mapping.Wish;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -74,9 +71,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private List<KeywordName> keywordName = new ArrayList<>();
 
-    /*
-    ----------위에는 회원가입에 직접 사용되는 값들----------------
-     */
     @Column(name = "user_profile_file_url")
     private String userProfilefileUrl;
 
@@ -181,6 +175,11 @@ public class User extends BaseEntity {
         this.addressLine = addressLine;
     }
 
+    public void updateUserProfileFileUrl(String userProfilefileUrl){
+        if(userProfilefileUrl==null) return;
+        this.userProfilefileUrl = userProfilefileUrl;
+    }
+
     @Transactional
     public void update(UpdateMypageResponseDto updateMypageResponseDto) {
         this.updateName(updateMypageResponseDto.getName());
@@ -191,6 +190,7 @@ public class User extends BaseEntity {
         this.updateDepartment(updateMypageResponseDto.getDepartment());
         this.updatePosition(updateMypageResponseDto.getPosition());
         this.updateKeywordName(updateMypageResponseDto.getKeywordName());
+        this.updateUserProfileFileUrl(updateMypageResponseDto.getUserProfileFileUrl());
     }
 }
 

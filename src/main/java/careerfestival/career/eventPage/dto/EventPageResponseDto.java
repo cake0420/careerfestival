@@ -1,7 +1,6 @@
 package careerfestival.career.eventPage.dto;
 
 import careerfestival.career.domain.Event;
-import careerfestival.career.domain.mapping.Comment;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +21,6 @@ public class EventPageResponseDto {
     private LocalDateTime recruitmentEnd;
     private String eventCost;
 
-    private String commentContent;
-    private Long orderNumber;
-    private int depth;
-    private boolean isParent;
     public static EventPageResponseDto fromEntity(Event event){
         return EventPageResponseDto.builder()
                 .eventId(event.getId())
@@ -35,7 +30,4 @@ public class EventPageResponseDto {
                 .eventCost(event.getEventCost())
                 .build();
     }
-
-
-
 }
