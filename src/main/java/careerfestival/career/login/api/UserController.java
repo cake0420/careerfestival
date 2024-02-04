@@ -64,11 +64,4 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
         }
     }
-
-    //화면 테스트용
-    @GetMapping("/login")
-    @ResponseBody
-    public String login() {
-        return "login page";
-    }
 }

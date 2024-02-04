@@ -108,7 +108,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         response.addHeader("Location", redirectUrl);
 
-
         System.out.println("------------------------");
         System.out.println("Login Success");
         System.out.println("------------------------");

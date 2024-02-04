@@ -30,4 +30,6 @@ public class UpdateMypageResponseDto {
     //관심 지역
     private String city;
     private String addressLine;
+
+    private String userProfileFileUrl;
 }
