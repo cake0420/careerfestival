@@ -55,7 +55,6 @@ dependencies {
 	implementation "org.springframework:spring-test:${springVersion}"
 
 	implementation "org.springframework:spring-core:${springVersion}"
-
 }
 
 tasks.named('test') {
