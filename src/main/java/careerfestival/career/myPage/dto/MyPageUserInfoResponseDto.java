@@ -3,11 +3,13 @@ package careerfestival.career.myPage.dto;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import jakarta.validation.constraints.Email;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class MyPageUserInfoResponseDto {
 
     private String name;
@@ -35,5 +37,7 @@ public class MyPageUserInfoResponseDto {
     // 직급
     private String position;
 
-    private List<KeywordName> keywordName;
+    private List<KeywordName> keywordNameList;
+
+    private String userProfilefileUrl;
 }

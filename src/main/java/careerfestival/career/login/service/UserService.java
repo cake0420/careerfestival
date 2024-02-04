@@ -72,16 +72,18 @@ public class UserService {
 
     @Transactional
     public MyPageUserInfoResponseDto fillMyPage(User user) {
-        MyPageUserInfoResponseDto myPageUserInfoResponseDto = new MyPageUserInfoResponseDto();
-        myPageUserInfoResponseDto.setName(user.getName());
-        myPageUserInfoResponseDto.setEmail(user.getEmail());
-        myPageUserInfoResponseDto.setAge(user.getAge());
-        myPageUserInfoResponseDto.setGender(user.getGender());
-        myPageUserInfoResponseDto.setPhoneNumber(user.getPhoneNumber());
-        myPageUserInfoResponseDto.setCompany(user.getCompany());
-        myPageUserInfoResponseDto.setDepartment(user.getDepartment());
-        List<KeywordName> keyword = user.getKeywordName();
-        myPageUserInfoResponseDto.setKeywordName(keyword);
+        MyPageUserInfoResponseDto myPageUserInfoResponseDto = MyPageUserInfoResponseDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .age(user.getAge())
+                .gender(user.getGender())
+                .phoneNumber(user.getPhoneNumber())
+                .company(user.getCompany())
+                .department(user.getDepartment())
+                .addressLine(user.getRegion().getAddressLine())
+                .keywordNameList(user.getKeywordName())
+                .userProfilefileUrl(user.getUserProfilefileUrl())
+                .build();
         return myPageUserInfoResponseDto;
     }
 

@@ -1,5 +1,7 @@
 package careerfestival.career.myPage.dto;
 
+import careerfestival.career.domain.Event;
+import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.domain.mapping.Wish;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -44,4 +47,16 @@ public class MyPageEventResponseDto {
                 .organizerProfileUrl(participate.getEvent().getOrganizer().getOrganizerProfileFileUrl())
                 .build();
     }
+
+    public static MyPageEventResponseDto fromEvent(Event event) {
+        return MyPageEventResponseDto.builder()
+                .eventMainFileUrl(event.getEventMainFileUrl())
+                .eventName(event.getEventName())
+                .recruitmentStart(event.getRecruitmentStart())
+                .recruitmentEnd(event.getRecruitmentEnd())
+                .eventCost(event.getEventCost())
+                .organizerProfileUrl(event.getOrganizer().getOrganizerProfileFileUrl())
+                .build();
+    }
+
 }

@@ -1,8 +1,10 @@
 package careerfestival.career.repository;
 
 import careerfestival.career.domain.Event;
+import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.domain.mapping.Participate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -43,4 +45,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Page<Event> findPageByOrganizerId(Long organizerId, Pageable pageable);
     Event findByOrganizerId(Long organizerId);
+
+    //마이페이지 주최자 용
+    @Query(value = "SELECT e FROM Event e WHERE e.user IN (?1)")
+    Page<Event> findAllByUserOrderByCreatedAtDesc(User user, Pageable pageable);
 }

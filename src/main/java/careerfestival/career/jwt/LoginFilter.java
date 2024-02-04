@@ -108,6 +108,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         response.addHeader("Location", redirectUrl);
 
+        // Role 정보 response에 담아서
+        response.getWriter().write("{\"role\": \"" + role.toString() + "\"}");
+
         System.out.println("------------------------");
         System.out.println("Login Success");
         System.out.println("------------------------");
