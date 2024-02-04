@@ -37,4 +37,6 @@ public class MainPageResponseDto {
                 .eventName(event.getEventName())
                 .build();
     }
+
+
 }

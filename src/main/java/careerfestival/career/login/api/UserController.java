@@ -56,24 +56,24 @@ public class UserController {
 
 
     //회원가입3
-    @Transactional
-    @PatchMapping("/participant")
-    public ResponseEntity<Void> updateParticipantDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
-        try {
-            userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
+        @Transactional
+        @PatchMapping("/participant")
+        public ResponseEntity<Void> updateParticipantDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
+            try {
+                userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
 
-            // 정보 저장 이후 리다이렉션할 URL 생성
-            String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/login")
-                    .toUriString();
+                // 정보 저장 이후 리다이렉션할 URL 생성
+                String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/login")
+                        .toUriString();
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", redirectUrl);
-            return new ResponseEntity<>(headers, HttpStatus.OK);
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Location", redirectUrl);
+                return new ResponseEntity<>(headers, HttpStatus.OK);
 
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
-        }
+            } catch (IllegalArgumentException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
+            }
     }
 
     @Transactional

@@ -97,4 +97,7 @@ public class MainPageService {
     }
 
 
+    public Region findRegion(String city, String addressLine) {
+        return regionRepository.findRegionByCityAndAddressLine(city, addressLine);
+    }
 }

@@ -2,7 +2,6 @@ package careerfestival.career.register.service;
 
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
-import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Region;
@@ -41,46 +40,10 @@ public class RegisterService {
     // 주최자 (organizer) 등록
     public void registerOrganizer(String email, MultipartFile organizerProfileImage, RegisterOrganizerDto registerOrganizerDto) {
         User user = userRepository.findByEmail(email);
-        try {
-            if (user.getRole() == Role.ROLE_ORGANIZER);
-            Organizer organizer = registerOrganizerDto.toEntity();
-            organizer.setUser(user);
+        if(Role.ROLE_ORGANIZER.equals(user.getRole())){
 
-            try{
-                if(!organizerProfileImage.isEmpty()){
-                    BufferedImage resizedImage = ImageUtils.resizeImage(organizerProfileImage, 600, 400);
-
-                    // BufferedImage를 byte[]로 변환
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(resizedImage, getFileExtension(organizerProfileImage.getOriginalFilename()), baos);
-                    byte[] resizedImageBytes = baos.toByteArray();
-
-                    MultipartFile multipartFile = new MockMultipartFile(
-                            "resized_" + organizerProfileImage.getOriginalFilename(),
-                            organizerProfileImage.getOriginalFilename(),
-                            organizerProfileImage.getContentType(),
-                            resizedImageBytes
-                    );
-
-                    String storedFileName = s3Uploader.upload(multipartFile, "organizer_profile");
-                    organizer.setOrganizerProfileFileUrl(storedFileName);
-                }
-                else{
-                    Gender organizerGender = organizer.getUser().getGender();
-                    if(Gender.남성.equals(organizerGender)){
-                        organizer.setOrganizerProfileFileUrl("classpath:Male_Profile.png");
-                    }
-                    else {
-                        organizer.setOrganizerProfileFileUrl("classpath:Female_Profile.png");
-                    }
-                }
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-            organizerRepository.save(organizer);
-        } catch(Exception e) {
-            e.printStackTrace();
         }
+
     }
 
     // 행사 등록하기 1, 2단계 기능 구현

@@ -35,8 +35,8 @@ public class MainPageController {
     @Transactional
     @GetMapping("")
     public ResponseEntity<Map<String, Object>> mainPage(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestParam(value = "region") Region region){
+            @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        Region region = null;
         if (customUserDetails != null){         // 로그인된 사용자일 때
             if(region != null){
                 try{
