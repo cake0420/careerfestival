@@ -22,7 +22,7 @@ repositories {
 }
 
 ext {
-	springVersion = '6.1.2' // springVersion 변수 정의
+	springVersion = '6.1.3' // springVersion 변수 정의
 }
 
 dependencies {

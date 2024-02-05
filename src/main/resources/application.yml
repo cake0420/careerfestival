@@ -7,6 +7,10 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  logging:
+    level:
+      org:
+        springframework=DEBUG:
 
   sql:
     init:
@@ -19,7 +23,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: none
+          auto: update
         default_batch_fetch_size: 1000
 
   jwt:
