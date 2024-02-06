@@ -123,9 +123,19 @@ public class MyPageController {
             }
             //주최자인 경우
             else {
-                //내가 주최한 행사 (구현중)
+                //구독자수, 등록한 행사 수
+                int countedFollowers = subscribeService.countFollower(findUser);
+                int countedEvents = organizerService.countRegisterdEvent(findUser);
+                MyPageOrganizerResponseDto myPageOrganizerResponseDto = MyPageOrganizerResponseDto.builder()
+                        .countFollower(countedFollowers)
+                        .countEvent(countedEvents)
+                        .build();
+
+
+                //내가 주최한 행사
                 Page<MyPageEventResponseDto> registerdEvent = myPageService.getEventByUser(findUser, pageable);
 
+                myPageResponeDtoObjectMap.put("OrganizerInfo", myPageOrganizerResponseDto);
                 myPageResponeDtoObjectMap.put("registerdEvent", registerdEvent);
                 return ResponseEntity.ok().body(myPageResponeDtoObjectMap);
             }
