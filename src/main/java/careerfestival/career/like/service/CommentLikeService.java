@@ -28,6 +28,7 @@ public class CommentLikeService {
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
         Optional<Event> eventOptional = eventRepository.findById(eventId);
+
         if (userOptional.isPresent() && eventOptional.isPresent() && commentOptional.isPresent()) {
             User user = userOptional.get();
             Event event = eventOptional.get();

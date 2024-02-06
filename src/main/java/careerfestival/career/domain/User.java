@@ -95,9 +95,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Organizer> organizer = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
-    private Region region;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Region> region = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
     private List<Subscribe> subscribe = new ArrayList<>();
@@ -169,8 +168,8 @@ public class User extends BaseEntity {
         this.userProfilefileUrl = userProfilefileUrl;
     }
 
-    public void updateRegion(Region region){
-        if(region == null) return;
+    public void updateRegion(List<Region> region){
+        if(region == null || region.isEmpty()) return;
         this.region = region;
     }
 

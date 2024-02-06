@@ -27,7 +27,7 @@ public class ParticipateService {
 
         Optional<User> user = userRepository.findById(userId);
         Optional<Event> event = eventRepository.findById(eventId);
-
+        System.out.println("event = " + event);
         Participate participate = participateRequestDto.toEntity(user.orElse(null), event.orElse(null));
         participateRepository.save(participate);
         return participate.getId();

@@ -1,5 +1,6 @@
 package careerfestival.career.register.controller;
 
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.register.dto.RegisterEventDto;
 import careerfestival.career.register.dto.RegisterMainResponseDto;
@@ -31,10 +32,15 @@ public class RegisterController {
                                                 HttpServletRequest request,
                                                 @RequestPart("organizerProfileImage") MultipartFile organizerProfileImage,
                                                 @RequestPart("registerOrganizerDto") RegisterOrganizerDto registerOrganizerDto) {
-        try{
-            registerService.registerOrganizer(customUserDetails.getUsername(), organizerProfileImage, registerOrganizerDto);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (IllegalArgumentException e){
+        // 주최자 프로필 생성하기 전에 검증
+        if(Role.ROLE_ORGANIZER.equals(registerService.getUserRole(customUserDetails.getUsername()))){
+            try{
+                registerService.registerOrganizer(customUserDetails.getUsername(), organizerProfileImage, registerOrganizerDto);
+                return new ResponseEntity(HttpStatus.OK);
+            } catch (IllegalArgumentException e){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -46,10 +52,16 @@ public class RegisterController {
                                         @RequestPart("eventMainImage") MultipartFile eventMainImage,
                                         @RequestPart("eventInformImage") MultipartFile eventInformImage,
                                         @RequestPart("registerEventDto") RegisterEventDto registerEventDto) {
-        try{
-            registerService.registerEvent(customUserDetails.getUsername(), eventMainImage, eventInformImage, registerEventDto);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (IllegalArgumentException e){
+        // 행사 등록하기 전에 검증
+        if(Role.ROLE_ORGANIZER.equals(registerService.getUserRole(customUserDetails.getUsername()))){
+            try{
+                registerService.registerEvent(customUserDetails.getUsername(), eventMainImage, eventInformImage, registerEventDto);
+                return new ResponseEntity(HttpStatus.OK);
+            } catch (IllegalArgumentException e){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+        else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

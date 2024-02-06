@@ -34,8 +34,6 @@ public class MyPageUserInfoResponseDto {
     // 부서 및 학과
     private String department;
 
-    // 직급
-    private String position;
 
     private List<KeywordName> keywordNameList;
 

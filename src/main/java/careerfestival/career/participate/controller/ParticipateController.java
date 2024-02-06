@@ -24,6 +24,7 @@ public class ParticipateController {
             @RequestBody ParticipateRequestDto participateRequestDto) {
         // Assuming you have the authenticated user's email
         String userEmail = "user@example.com"; // Replace this with the actual email
+
         try {
             Long participateId = participateService.participateSave(userId, eventId, participateRequestDto);
             // 리다이렉트를 위한 URL 생성
