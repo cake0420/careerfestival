@@ -167,7 +167,8 @@ public class RegisterService {
     */
 
     public Long getOrganizerId(String email) {
-        return userRepository.findByEmail(email).getId();
+        Long userId =  userRepository.findByEmail(email).getId();
+        return organizerRepository.findByUserId(userId).getId();
     }
 
     private static String getFileExtension(String fileName) {
