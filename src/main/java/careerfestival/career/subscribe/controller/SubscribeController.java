@@ -1,15 +1,12 @@
 package careerfestival.career.subscribe.controller;
 
-import careerfestival.career.domain.mapping.Subscribe;
 import careerfestival.career.jwt.JWTUtil;
-import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.subscribe.dto.SubscribeRequestDto;
 import careerfestival.career.subscribe.dto.SubscribeResponseDto;
 import careerfestival.career.subscribe.service.SubscribeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +17,7 @@ public class SubscribeController {
     private final JWTUtil jwtUtil;
     private final SubscribeService subscribeService;
 
+    // 구독하기
     @PostMapping("/profile/{fromUserId}/{toUserId}/subs")
     public ResponseEntity<Long> addSubs(
             @PathVariable Long fromUserId,

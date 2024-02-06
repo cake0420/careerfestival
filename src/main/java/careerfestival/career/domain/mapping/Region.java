@@ -25,6 +25,6 @@ public class Region {
     @OneToOne(mappedBy = "region", cascade = CascadeType.ALL)
     private Event event;
 
-    @OneToOne(mappedBy = "region", cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }

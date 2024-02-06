@@ -8,6 +8,7 @@ import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.mainPage.dto.MainPageFestivalListResponseDto;
+import careerfestival.career.mainPage.dto.MainPageOrganizerListResponseDto;
 import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.repository.EventRepository;
 import careerfestival.career.repository.OrganizerRepository;
@@ -97,4 +98,16 @@ public class MainPageService {
     }
 
 
+    public Region findRegion(String city, String addressLine) {
+        return regionRepository.findRegionByCityAndAddressLine(city, addressLine);
+    }
+
+    public int getOrganizerCount() {
+        return organizerRepository.countOrganizer();
+    }
+
+    public Page<MainPageOrganizerListResponseDto> getOrganizers(Pageable organizerPageable) {
+        Page<Organizer> organizers = organizerRepository.findOrganizers(organizerPageable);
+        return organizers.map(MainPageOrganizerListResponseDto::fromOrganizerEntity);
+    }
 }
