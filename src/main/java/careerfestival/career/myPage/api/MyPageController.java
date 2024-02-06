@@ -5,10 +5,14 @@ import careerfestival.career.domain.enums.Role;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.service.UserService;
 import careerfestival.career.myPage.dto.MyPageEventResponseDto;
+import careerfestival.career.myPage.dto.MyPageOrganizerResponseDto;
 import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.myPage.service.MyPageService;
+import careerfestival.career.organizer.OrganizerService;
 import careerfestival.career.repository.OrganizerRepository;
+import careerfestival.career.repository.SubscribeRepository;
+import careerfestival.career.subscribe.service.SubscribeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +35,8 @@ import java.util.Map;
 public class MyPageController {
     private final UserService userService;
     private final MyPageService myPageService;
-    private final OrganizerRepository organizerRepository;
+    private final SubscribeService subscribeService;
+    private final OrganizerService organizerService;
 
     @GetMapping("")
     @ResponseBody
@@ -64,9 +69,19 @@ public class MyPageController {
             }
             //주최자인 경우
             else {
-                //내가 주최한 행사 (구현중)
+                //구독자수, 등록한 행사 수
+                int countedFollowers = subscribeService.countFollower(findUser);
+                int countedEvents = organizerService.countRegisterdEvent(findUser);
+                MyPageOrganizerResponseDto myPageOrganizerResponseDto = MyPageOrganizerResponseDto.builder()
+                        .countFollower(countedFollowers)
+                        .countEvent(countedEvents)
+                        .build();
+
+
+                //내가 주최한 행사
                 Page<MyPageEventResponseDto> registerdEvent = myPageService.getEventByUser(findUser, pageable);
 
+                myPageResponeDtoObjectMap.put("OrganizerInfo", myPageOrganizerResponseDto);
                 myPageResponeDtoObjectMap.put("registerdEvent", registerdEvent);
                 return ResponseEntity.ok().body(myPageResponeDtoObjectMap);
             }
