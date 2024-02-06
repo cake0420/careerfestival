@@ -60,4 +60,9 @@ import java.util.stream.Collectors;
                     .collect(Collectors.toList());
         }
     }
+
+    public int countFollower (User user){
+        int counted = subscribeRepository.findByFromUser(user);
+        return counted;
+    }
 }
