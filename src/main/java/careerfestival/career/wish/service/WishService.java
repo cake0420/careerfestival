@@ -2,6 +2,7 @@ package careerfestival.career.wish.service;
 
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Wish;
 import careerfestival.career.participate.Exception.UserOrEventNotFoundException;
 import careerfestival.career.repository.EventRepository;
@@ -33,15 +34,18 @@ public class WishService {
             Event event = eventOptional.get();
 
             Wish check = wishRepository.findByUserIdAndEventId(user.getId(), event.getId()).orElse(null);
-            if (check == null) {
+            if(user.getRole() == Role.ROLE_PARTICIPANT){
+                if (check == null) {
 
-                Wish newWish = wishRequestDto.toEntity(user, event);
-                wishRepository.save(newWish);
-                return true;
-            } else {
-                wishRepository.delete(check);
-                return false;
+                    Wish newWish = wishRequestDto.toEntity(user, event);
+                    wishRepository.save(newWish);
+                    return true;
+                } else {
+                    wishRepository.delete(check);
+                    return false;
+                }
             }
+            return false;
         }else {
             throw new UserOrEventNotFoundException("User or Event not found");
         }

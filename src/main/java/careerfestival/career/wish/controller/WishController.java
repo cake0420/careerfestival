@@ -1,7 +1,9 @@
 package careerfestival.career.wish.controller;
 
+import careerfestival.career.domain.User;
 import careerfestival.career.jwt.JWTUtil;
 import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.login.service.UserService;
 import careerfestival.career.repository.UserRepository;
 import careerfestival.career.wish.dto.WishRequestDto;
 import careerfestival.career.wish.dto.WishResponseDto;
@@ -20,6 +22,8 @@ public class WishController {
     private final WishService wishService;
     private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
+    private final UserService userService;
+
     @PostMapping("/event/{eventId}/wish")
     public ResponseEntity<Long> addWish(
             @RequestHeader(name = "Authorization") String token, // Assuming the token is passed in the Authorization header
@@ -27,8 +31,8 @@ public class WishController {
             @PathVariable("eventId") Long eventId,
             @RequestBody WishRequestDto wishRequestDto) {
 
-        String username = customUserDetails.getUsername();
-        Long userId = userRepository.findByEmail(username).getId();
+        User findUser = userService.findUserByCustomUserDetails(customUserDetails);
+        Long userId = findUser.getId();
 
         try {
             boolean wishId = wishService.CheckWish(userId, eventId, wishRequestDto);
@@ -51,6 +55,7 @@ public class WishController {
     public ResponseEntity<List<WishResponseDto>> getAllWishByEvent(
             @RequestHeader(name = "Authorization") String token, // Assuming the token is passed in the Authorization header
             @PathVariable("eventId") Long eventId) {
+
 
         String username = jwtUtil.getUsername(token);
         String email = userRepository.findByEmail(username).getEmail();

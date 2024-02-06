@@ -1,8 +1,10 @@
 package careerfestival.career.inquiry.controller;
 
+import careerfestival.career.domain.User;
 import careerfestival.career.inquiry.dto.InquiryRequestDto;
 import careerfestival.career.inquiry.service.InquiryService;
 import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.login.service.UserService;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController{
     private final InquiryService inquiryService;
     private final UserRepository userRepository;
+    private final UserService userService;
+
+
     @PostMapping("/event/{eventId}/inquiry")
     public ResponseEntity<Long> addInquiry(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
@@ -26,13 +31,9 @@ public class InquiryController{
         // Assuming you have the authenticated user's email
         // Replace this with the actual email
 
-        String username = customUserDetails.getUsername();
-        Long userId = userRepository.findByEmail(username).getId();
+        User findUser = userService.findUserByCustomUserDetails(customUserDetails);
+        Long userId = findUser.getId();
         try {
-            if (userId != null){
-                System.out.println("있음" + userId);
-            }else {                System.out.println("없음");
-            }
             Long commentId = inquiryService.inquirySave(userId, eventId, inquiryRequestDto);
 
             // 리다이렉트를 위한 URL 생성

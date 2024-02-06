@@ -5,13 +5,11 @@ import careerfestival.career.domain.User;
 import careerfestival.career.domain.mapping.Inquiry;
 import careerfestival.career.inquiry.dto.InquiryRequestDto;
 import careerfestival.career.inquiry.dto.InquiryResponseDto;
-import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +24,8 @@ public class InquiryService {
     private final InquiryRepository inquiryRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
+    public static final Long DEFAULT_USER_ID = 0L;
+
 
     public Long inquirySave(Long userId, Long eventId, InquiryRequestDto inquiryRequestDto) {
         Optional<User> user = userRepository.findById(userId);
@@ -61,7 +61,6 @@ public class InquiryService {
                 inquiry.setDepth(0);
                 inquiry.setName(name);
                 inquiry.setSecret(inquiryRequestDto.isSecret()); // Set the isSecret field
-                System.out.println(inquiryRequestDto.isSecret() + "여기다 여기");
                 Inquiry savedComment = inquiryRepository.save(inquiry);
                 return savedComment.getId();
             }
@@ -75,8 +74,12 @@ public class InquiryService {
     public Page<InquiryResponseDto> getAllCommentsByEvent(
             Long userId,
             Long eventId, int pageStandard, int setOff) {
-        Optional<User> currentUserId = userRepository.findById(userId);
-        Long user = currentUserId.get().getId();
+        if (userId == null) {
+            userId = DEFAULT_USER_ID;
+        }
+        Optional<User> currentUserIdOptional = userRepository.findById(userId);
+
+        Long user = currentUserIdOptional.map(User::getId).orElse(DEFAULT_USER_ID);
         List<Inquiry> comments = inquiryRepository.findAllLimitedParentCommentsWithRepliesByEventId(eventId, pageStandard, setOff);
         // 전체 댓글 중에서 부모 댓글만 추출
         List<Inquiry> parentComments = comments.stream()

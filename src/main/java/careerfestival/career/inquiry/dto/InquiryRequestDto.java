@@ -25,6 +25,7 @@ public class InquiryRequestDto {
     private boolean secret;
 
 
+
     @Builder
     public static InquiryRequestDto of(Long userId, Long eventId, String commentContent, Long parent, Long orderNumber, boolean isParent, boolean secret)
     {

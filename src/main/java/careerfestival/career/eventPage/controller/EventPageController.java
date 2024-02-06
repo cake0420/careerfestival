@@ -2,6 +2,7 @@ package careerfestival.career.eventPage.controller;
 
 import careerfestival.career.comments.Service.CommentService;
 import careerfestival.career.comments.dto.CommentResponseDto;
+import careerfestival.career.config.SecurityConfig;
 import careerfestival.career.domain.User;
 import careerfestival.career.eventPage.dto.EventPageResponseDto;
 import careerfestival.career.eventPage.service.EventPageService;
@@ -28,15 +29,15 @@ import java.util.Map;
 
 public class EventPageController {
     private final EventPageService eventPageService;
-    private final UserRepository userRepository;
     private final CommentService commentService;
     private final InquiryService inquiryService;
     private final UserService userService;
+    private final JWTUtil jwtUtil;
+    private final UserRepository userRepository;
 
     @GetMapping("/event/{eventId}")
     public ResponseEntity<Map<String, Object>> getAllCommentsByEvent(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestHeader(name = "Authorization") String token, // Assuming the token is passed in the Authorization header
             @PathVariable("eventId") Long eventId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "3") int size,
@@ -47,13 +48,9 @@ public class EventPageController {
         int offset = (page - 1) * pageSize;
         int setOff = (index - 1) * pageStandard;
 
-        User findUser = userService.findUserByCustomUserDetails(customUserDetails);
-        Long userId = findUser.getId();
-        if(token != null) {
-            System.out.println(token + "체크");
-        }else {
-            System.out.println("없음");
-        }
+
+        String email = (customUserDetails != null) ? customUserDetails.getUsername() : null;
+        Long userId = (email != null) ? userRepository.findByEmail(email).getId() : null;
         // 페이징 정보를 생성합니다.
         // 댓글을 조회합니다.
         try {
@@ -78,11 +75,6 @@ public class EventPageController {
         } catch (Exception e) {
             // Log the exception or return a more specific error response
             e.printStackTrace();
-            if(token != null) {
-                System.out.println(token + "체크");
-            }else {
-                System.out.println("없음");
-            }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
