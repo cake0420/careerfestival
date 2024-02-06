@@ -30,8 +30,8 @@ public class InquiryService {
     public Long inquirySave(Long userId, Long eventId, InquiryRequestDto inquiryRequestDto) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Event> event = eventRepository.findById(eventId);
-        String name = user.get().getName();
         if (user.isPresent() && event.isPresent() && inquiryRequestDto.getCommentContent() != null) {
+            String name = user.get().getName();
             if (inquiryRequestDto.getParent() != null) {
                 // 대댓글인 경우
                 List<Inquiry> parentComment = inquiryRepository.findByOrderNumber(inquiryRequestDto.getParent());

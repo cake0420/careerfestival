@@ -67,8 +67,11 @@ public class EventPageController {
             eventPage.put("totalPages", comments.getTotalPages());  // 전체 페이지 수
             eventPage.put("totalElements", comments.getTotalElements());  // 전체 요소 수
             eventPage.put("inquiry", inquiry.getContent());
+            eventPage.put("currentIndex", inquiry.getNumber());
+            eventPage.put("totalIndex", inquiry.getTotalPages());
+            eventPage.put("totalElement", inquiry.getTotalElements());
             return ResponseEntity.ok()
-                    .header("Location", "/event/" + eventId + "?page=" + (page + 1) + "&&index" + (index + 1))
+                    .header("Location", "/event/" + eventId + "?page=" + (page + 1) + "&&index=" + (index + 1))
                     .body(eventPage);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -21,6 +21,7 @@ public class InquiryController{
     private final InquiryService inquiryService;
     private final UserRepository userRepository;
     private final UserService userService;
+    public static final Long DEFAULT_USER_ID = 0L;
 
 
     @PostMapping("/event/{eventId}/inquiry")
@@ -31,8 +32,14 @@ public class InquiryController{
         // Assuming you have the authenticated user's email
         // Replace this with the actual email
 
-        User findUser = userService.findUserByCustomUserDetails(customUserDetails);
-        Long userId = findUser.getId();
+        if (customUserDetails == null) {
+            // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트합니다.
+            return ResponseEntity.ok()
+                    .header("Location", "/login")
+                    .build();
+        }
+        String email = customUserDetails.getUsername();
+        Long userId = userRepository.findByEmail(email).getId();
         try {
             Long commentId = inquiryService.inquirySave(userId, eventId, inquiryRequestDto);
 
