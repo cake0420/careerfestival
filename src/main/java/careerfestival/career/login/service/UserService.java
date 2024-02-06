@@ -2,7 +2,6 @@ package careerfestival.career.login.service;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
-import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
@@ -14,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +51,6 @@ public class UserService {
         findUser.update(updateMypageResponseDto);
 
         Region region = regionRepository.findRegionByCityAndAddressLine(updateMypageResponseDto.getCity(), updateMypageResponseDto.getAddressLine());
-        findUser.updateRegion(region);
 
         Gender gender = findUser.getGender();
 
@@ -72,19 +68,27 @@ public class UserService {
 
     @Transactional
     public MyPageUserInfoResponseDto fillMyPage(User user) {
-        MyPageUserInfoResponseDto myPageUserInfoResponseDto = MyPageUserInfoResponseDto.builder()
-                .name(user.getName())
-                .email(user.getEmail())
-                .age(user.getAge())
-                .gender(user.getGender())
-                .phoneNumber(user.getPhoneNumber())
-                .company(user.getCompany())
-                .department(user.getDepartment())
-                .addressLine(user.getRegion().getAddressLine())
-                .keywordNameList(user.getKeywordName())
-                .userProfilefileUrl(user.getUserProfilefileUrl())
-                .build();
-        return myPageUserInfoResponseDto;
+        if(user.getRegion() != null){
+            MyPageUserInfoResponseDto myPageUserInfoResponseDto = MyPageUserInfoResponseDto.builder()
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .age(user.getAge())
+                    .gender(user.getGender())
+                    .phoneNumber(user.getPhoneNumber())
+                    .company(user.getCompany())
+                    .department(user.getDepartment())
+                    .keywordNameList(user.getKeywordName())
+                    .userProfilefileUrl(user.getUserProfilefileUrl())
+                    .build();
+            return myPageUserInfoResponseDto;
+        } else {
+            MyPageUserInfoResponseDto myPageUserInfoResponseDto = MyPageUserInfoResponseDto.builder()
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .userProfilefileUrl(user.getUserProfilefileUrl())
+                    .build();
+            return myPageUserInfoResponseDto;
+        }
     }
 
 }

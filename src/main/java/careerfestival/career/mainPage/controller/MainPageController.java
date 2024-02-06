@@ -5,11 +5,13 @@ import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.mainPage.dto.MainPageFestivalListResponseDto;
+import careerfestival.career.mainPage.dto.MainPageOrganizerListResponseDto;
 import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.mainPage.service.MainPageService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -149,16 +151,24 @@ public class MainPageController {
                 List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
 
                 // 4. (219명의 주최자) 정보 입력 공간
+                int countOrganizer = mainPageService.getOrganizerCount();
 
+                // 5. 주최자 정보 페이지 형태 반환
+                Pageable organizerPageable = PageRequest.of(0, 10, Sort.by("countEvent").descending());
+                Page<MainPageOrganizerListResponseDto> mainPageOrganizerListDtos = mainPageService.getOrganizers(organizerPageable);
 
                 Map<String, Object> mainPageFestivalListResponseDtoObjectMap = new HashMap<>();
+
                 // userName은 로그인한 사용자의 사용자명
                 mainPageFestivalListResponseDtoObjectMap.put("userName", userName);
                 // eventFilter는 메인페이지의 필터링이 적용된 페이지 행사 리스트들
                 mainPageFestivalListResponseDtoObjectMap.put("eventFilter", mainPageFestivalListResponseDtos);
                 // eventNames는 상단바에 위치한 조회수에 의한 행사명 리스트
                 mainPageFestivalListResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
-
+                // countOrganizer는 등록된 주최자 전체 인원 수 반환
+                mainPageFestivalListResponseDtoObjectMap.put("countOrganizer", countOrganizer);
+                // organizers는 보여질 주최자 인원 수
+                mainPageFestivalListResponseDtoObjectMap.put("organizers", mainPageOrganizerListDtos);
 
                 return ResponseEntity.ok().body(mainPageFestivalListResponseDtoObjectMap);
             } catch (IllegalArgumentException e){
@@ -166,19 +176,28 @@ public class MainPageController {
             }
         } else {                                // 로그인 하지 않은 사용자일 경우
             try{
-                // 조회순으로 보여지는 행사 9개
+                // 1. 조회순으로 보여지는 행사 9개
                 Page<MainPageFestivalListResponseDto> mainPageFestivalListResponseDtos
                         = mainPageService.getEventsFiltered(category, keywordName, region, pageable);
-                // 조회수에 의한 이벤트명
+                // 2. 조회수에 의한 이벤트명
                 List<MainPageResponseDto> mainPageResponseDtoNames = mainPageService.getEventNames();
+                // 3. (219명의 주최자) 정보 입력 공간
+                int countOrganizer = mainPageService.getOrganizerCount();
+
+                // 4. 주최자 정보 페이지 형태 반환
+                Pageable organizerPageable = PageRequest.of(0, 10, Sort.by("countEvent").descending());
+                Page<MainPageOrganizerListResponseDto> mainPageOrganizerListDtos = mainPageService.getOrganizers(organizerPageable);
+
 
                 Map<String, Object> mainPageFestivalListResponseDtoObjectMap = new HashMap<>();
                 // eventFilter는 메인페이지의 필터링이 적용된 페이지 행사 리스트들
                 mainPageFestivalListResponseDtoObjectMap.put("eventFilter", mainPageFestivalListResponseDtos);
                 // eventNames는 상단바에 위치한 조회수에 의한 행사명 리스트
                 mainPageFestivalListResponseDtoObjectMap.put("eventNames", mainPageResponseDtoNames);
-                // 구독하기에 대한 구현 필요
-
+                // countOrganizer는 등록된 주최자 전체 인원 수 반환
+                mainPageFestivalListResponseDtoObjectMap.put("countOrganizer", countOrganizer);
+                // organizers는 보여질 주최자 인원 수
+                mainPageFestivalListResponseDtoObjectMap.put("organizers", mainPageOrganizerListDtos);
 
                 return ResponseEntity.ok().body(mainPageFestivalListResponseDtoObjectMap);
             } catch (IllegalArgumentException e){

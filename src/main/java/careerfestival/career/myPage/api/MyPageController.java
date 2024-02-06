@@ -2,12 +2,11 @@ package careerfestival.career.myPage.api;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Role;
-import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.login.service.UserService;
 import careerfestival.career.myPage.dto.MyPageEventResponseDto;
 import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
-import careerfestival.career.login.service.UserService;
 import careerfestival.career.myPage.service.MyPageService;
 import careerfestival.career.repository.OrganizerRepository;
 import lombok.RequiredArgsConstructor;
@@ -124,7 +123,8 @@ public class MyPageController {
 
 
     @PatchMapping("/update")
-    public ResponseEntity<Void> updateMember(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
+    public ResponseEntity<Void> updateMember(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                             @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
 
         User findUser = userService.findUserByCustomUserDetails(customUserDetails);
         userService.findUserByEmailAndUpdate(findUser.getEmail(), updateMypageResponseDto);
