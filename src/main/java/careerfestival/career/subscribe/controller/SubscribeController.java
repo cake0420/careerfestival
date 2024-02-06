@@ -3,6 +3,7 @@ package careerfestival.career.subscribe.controller;
 import careerfestival.career.domain.mapping.Subscribe;
 import careerfestival.career.jwt.JWTUtil;
 import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.register.service.RegisterService;
 import careerfestival.career.subscribe.dto.SubscribeRequestDto;
 import careerfestival.career.subscribe.dto.SubscribeResponseDto;
 import careerfestival.career.subscribe.service.SubscribeService;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SubscribeController {
     private final JWTUtil jwtUtil;
     private final SubscribeService subscribeService;
+    private final RegisterService registerService;
 
     @PostMapping("/profile/{fromUserId}/{toUserId}/subs")
     public ResponseEntity<Long> addSubs(
