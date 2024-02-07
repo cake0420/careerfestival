@@ -24,7 +24,7 @@ public class MyPageService {
     private final EventRepository eventRepository;
 
     public List<MyPageEventResponseDto> getWishEvent(User user) {
-        List<Wish> wishList = wishRepository.findTop6ByUserOrderByCreatedAtDesc(user);
+        List<Wish> wishList = wishRepository.findAllByUserOrderByCreatedAtDesc(user);
 
         return
                 wishList.stream()
@@ -34,7 +34,7 @@ public class MyPageService {
 
 
     public List<MyPageEventResponseDto> getParticipateEvent(User user) {
-        List<Participate> participateList = participateRepository.findTop4ByUserOrderByCreatedAtDesc(user);
+        List<Participate> participateList = participateRepository.findAllByUserOrderByCreatedAtDesc(user);
 
         return
                 participateList.stream()
