@@ -7,9 +7,11 @@ import careerfestival.career.login.service.UserService;
 import careerfestival.career.myPage.dto.MyPageEventResponseDto;
 import careerfestival.career.myPage.dto.MyPageOrganizerResponseDto;
 import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
-import careerfestival.career.myPage.dto.UpdateMypageRequestDto;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.myPage.service.MyPageService;
 import careerfestival.career.organizer.OrganizerService;
+import careerfestival.career.repository.OrganizerRepository;
+import careerfestival.career.repository.SubscribeRepository;
 import careerfestival.career.subscribe.service.SubscribeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -63,8 +65,8 @@ public class MyPageController {
                 myPageResponeDtoObjectMap.put("participateEvent", participateEvent);
 
                 return ResponseEntity.ok().body(myPageResponeDtoObjectMap);
-            }
 
+            }
             //주최자인 경우
             else {
                 //구독자수, 등록한 행사 수
@@ -147,10 +149,10 @@ public class MyPageController {
 
     @PatchMapping("/update")
     public ResponseEntity<Void> updateMember(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                             @RequestBody UpdateMypageRequestDto updateMypageRequestDto) {
+                                             @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
 
         User findUser = userService.findUserByCustomUserDetails(customUserDetails);
-        userService.findUserByEmailAndUpdate(findUser.getEmail(), updateMypageRequestDto);
+        userService.findUserByEmailAndUpdate(findUser.getEmail(), updateMypageResponseDto);
 
         // 회원정보 수정 이후 리다이렉션할 URL 생성
         String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()

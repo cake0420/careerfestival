@@ -6,7 +6,7 @@ import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
-import careerfestival.career.myPage.dto.UpdateMypageRequestDto;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,11 +46,11 @@ public class UserService {
 
 
     @Transactional
-    public void findUserByEmailAndUpdate(String email, UpdateMypageRequestDto updateMypageRequestDto){
+    public void findUserByEmailAndUpdate(String email, UpdateMypageResponseDto updateMypageResponseDto){
         User findUser = userRepository.findByEmail(email);
-        findUser.update(updateMypageRequestDto);
+        findUser.update(updateMypageResponseDto);
 
-        Region region = regionRepository.findRegionByCityAndAddressLine(updateMypageRequestDto.getCity(), updateMypageRequestDto.getAddressLine());
+        Region region = regionRepository.findRegionByCityAndAddressLine(updateMypageResponseDto.getCity(), updateMypageResponseDto.getAddressLine());
 
         Gender gender = findUser.getGender();
 

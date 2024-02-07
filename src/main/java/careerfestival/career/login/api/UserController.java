@@ -6,7 +6,7 @@ import careerfestival.career.jwt.JWTUtil;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
-import careerfestival.career.myPage.dto.UpdateMypageRequestDto;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -58,9 +58,9 @@ public class UserController {
     //회원가입3
         @Transactional
         @PatchMapping("/participant")
-        public ResponseEntity<Void> updateParticipantDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageRequestDto updateMypageRequestDto) {
+        public ResponseEntity<Void> updateParticipantDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
             try {
-                userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageRequestDto);
+                userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
 
                 // 정보 저장 이후 리다이렉션할 URL 생성
                 String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -78,9 +78,9 @@ public class UserController {
 
     @Transactional
     @PatchMapping("/organizer")
-    public ResponseEntity<Void> updateOrganizerDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageRequestDto updateMypageRequestDto) {
+    public ResponseEntity<Void> updateOrganizerDetail(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody UpdateMypageResponseDto updateMypageResponseDto) {
         try {
-            userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageRequestDto);
+            userService.findUserByEmailAndUpdate(customUserDetails.getUsername(), updateMypageResponseDto);
 
             // 정보 저장 이후 리다이렉션할 URL 생성
             String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
