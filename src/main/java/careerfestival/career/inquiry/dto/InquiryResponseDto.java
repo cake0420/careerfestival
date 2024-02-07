@@ -24,13 +24,14 @@ public class InquiryResponseDto {
     public void setSecreteMessage(String secreteMessage) {
         this.secreteMessage = secreteMessage;
     }
+    public void setCommentContent(String commentContent){ this.commentContent = commentContent;}
     public InquiryResponseDto(Inquiry inquiry) {
         this.userId = (inquiry.getUser() != null) ? inquiry.getUser().getId() : null;
         this.eventId = (inquiry.getEvent() != null) ? inquiry.getEvent().getId() : null;
         this.commentContent = inquiry.getCommentContent();
         this.parent = (inquiry.getParent() != null) ? inquiry.getParent().getId() : null;
         this.Name = inquiry.getName();
-        this.secreteMessage = inquiry.isSecret() ? "사용자가 비공개처리했습니다." : "";
+        this.secreteMessage = inquiry.isSecret() ? getSecreteMessage() : null;
         this.secret = inquiry.isSecret();
     }
 }

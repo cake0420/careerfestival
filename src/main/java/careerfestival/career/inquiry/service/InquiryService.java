@@ -113,9 +113,10 @@ public class InquiryService {
             Event event = eventRepository.findById(responseDto.getEventId()).get();
 
             if (Objects.equals(responseDto.getUserId(), currentUserId) || Objects.equals(event.getUser().getId(), currentUserId)) {
-                responseDto.setSecreteMessage("");
+                responseDto.setSecreteMessage(null);
             } else {
-                responseDto.setSecreteMessage("사용자가 비공개처리했습니다.");
+                responseDto.setSecreteMessage("사용자가 비공개처리 했습니다.");
+                responseDto.setCommentContent(null);
             }
         }
         return responseDto;
