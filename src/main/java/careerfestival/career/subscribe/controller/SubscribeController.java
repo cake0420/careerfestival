@@ -1,8 +1,6 @@
 package careerfestival.career.subscribe.controller;
 
-
 import careerfestival.career.jwt.JWTUtil;
-import careerfestival.career.register.service.RegisterService;
 import careerfestival.career.subscribe.dto.SubscribeRequestDto;
 import careerfestival.career.subscribe.dto.SubscribeResponseDto;
 import careerfestival.career.subscribe.service.SubscribeService;
@@ -18,7 +16,6 @@ import java.util.List;
 public class SubscribeController {
     private final JWTUtil jwtUtil;
     private final SubscribeService subscribeService;
-    private final RegisterService registerService;
 
     // 구독하기
     @PostMapping("/profile/{fromUserId}/{toUserId}/subs")

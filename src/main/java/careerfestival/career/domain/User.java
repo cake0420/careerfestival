@@ -78,9 +78,6 @@ public class User extends BaseEntity {
     private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Inquiry> inquiry = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Event> event = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -106,7 +103,6 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CommentLike> commentLike = new ArrayList<>();
-
   
     public void addRecord(Record record) {
         records.add(record);
