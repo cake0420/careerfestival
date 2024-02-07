@@ -29,6 +29,7 @@ public class CommentLike {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
+
     public CommentLike(User user, Event event, Comment comment){
         this.user = user;
         this.event = event;
