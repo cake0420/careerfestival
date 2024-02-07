@@ -16,6 +16,8 @@ import java.util.List;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
+    boolean existsByEventName(String eventName);
+    Event findByEventName(String eventName);
 
     /*
      사용자가 등록한 행사 리스트 조회하기 위함.
@@ -23,8 +25,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      */
 
 
+    List<Event> findByUserId(Long userId);
     List<Event> findAllById(Long eventId);
 
+    List<Event> findAllByUserId(Long userId);
 
     @Query(value = "SELECT * FROM event ORDER BY hits DESC LIMIT ?1", nativeQuery = true)
     List<Event> findAllByOrderByHitsDesc(int limit);

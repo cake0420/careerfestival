@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,9 +18,9 @@ public class EventPageService {
 
     public List<EventPageResponseDto> getEvents(Long eventId) {
         // 조회수에 의한 정렬 처리 필요
-        Optional<Event> eventOptional = eventRepository.findById(eventId);
+        List<Event> events = eventRepository.findAllById(eventId);
 
-        return eventOptional.stream()
+        return events.stream()
                 .map(EventPageResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
