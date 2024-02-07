@@ -2,24 +2,24 @@ package careerfestival.career.login.service;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
-import careerfestival.career.domain.enums.KeywordName;
+import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
-import careerfestival.career.myPage.dto.MyPageResponseDto;
-import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
+import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
+import careerfestival.career.myPage.dto.UpdateMypageRequestDto;
+import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RegionRepository regionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
@@ -38,7 +38,7 @@ public class UserService {
 
         User user = userSignUpRequestDto.toEntity();
         user.updatePassword(bCryptPasswordEncoder.encode(userSignUpRequestDto.getPassword()));
-
+        user.setUserStatus();
         userRepository.save(user);
 
         return user;
@@ -46,14 +46,12 @@ public class UserService {
 
 
     @Transactional
-    public void findUserByEmailAndUpdate(String email, UpdateMypageResponseDto updateMypageResponseDto){
+    public void findUserByEmailAndUpdate(String email, UpdateMypageRequestDto updateMypageRequestDto){
         User findUser = userRepository.findByEmail(email);
-        findUser.update(updateMypageResponseDto);
-        String city = updateMypageResponseDto.getCity();
-        String addressLine = updateMypageResponseDto.getAddressLine();
-        if(city == null || addressLine == null){
-            return;
-        }
+        findUser.update(updateMypageRequestDto);
+
+        Region region = regionRepository.findRegionByCityAndAddressLine(updateMypageRequestDto.getCity(), updateMypageRequestDto.getAddressLine());
+
         Gender gender = findUser.getGender();
 
         if(Gender.남성.equals(gender)){
@@ -61,8 +59,6 @@ public class UserService {
         } else{
             findUser.updateUserProfileFileUrl("classpath:Female_Profile.png");
         }
-
-        findUser.updateAddressLine(addressLine);
     }
 
     @Transactional
@@ -71,20 +67,28 @@ public class UserService {
     }
 
     @Transactional
-    public MyPageResponseDto fillMyPage(User user) {
-        MyPageResponseDto myPageResponseDto = new MyPageResponseDto();
-        myPageResponseDto.setName(user.getName());
-        myPageResponseDto.setEmail(user.getEmail());
-        myPageResponseDto.setAge(user.getAge());
-        myPageResponseDto.setGender(user.getGender());
-        myPageResponseDto.setPhoneNumber(user.getPhoneNumber());
-        myPageResponseDto.setCompany(user.getCompany());
-        myPageResponseDto.setDepartment(user.getDepartment());
-        myPageResponseDto.setPosition(user.getPosition());
-        myPageResponseDto.setAddressLine(user.getAddressLine());
-        List<KeywordName> keyword = user.getKeywordName();
-        myPageResponseDto.setKeywordName(keyword);
-        return myPageResponseDto;
+    public MyPageUserInfoResponseDto fillMyPage(User user) {
+        if(user.getRegion() != null){
+            MyPageUserInfoResponseDto myPageUserInfoResponseDto = MyPageUserInfoResponseDto.builder()
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .age(user.getAge())
+                    .gender(user.getGender())
+                    .phoneNumber(user.getPhoneNumber())
+                    .company(user.getCompany())
+                    .department(user.getDepartment())
+                    .keywordNameList(user.getKeywordName())
+                    .userProfilefileUrl(user.getUserProfilefileUrl())
+                    .build();
+            return myPageUserInfoResponseDto;
+        } else {
+            MyPageUserInfoResponseDto myPageUserInfoResponseDto = MyPageUserInfoResponseDto.builder()
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .userProfilefileUrl(user.getUserProfilefileUrl())
+                    .build();
+            return myPageUserInfoResponseDto;
+        }
     }
 
 }

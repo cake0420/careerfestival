@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface OrganizerRepository extends JpaRepository<Organizer, Long> {
     Organizer findByUserId(Long userId);
@@ -18,5 +17,10 @@ public interface OrganizerRepository extends JpaRepository<Organizer, Long> {
     Page<Organizer> findAllByCategoryKeywordName(Category category, KeywordName keywordName, Pageable pageable);
 
     @Query("SELECT o.organizerName FROM Organizer o WHERE o.id = :organizerId")
-    String findOrganizerNameByOrganizerId(@Param("organizerId") Long organizerId);
+    String findOrganizerNameByOrganizerId(Long organizerId);
+
+    @Query("SELECT COUNT(o) FROM Organizer o")
+    int countOrganizer();
+    @Query("SELECT o FROM Organizer o")
+    Page<Organizer> findOrganizers(Pageable organizerPageable);
 }
