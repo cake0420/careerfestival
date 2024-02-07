@@ -63,8 +63,8 @@ public class MyPageController {
                 myPageResponeDtoObjectMap.put("participateEvent", participateEvent);
 
                 return ResponseEntity.ok().body(myPageResponeDtoObjectMap);
-
             }
+
             //주최자인 경우
             else {
                 //구독자수, 등록한 행사 수
