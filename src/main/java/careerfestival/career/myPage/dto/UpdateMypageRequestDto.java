@@ -1,5 +1,6 @@
 package careerfestival.career.myPage.dto;
 
+import careerfestival.career.domain.enums.CompanyType;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import lombok.AllArgsConstructor;
@@ -11,10 +12,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateMypageResponseDto {
+public class UpdateMypageRequestDto {
     private String name;
-
-    private String email;
 
     private Gender gender;
 
@@ -23,7 +22,7 @@ public class UpdateMypageResponseDto {
     private String phoneNumber;
 
     //소속, 부서/학과, 직급
-    private String company;
+    private CompanyType company;
     private String department;
 
     //커리어 키워드
