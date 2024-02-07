@@ -1,12 +1,9 @@
 package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
-import careerfestival.career.domain.enums.Gender;
-import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.enums.Role;
-import careerfestival.career.domain.enums.UserStatus;
+import careerfestival.career.domain.enums.*;
 import careerfestival.career.domain.mapping.*;
-import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
+import careerfestival.career.myPage.dto.UpdateMypageRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -53,8 +50,8 @@ public class User extends BaseEntity {
     private int age;
 
     // 소속
-    @Column(length = 20, name = "company")
-    private String company;
+    @Enumerated(EnumType.STRING)
+    private CompanyType company;
 
     // 부서 및 학과
     @Column(length = 20, name = "department")
@@ -76,6 +73,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Inquiry> inquiry = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Event> event = new ArrayList<>();
@@ -103,6 +103,7 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CommentLike> commentLike = new ArrayList<>();
+
   
     public void addRecord(Record record) {
         records.add(record);
@@ -139,7 +140,7 @@ public class User extends BaseEntity {
     }
 
 
-    public void updateCompany(String company) {
+    public void updateCompany(CompanyType company) {
         if(company==null) return;
         this.company = company;
     }
@@ -170,15 +171,15 @@ public class User extends BaseEntity {
     }
 
     @Transactional
-    public void update(UpdateMypageResponseDto updateMypageResponseDto) {
-        this.updateName(updateMypageResponseDto.getName());
-        this.updateAge(updateMypageResponseDto.getAge());
-        this.updateGender(updateMypageResponseDto.getGender());
-        this.updatePhoneNumber(updateMypageResponseDto.getPhoneNumber());
-        this.updateCompany(updateMypageResponseDto.getCompany());
-        this.updateDepartment(updateMypageResponseDto.getDepartment());
-        this.updateKeywordName(updateMypageResponseDto.getKeywordName());
-        this.updateUserProfileFileUrl(updateMypageResponseDto.getUserProfileFileUrl());
+    public void update(UpdateMypageRequestDto updateMypageRequestDto) {
+        this.updateName(updateMypageRequestDto.getName());
+        this.updateAge(updateMypageRequestDto.getAge());
+        this.updateGender(updateMypageRequestDto.getGender());
+        this.updatePhoneNumber(updateMypageRequestDto.getPhoneNumber());
+        this.updateCompany(updateMypageRequestDto.getCompany());
+        this.updateDepartment(updateMypageRequestDto.getDepartment());
+        this.updateKeywordName(updateMypageRequestDto.getKeywordName());
+        this.updateUserProfileFileUrl(updateMypageRequestDto.getUserProfileFileUrl());
     }
 }
 
