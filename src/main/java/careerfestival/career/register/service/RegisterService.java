@@ -80,11 +80,8 @@ public class RegisterService {
 
     // 행사 등록하기 1, 2단계 기능 구현
     public void registerEvent(String email, MultipartFile eventMainImage, MultipartFile eventInformImage, RegisterEventDto registerEventDto) {
-
         User user = userRepository.findByEmail(email);
-
         Organizer organizer = organizerRepository.findByUserId(user.getId());
-
         Event event = registerEventDto.toEventEntity();
         Region region = registerEventDto.toRegionEntity();
 
@@ -117,6 +114,8 @@ public class RegisterService {
                 event.setEventMainFileUrl(storedFileName);
                 organizer.updateCountEvent();
                 eventRepository.save(event);
+            } else {
+                throw new Exception();
             }
         } catch (Exception e) {
             e.printStackTrace();
