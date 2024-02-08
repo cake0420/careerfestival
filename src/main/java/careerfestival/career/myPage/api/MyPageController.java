@@ -2,8 +2,10 @@ package careerfestival.career.myPage.api;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Role;
+import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.service.UserService;
+import careerfestival.career.mainPage.service.MainPageService;
 import careerfestival.career.myPage.dto.MyPageEventResponseDto;
 import careerfestival.career.myPage.dto.MyPageOrganizerResponseDto;
 import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
@@ -32,6 +34,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MyPageController {
     private final UserService userService;
+    private final MainPageService mainPageService;
     private final MyPageService myPageService;
     private final SubscribeService subscribeService;
     private final OrganizerService organizerService;
@@ -68,7 +71,8 @@ public class MyPageController {
             //주최자인 경우
             else {
                 //구독자수, 등록한 행사 수
-                int countedFollowers = subscribeService.countFollower(findUser);
+                Organizer organizer = subscribeService.getOrganizer(findUser.getId());
+                int countedFollowers = subscribeService.countFollower(organizer);
                 int countedEvents = organizerService.countRegisterdEvent(findUser);
                 MyPageOrganizerResponseDto myPageOrganizerResponseDto = MyPageOrganizerResponseDto.builder()
                         .countFollower(countedFollowers)
@@ -122,7 +126,8 @@ public class MyPageController {
             //주최자인 경우
             else {
                 //구독자수, 등록한 행사 수
-                int countedFollowers = subscribeService.countFollower(findUser);
+                Organizer organizer = subscribeService.getOrganizer(findUser.getId());
+                int countedFollowers = subscribeService.countFollower(organizer);
                 int countedEvents = organizerService.countRegisterdEvent(findUser);
                 MyPageOrganizerResponseDto myPageOrganizerResponseDto = MyPageOrganizerResponseDto.builder()
                         .countFollower(countedFollowers)
@@ -141,6 +146,12 @@ public class MyPageController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+
+
+
+
+
 
 
     @PatchMapping("/update")
