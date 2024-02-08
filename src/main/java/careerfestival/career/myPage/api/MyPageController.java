@@ -10,8 +10,6 @@ import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.myPage.service.MyPageService;
 import careerfestival.career.organizer.OrganizerService;
-import careerfestival.career.repository.OrganizerRepository;
-import careerfestival.career.repository.SubscribeRepository;
 import careerfestival.career.subscribe.service.SubscribeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -139,8 +137,6 @@ public class MyPageController {
                 myPageResponeDtoObjectMap.put("registerdEvent", registerdEvent);
                 return ResponseEntity.ok().body(myPageResponeDtoObjectMap);
             }
-
-
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
