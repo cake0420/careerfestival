@@ -2,6 +2,7 @@ package careerfestival.career.myPage.api;
 
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Role;
+import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.service.UserService;
 import careerfestival.career.myPage.dto.MyPageEventResponseDto;
@@ -45,6 +46,7 @@ public class MyPageController {
         try{
             //사용자 정보
             User findUser = userService.findUserByCustomUserDetails(customUserDetails);
+            Organizer findOrganizer = userService.findOrganizerCustomUserDetails(customUserDetails);
             MyPageUserInfoResponseDto myPageUserInfoResponse = userService.fillMyPage(findUser);
 
             Map<String, Object> myPageResponeDtoObjectMap = new HashMap<>();
@@ -68,7 +70,7 @@ public class MyPageController {
             //주최자인 경우
             else {
                 //구독자수, 등록한 행사 수
-                int countedFollowers = subscribeService.countFollower(findUser);
+                int countedFollowers = subscribeService.countFollower(findOrganizer);
                 int countedEvents = organizerService.countRegisterdEvent(findUser);
                 MyPageOrganizerResponseDto myPageOrganizerResponseDto = MyPageOrganizerResponseDto.builder()
                         .countFollower(countedFollowers)
@@ -99,6 +101,7 @@ public class MyPageController {
         try{
             //사용자 정보
             User findUser = userService.findUserByCustomUserDetails(customUserDetails);
+            Organizer findOrganizer = userService.findOrganizerCustomUserDetails(customUserDetails);
             MyPageUserInfoResponseDto myPageUserInfoResponse = userService.fillMyPage(findUser);
 
             Map<String, Object> myPageResponeDtoObjectMap = new HashMap<>();
@@ -122,7 +125,7 @@ public class MyPageController {
             //주최자인 경우
             else {
                 //구독자수, 등록한 행사 수
-                int countedFollowers = subscribeService.countFollower(findUser);
+                int countedFollowers = subscribeService.countFollower(findOrganizer);
                 int countedEvents = organizerService.countRegisterdEvent(findUser);
                 MyPageOrganizerResponseDto myPageOrganizerResponseDto = MyPageOrganizerResponseDto.builder()
                         .countFollower(countedFollowers)

@@ -24,7 +24,8 @@ public class Subscribe extends BaseEntity {
     // 구독되는 주최자
     @ManyToOne
     @JoinColumn(name = "from_user")
-    private User fromUser;
+    private Organizer fromUser;
+
 
     public Subscribe(User toUser, User fromUser){
         this.toUser = toUser;

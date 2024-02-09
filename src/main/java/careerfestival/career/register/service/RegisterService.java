@@ -1,5 +1,6 @@
 package careerfestival.career.register.service;
 
+import careerfestival.career.AES.AESUtil;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
@@ -34,9 +35,11 @@ public class RegisterService {
     private final EventRepository eventRepository;
     private final OrganizerRepository organizerRepository;
     private final RegionRepository regionRepository;
+    private final AESUtil aesUtil;
 
     @Autowired
     private S3Uploader s3Uploader;
+
 
     // 주최자 (organizer) 등록
     public void registerOrganizer(String email, MultipartFile organizerProfileImage, RegisterOrganizerDto registerOrganizerDto) {
@@ -45,6 +48,7 @@ public class RegisterService {
             if(Role.ROLE_ORGANIZER.equals(user.getRole())){
                 Organizer organizer = registerOrganizerDto.toEntity();
                 organizer.setUser(user);
+                organizer.setOrganizerEmail(aesUtil.encrypt(email));
                 if(!organizerProfileImage.isEmpty()){
                     BufferedImage resizedImage = ImageUtils.resizeImage(organizerProfileImage, 400, 400);
 
