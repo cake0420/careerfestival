@@ -44,7 +44,13 @@ public class SubscribeController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable String fromUserId,
             @RequestBody SubscribeRequestDto subscribeRequestDto) {
+        if(customUserDetails == null)
+        {
+            return ResponseEntity.ok()
+                    .header("Location", "/login")
+                    .build();
 
+        }
         Long findUser = userService.findUserByCustomUserDetails(customUserDetails).getId();
         try {
             boolean subsId = subscribeService.addRemove(findUser, subscribeRequestDto);
