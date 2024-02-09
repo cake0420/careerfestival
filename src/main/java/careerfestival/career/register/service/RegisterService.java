@@ -45,6 +45,7 @@ public class RegisterService {
             if(Role.ROLE_ORGANIZER.equals(user.getRole())){
                 Organizer organizer = registerOrganizerDto.toEntity();
                 organizer.setUser(user);
+                organizer.setOrganizerEmail(email);
                 if(!organizerProfileImage.isEmpty()){
                     BufferedImage resizedImage = ImageUtils.resizeImage(organizerProfileImage, 400, 400);
 

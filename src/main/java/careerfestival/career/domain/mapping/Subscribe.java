@@ -22,9 +22,9 @@ public class Subscribe extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "from_user")
-    private User fromUser;
+    private Organizer fromUser;
 
-    public Subscribe(User toUser, User fromUser){
+    public Subscribe(User toUser, Organizer fromUser){
 
         this.toUser = toUser;
         this.fromUser = fromUser;

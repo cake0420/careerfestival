@@ -13,15 +13,11 @@ import lombok.NoArgsConstructor;
 
 public class SubscribeRequestDto {
 
-    private Long toUser;
-    private Long fromUser;
-    private Integer subscriberCount;
+    private String fromUser;
     @Builder
-    public static SubscribeRequestDto of(Long toUser, Long fromUser, Integer subscriberCount) {
+    public static SubscribeRequestDto of(String fromUser) {
         return SubscribeRequestDto.builder()
-                .toUser(toUser)
                 .fromUser(fromUser)
-                .subscriberCount(subscriberCount)
                 .build();
     }
 

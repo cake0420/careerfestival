@@ -98,9 +98,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Region> region = new ArrayList<>();
 
-    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<Subscribe> subscribe = new ArrayList<>();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
 

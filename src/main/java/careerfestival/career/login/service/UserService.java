@@ -1,12 +1,15 @@
 package careerfestival.career.login.service;
 
+import careerfestival.career.AES.AESUtil;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
+import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.myPage.dto.MyPageUserInfoResponseDto;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
+import careerfestival.career.repository.OrganizerRepository;
 import careerfestival.career.repository.RegionRepository;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RegionRepository regionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OrganizerRepository organizerRepository;
 
     @Transactional
     public User signUp(UserSignUpRequestDto userSignUpRequestDto) {
@@ -64,6 +68,13 @@ public class UserService {
     @Transactional
     public User findUserByCustomUserDetails(CustomUserDetails customUserDetails){
         return userRepository.findByEmail(customUserDetails.getUsername());
+    }
+
+    @Transactional
+    public Organizer findOrganizerCustomUserDetails(CustomUserDetails customUserDetails){
+
+        return organizerRepository.findByEncryptedEmail(AESUtil.encrypt(customUserDetails.getUsername()));
+
     }
 
     @Transactional
