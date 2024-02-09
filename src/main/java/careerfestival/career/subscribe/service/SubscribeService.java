@@ -26,15 +26,14 @@ import java.util.stream.Collectors;
     private final UserRepository userRepository;
     private final SubscribeRepository subscribeRepository;
     private final OrganizerRepository organizerRepository;
+    private final AESUtil aesUtil;
 
     public boolean addRemove(Long userId, SubscribeRequestDto subscribeRequestDto) {
         String fromUserId = subscribeRequestDto.getFromUser();
-        String decrypt = AESUtil.decrypt(fromUserId);
+        String decrypt = aesUtil.decrypt(fromUserId);
         Optional<User> toUserOptional = userRepository.findById(userId);
         User fromUserOptional = userRepository.findByEmail(decrypt);
 
-        System.out.println(fromUserId);
-        System.out.println(decrypt + "테스트");
         if (toUserOptional.isEmpty( ) ||  fromUserOptional.getId() == null) {
             throw new UserOrEventNotFoundException("User not found");
         }

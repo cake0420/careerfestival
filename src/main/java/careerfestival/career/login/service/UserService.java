@@ -25,6 +25,7 @@ public class UserService {
     private final RegionRepository regionRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final OrganizerRepository organizerRepository;
+    private final AESUtil aesUtil;
 
     @Transactional
     public User signUp(UserSignUpRequestDto userSignUpRequestDto) {
@@ -73,7 +74,7 @@ public class UserService {
     @Transactional
     public Organizer findOrganizerCustomUserDetails(CustomUserDetails customUserDetails){
 
-        return organizerRepository.findByEncryptedEmail(AESUtil.encrypt(customUserDetails.getUsername()));
+        return organizerRepository.findByEncryptedEmail(aesUtil.encrypt(customUserDetails.getUsername()));
 
     }
 

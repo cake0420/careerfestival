@@ -2,22 +2,27 @@ package careerfestival.career.AES;
 
 
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+@Component
 public class AESUtil {
 
-
-    private final static String SECRET_KEY = "2F8D1E6A4BC3795D";
-    private final static String INIT_VECTOR = "yourInitVector12";
+    @Value("${aes.secret-key}")
+    private String SECRET_KEY;
+    @Value("${aes.init-vector}")
+    private String INIT_VECTOR;
 
 //    private final static String INIT_VECTOR = "InitVector123456";
 
 
 
-    public static String encrypt(String value) {
+    public String encrypt(String value) {
         try {
             IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
             SecretKeySpec skeySpec = new SecretKeySpec(SECRET_KEY.getBytes("UTF-8"), "AES");
@@ -33,14 +38,13 @@ public class AESUtil {
         }
     }
 
-    public static String decrypt(String encrypted) {
+    public String decrypt(String encrypted) {
         try {
             IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
             SecretKeySpec skeySpec = new SecretKeySpec(SECRET_KEY.getBytes("UTF-8"), "AES");
 
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-            System.out.println(INIT_VECTOR);
 
             byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));
             return new String(original, "UTF-8");

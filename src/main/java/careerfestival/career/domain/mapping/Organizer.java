@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class Organizer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,6 +48,6 @@ public class Organizer {
     }
 
     public void setOrganizerEmail(String encryptedEmail) {
-        this.encryptedEmail = AESUtil.encrypt(encryptedEmail);
+        this.encryptedEmail = encryptedEmail;
     }
 }
