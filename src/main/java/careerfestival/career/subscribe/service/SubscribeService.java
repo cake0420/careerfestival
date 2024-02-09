@@ -2,6 +2,7 @@ package careerfestival.career.subscribe.service;
 
 import careerfestival.career.AES.AESUtil;
 import careerfestival.career.domain.User;
+
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Subscribe;
@@ -11,11 +12,9 @@ import careerfestival.career.repository.SubscribeRepository;
 import careerfestival.career.repository.UserRepository;
 import careerfestival.career.subscribe.dto.SubscribeRequestDto;
 import careerfestival.career.subscribe.dto.SubscribeResponseDto;
-import careerfestival.career.wish.dto.WishResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,27 +23,31 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
     public class SubscribeService {
     private final UserRepository userRepository;
-    private final SubscribeRepository subscribeRepository;
     private final OrganizerRepository organizerRepository;
+    private final SubscribeRepository subscribeRepository;
     private final AESUtil aesUtil;
 
-    public boolean addRemove(Long userId, SubscribeRequestDto subscribeRequestDto) {
-        String fromUserId = subscribeRequestDto.getFromUser();
-        String decrypt = aesUtil.decrypt(fromUserId);
-        Optional<User> toUserOptional = userRepository.findById(userId);
-        User fromUserOptional = userRepository.findByEmail(decrypt);
 
-        if (toUserOptional.isEmpty( ) ||  fromUserOptional.getId() == null) {
+    public boolean addRemove(SubscribeRequestDto subscribeRequestDto) {
+        Long toUserId = subscribeRequestDto.getToUser();
+        Long subscribedOrganizerId = subscribeRequestDto.getSubscribedOrganizer();
+
+        Optional<User> toUserOptional = userRepository.findById(toUserId);
+        Optional<Organizer> fromOrganizerOptional = organizerRepository.findById(subscribedOrganizerId);
+
+        if (toUserOptional.isEmpty() || fromOrganizerOptional.isEmpty()) {
+
             throw new UserOrEventNotFoundException("User not found");
         }
 
         User toUser = toUserOptional.get();
-        Organizer fromUser = organizerRepository.findByUserId(fromUserOptional.getId());
+        Organizer subscribedOrganizer = fromOrganizerOptional.get();
 
-        Subscribe subscribe = subscribeRepository.findByFromUser_IdAndToUser_Id(fromUser.getId(), userId);
-        if (subscribe == null && toUser.getRole() == Role.ROLE_PARTICIPANT) {
+        Subscribe subscribe = subscribeRepository.findBySubscribedOrganizer_IdAndToUser_id(subscribedOrganizerId, toUserId);
+        if (subscribe == null) {
 
-            subscribeRepository.save(new Subscribe(toUser, fromUser));
+
+            subscribeRepository.save(new Subscribe(toUser, subscribedOrganizer));
             return true;
         } else if (subscribe != null && toUser.getRole() == Role.ROLE_PARTICIPANT) {
             subscribeRepository.delete(subscribe);
@@ -59,15 +62,18 @@ import java.util.stream.Collectors;
         if (userOptional.isEmpty()) {
             throw new UserOrEventNotFoundException("User not found");
         } else {
-            List<Subscribe> subscribes = subscribeRepository.findByFromUserId(userId);
+            List<Subscribe> subscribes = subscribeRepository.findBySubscribedOrganizerId(userId);
             return subscribes.stream()
                     .map(SubscribeResponseDto::new)
                     .collect(Collectors.toList());
         }
     }
-
-    public int countFollower (Organizer user){
-        int counted = subscribeRepository.findByFromUser(user);
+    public int countFollower (Organizer organizer){
+        int counted = subscribeRepository.findBySubscribedOrganizer(organizer);
         return counted;
+    }
+
+    public Organizer getOrganizer(Long userId) {
+        return organizerRepository.findByUserId(userId);
     }
 }

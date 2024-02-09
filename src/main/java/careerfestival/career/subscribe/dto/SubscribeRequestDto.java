@@ -1,8 +1,6 @@
 package careerfestival.career.subscribe.dto;
 
 
-import careerfestival.career.domain.User;
-import careerfestival.career.domain.mapping.Subscribe;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +11,15 @@ import lombok.NoArgsConstructor;
 
 public class SubscribeRequestDto {
 
-    private String fromUser;
+    private Long toUser;
+    private Long subscribedOrganizer;
+    private Integer subscriberCount;
     @Builder
-    public static SubscribeRequestDto of(String fromUser) {
+    public static SubscribeRequestDto of(Long toUser, Long subscribedOrganizer, Integer subscriberCount) {
         return SubscribeRequestDto.builder()
-                .fromUser(fromUser)
+                .toUser(toUser)
+                .subscribedOrganizer(subscribedOrganizer)
+                .subscriberCount(subscriberCount)
                 .build();
     }
-
-
 }
