@@ -1,6 +1,8 @@
 package careerfestival.career.subscribe.controller;
 
 
+import careerfestival.career.AES.AESUtil;
+import careerfestival.career.jwt.JWTUtil;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.service.UserService;
 import careerfestival.career.register.dto.RegisterMainResponseDto;
@@ -19,6 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -50,7 +53,7 @@ public class SubscribeController {
         }
         Long findUser = userService.findUserByCustomUserDetails(customUserDetails).getId();
         try {
-            boolean subsId = subscribeService.addRemove(subscribeRequestDto);
+            boolean subsId = subscribeService.addRemove(findUser, subscribeRequestDto);
             String redirectUrl = "/profile/" + fromUserId;
             return ResponseEntity.ok()
                     .header("Location", redirectUrl)

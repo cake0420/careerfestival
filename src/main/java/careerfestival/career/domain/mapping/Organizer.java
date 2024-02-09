@@ -36,7 +36,7 @@ public class Organizer {
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
     private List<Event> event = new ArrayList<>();
 
-    @OneToMany(mappedBy = "subscribedOrganizer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscribe> subscribe = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
