@@ -7,6 +7,8 @@ import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.service.UserService;
 import careerfestival.career.register.dto.RegisterMainResponseDto;
 import careerfestival.career.register.service.RegisterService;
+import careerfestival.career.repository.OrganizerRepository;
+import careerfestival.career.repository.SubscribeRepository;
 import careerfestival.career.repository.UserRepository;
 import careerfestival.career.subscribe.dto.SubscribeRequestDto;
 import careerfestival.career.subscribe.dto.SubscribeResponseDto;
@@ -33,6 +35,8 @@ public class SubscribeController {
     private final RegisterService registerService;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final SubscribeRepository subscribeRepository;
+    private final OrganizerRepository organizerRepository;
 
     // 구독하기
     @PostMapping("/profile/{fromUserId}/subs")
@@ -82,23 +86,26 @@ public class SubscribeController {
             @PageableDefault(size = 4, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
         try{
-            Long organizerId = registerService.getOrganizerId(fromUserId);
+
+            Long organizerId = organizerRepository.findByEncryptedEmail(fromUserId).getId();
+            Long organizerUserId = organizerRepository.findByEncryptedEmail(fromUserId).getUser().getId();
+            System.out.println(organizerId + "주최자 id");
+            System.out.println(organizerUserId + "주최자의 유저 id");
             String organizerName = registerService.getOrganizerName(organizerId);
-            int getEventCount = registerService.getCountRegisterEvent(organizerId);
+            int getEventCount = registerService.getCountRegisterEvent(organizerUserId);
             Page<RegisterMainResponseDto> registerMainResponseDtos
                     = registerService.getEventList(organizerId, pageable);
 
-            /*
-            주최자를 구독하는 사람들의 인원수 반환 필요
-             */
-
-            Map<String, Object> registerMainResponseDtoObjectMap = new HashMap<>();
-            registerMainResponseDtoObjectMap.put("organizerName", organizerName);
+            List<SubscribeResponseDto> subs = subscribeService.getAllSubscribeByUser(organizerId);
+            int totalSubsCount = subs.size();
+            Map<String, Object> profile = new HashMap<>();
+            profile.put("organizerName", organizerName);
             // 구독자 관련 코드 추가 작성 필요
-            registerMainResponseDtoObjectMap.put("festivalList", registerMainResponseDtos);
-            registerMainResponseDtoObjectMap.put("festivalCount", getEventCount);
+            profile.put("festivalList", registerMainResponseDtos);
+            profile.put("festivalCount", getEventCount);
+            profile.put("subsCount", totalSubsCount);
 
-            return ResponseEntity.ok().body(registerMainResponseDtoObjectMap);
+            return ResponseEntity.ok().body(profile);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

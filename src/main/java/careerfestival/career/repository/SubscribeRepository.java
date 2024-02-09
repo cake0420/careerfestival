@@ -17,6 +17,8 @@ public interface SubscribeRepository extends JpaRepository<Subscribe, Long> {
 
     Subscribe findByFromUser_IdAndToUser_Id(Long formUserId, Long userId);
 
+    @Query("SELECT COUNT(s) FROM Subscribe s WHERE s.fromUser = ?1")
+    int findAllByFromUser_Id(Long formUserId);
 
     @Query("SELECT COUNT(s) FROM Subscribe s WHERE s.fromUser = ?1")
     int findByFromUser(Organizer fromUser);
