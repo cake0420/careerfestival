@@ -26,6 +26,7 @@ public class Subscribe extends BaseEntity {
     @JoinColumn(name = "subscribed_organizer")
     private Organizer subscribedOrganizer;
 
+
     public Subscribe(User toUser, Organizer subscribedOrganizer){
         this.toUser = toUser;
         this.subscribedOrganizer = subscribedOrganizer;

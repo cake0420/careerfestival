@@ -1,6 +1,9 @@
 package careerfestival.career.subscribe.service;
 
+import careerfestival.career.AES.AESUtil;
 import careerfestival.career.domain.User;
+
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Subscribe;
 import careerfestival.career.participate.Exception.UserOrEventNotFoundException;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
     private final UserRepository userRepository;
     private final OrganizerRepository organizerRepository;
     private final SubscribeRepository subscribeRepository;
+    private final AESUtil aesUtil;
 
 
     public boolean addRemove(SubscribeRequestDto subscribeRequestDto) {
@@ -32,6 +36,7 @@ import java.util.stream.Collectors;
         Optional<Organizer> fromOrganizerOptional = organizerRepository.findById(subscribedOrganizerId);
 
         if (toUserOptional.isEmpty() || fromOrganizerOptional.isEmpty()) {
+
             throw new UserOrEventNotFoundException("User not found");
         }
 
@@ -41,12 +46,14 @@ import java.util.stream.Collectors;
         Subscribe subscribe = subscribeRepository.findBySubscribedOrganizer_IdAndToUser_id(subscribedOrganizerId, toUserId);
         if (subscribe == null) {
 
+
             subscribeRepository.save(new Subscribe(toUser, subscribedOrganizer));
             return true;
-        } else {
+        } else if (subscribe != null && toUser.getRole() == Role.ROLE_PARTICIPANT) {
             subscribeRepository.delete(subscribe);
-            return false;
+            return true;
         }
+        return false;
     }
 
 
@@ -61,7 +68,6 @@ import java.util.stream.Collectors;
                     .collect(Collectors.toList());
         }
     }
-
     public int countFollower (Organizer organizer){
         int counted = subscribeRepository.findBySubscribedOrganizer(organizer);
         return counted;

@@ -32,6 +32,10 @@ spring:
       max-file-size: 10MB
       enabled: true
 
+aes:
+    secret-key: ${AES_SECRET_KEY}
+    init-vector: ${AES_INIT_VECTOR}
+
 cloud:
   aws:
     credentials:

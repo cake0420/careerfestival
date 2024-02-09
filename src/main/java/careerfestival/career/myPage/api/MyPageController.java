@@ -48,6 +48,7 @@ public class MyPageController {
         try{
             //사용자 정보
             User findUser = userService.findUserByCustomUserDetails(customUserDetails);
+            Organizer findOrganizer = userService.findOrganizerCustomUserDetails(customUserDetails);
             MyPageUserInfoResponseDto myPageUserInfoResponse = userService.fillMyPage(findUser);
 
             Map<String, Object> myPageResponeDtoObjectMap = new HashMap<>();
@@ -71,8 +72,10 @@ public class MyPageController {
             //주최자인 경우
             else {
                 //구독자수, 등록한 행사 수
+
                 Organizer organizer = subscribeService.getOrganizer(findUser.getId());
                 int countedFollowers = subscribeService.countFollower(organizer);
+
                 int countedEvents = organizerService.countRegisterdEvent(findUser);
                 MyPageOrganizerResponseDto myPageOrganizerResponseDto = MyPageOrganizerResponseDto.builder()
                         .countFollower(countedFollowers)
@@ -103,6 +106,7 @@ public class MyPageController {
         try{
             //사용자 정보
             User findUser = userService.findUserByCustomUserDetails(customUserDetails);
+            Organizer findOrganizer = userService.findOrganizerCustomUserDetails(customUserDetails);
             MyPageUserInfoResponseDto myPageUserInfoResponse = userService.fillMyPage(findUser);
 
             Map<String, Object> myPageResponeDtoObjectMap = new HashMap<>();

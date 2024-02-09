@@ -12,6 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface OrganizerRepository extends JpaRepository<Organizer, Long> {
     Organizer findByUserId(Long userId);
 
+    Organizer findByEncryptedEmail(String encryptedEmail);
+
     // 주최자가 주최한 행사 중에서 category와 keywordName에 의한 필터링이 적용된 상태의 주최자들을 보여줘야 함
 
     @Query("SELECT o FROM Organizer o JOIN o.event e WHERE e.category = :category AND e.keywordName = :keywordName")

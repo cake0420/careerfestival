@@ -1,5 +1,6 @@
 package careerfestival.career.domain.mapping;
 
+import careerfestival.career.AES.AESUtil;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class Organizer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +29,9 @@ public class Organizer {
 
     @Column(columnDefinition = "INT DEFAULT 0", name = "count_event")
     private int countEvent;
+
+    @Column(name = "encrypted_email")
+    private String encryptedEmail;
 
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
     private List<Event> event = new ArrayList<>();
@@ -41,5 +46,8 @@ public class Organizer {
     public void updateCountEvent() {
         this.countEvent += 1;
     }
-}
 
+    public void setOrganizerEmail(String encryptedEmail) {
+        this.encryptedEmail = encryptedEmail;
+    }
+}

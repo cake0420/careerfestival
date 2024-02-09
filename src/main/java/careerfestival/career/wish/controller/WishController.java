@@ -26,10 +26,17 @@ public class WishController {
 
     @PostMapping("/event/{eventId}/wish")
     public ResponseEntity<Long> addWish(
-            @RequestHeader(name = "Authorization") String token, // Assuming the token is passed in the Authorization header
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId,
             @RequestBody WishRequestDto wishRequestDto) {
+
+        if(customUserDetails == null)
+        {
+            return ResponseEntity.ok()
+                    .header("Location", "/login")
+                    .build();
+
+        }
 
         User findUser = userService.findUserByCustomUserDetails(customUserDetails);
         Long userId = findUser.getId();
@@ -53,11 +60,11 @@ public class WishController {
     }
     @GetMapping("/event/{eventId}/wish")
     public ResponseEntity<List<WishResponseDto>> getAllWishByEvent(
-            @RequestHeader(name = "Authorization") String token, // Assuming the token is passed in the Authorization header
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId) {
 
 
-        String username = jwtUtil.getUsername(token);
+        String username = customUserDetails.getUsername();
         String email = userRepository.findByEmail(username).getEmail();
 
 
