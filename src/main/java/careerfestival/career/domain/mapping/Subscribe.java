@@ -27,7 +27,7 @@ public class Subscribe extends BaseEntity {
     private Organizer fromUser;
 
 
-    public Subscribe(User toUser, User fromUser){
+    public Subscribe(User toUser, Organizer fromUser){
         this.toUser = toUser;
         this.fromUser = fromUser;
     }
