@@ -87,15 +87,13 @@ public class RegisterController {
             Page<RegisterMainResponseDto> registerMainResponseDtos
                     = registerService.getEventList(organizerId, pageable);
 
-            /*
-            주최자를 구독하는 사람들의 인원수 반환 필요
-             */
+
 
             Map<String, Object> registerMainResponseDtoObjectMap = new HashMap<>();
             registerMainResponseDtoObjectMap.put("organizerName", organizerName);
             // 구독자 관련 코드 추가 작성 필요
-            registerMainResponseDtoObjectMap.put("festivalList", registerMainResponseDtos);
-            registerMainResponseDtoObjectMap.put("festivalCount", getEventCount);
+            registerMainResponseDtoObjectMap.put("eventList", registerMainResponseDtos);
+            registerMainResponseDtoObjectMap.put("eventCount", getEventCount);
 
             return ResponseEntity.ok().body(registerMainResponseDtoObjectMap);
         } catch (IllegalArgumentException e){
