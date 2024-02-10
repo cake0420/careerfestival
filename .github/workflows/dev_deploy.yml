@@ -20,20 +20,12 @@ jobs:
           java-version: '17' # (5).자바 설치
           distribution: 'adopt'
 
-      - name: Set up Environment Variables
+      - name: Docker build and push to Docker hub
         run: |
-            echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
-            echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
-            echo "TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}" >> $GITHUB_ENV
-            echo "AES_SECRET_KEY=${{ secrets.AES_SECRET_KEY }}" >> $GITHUB_ENV
-            echo "AES_INIT_VECTOR=${{ secrets.AES_INIT_VECTOR }}" >> $GITHUB_ENV
-            echo "ACCESS_KEY=${{ secrets.ACCESS_KEY }}" >> $GITHUB_ENV
-            echo "SECRET_ACCESS_KEY=${{ secrets.SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-            echo "BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> $GITHUB_ENV
-
-          # 다른 환경 변수들도 동일하게 설정
-        shell: bash
+          docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t careerfestval .
+          docker tag careerfestival euegenechoi/careerfestival:latest
+          docker push euegenechoi/careerfestval:latest
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -75,5 +67,5 @@ jobs:
           environment_name: careerfastival-dev-cicd-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
+          deployment_package: Dockerrun.aws.json
           wait_for_deployment: false
