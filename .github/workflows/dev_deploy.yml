@@ -62,6 +62,7 @@ jobs:
           cp -rf .ebextensions-dev deploy/.ebextensions
           cp -rf .platform deploy/.platform
           cd deploy && zip -r deploy.zip .
+        shell: bash
 
 
       - name: Beanstalk Deploy
