@@ -23,9 +23,9 @@ jobs:
       - name: Docker build and push to Docker hub
         run: |
           docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t careerfestval .
+          docker build -t careerfestival .
           docker tag careerfestival euegenechoi/careerfestival:latest
-          docker push euegenechoi/careerfestval:latest
+          docker push euegenechoi/careerfestival:latest
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
