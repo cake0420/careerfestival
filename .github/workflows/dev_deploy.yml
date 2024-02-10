@@ -20,13 +20,6 @@ jobs:
           java-version: '17' # (5).자바 설치
           distribution: 'adopt'
 
-      - name: Docker build and push to Docker hub
-        run: |
-          docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t careerfestival .
-          docker tag careerfestival euegenechoi/careerfestival:latest
-          docker push euegenechoi/careerfestival:latest
-
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash # (6).권한 부여
@@ -34,6 +27,13 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
         shell: bash # (7).build 시작
+
+      - name: Docker build and push to Docker hub
+        run: |
+          docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t careerfestival .
+          docker tag careerfestival euegenechoi/careerfestival:latest
+          docker push euegenechoi/careerfestival:latest
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
@@ -45,18 +45,6 @@ jobs:
       - name: Show Current Time
         run: echo "CurrentTime=$"
         shell: bash # (9).확보한 시간 보여주기
-
-      - name: Generate deployment package
-        run: |
-          mkdir -p deploy
-          cp -f build/libs/*.jar deploy/application.jar
-          cp -f Procfile deploy/Procfile
-          cp -rf .ebextensions-dev deploy/.ebextensions
-          cp -rf .platform deploy/.platform
-          rm -f deploy/deploy.zip  
-          cd deploy && zip -r deploy.zip .
-        shell: bash
-
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
