@@ -18,7 +18,6 @@ public class AESUtil {
     @Value("${aes.init-vector}")
     private String INIT_VECTOR;
 
-//    private final static String INIT_VECTOR = "InitVector123456";
 
 
 
