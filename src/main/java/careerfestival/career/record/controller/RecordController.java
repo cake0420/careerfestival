@@ -1,6 +1,7 @@
 package careerfestival.career.record.controller;
 
 import careerfestival.career.login.dto.CustomUserDetails;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import careerfestival.career.record.dto.RecordRequestDto;
 import careerfestival.career.record.service.RecordService;
 import careerfestival.career.record.dto.*;
@@ -10,11 +11,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -78,12 +82,19 @@ public class RecordController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+        //기록 수정
+    @PatchMapping("/update")
+    public ResponseEntity<Void> updateRecord(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                             @RequestBody UpdateRecordResponseDto updateRecordResponseDto ,Long recordId){
+        recordService.findRecordByEmailAndUpdate(recordId, updateRecordResponseDto);
+        String redirectUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/record")
+                .toUriString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", redirectUrl);
 
-
-
-
-
-
+        return new ResponseEntity<>(headers, HttpStatus.OK);
+    }
 
 
 
