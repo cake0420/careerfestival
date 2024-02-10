@@ -1,12 +1,9 @@
-
 spring:
-
   datasource:
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
 
   sql:
     init:
@@ -33,8 +30,8 @@ spring:
       enabled: true
 
 aes:
-    secret-key: ${AES_SECRET_KEY}
-    init-vector: ${AES_INIT_VECTOR}
+  secret-key: ${AES_SECRET_KEY}
+  init-vector: ${AES_INIT_VECTOR}
 
 cloud:
   aws:
@@ -45,8 +42,8 @@ cloud:
       bucket: ${BUCKET_NAME}
     region:
       static: ap-northeast-2
-    stack:
-      auto: false
+  stack:
+    auto: false
 
 server:
   port: 9000
