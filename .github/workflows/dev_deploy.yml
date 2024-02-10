@@ -61,6 +61,7 @@ jobs:
           cp -f Procfile deploy/Procfile
           cp -rf .ebextensions-dev deploy/.ebextensions
           cp -rf .platform deploy/.platform
+          rm -f deploy/deploy.zip  
           cd deploy && zip -r deploy.zip .
         shell: bash
 
