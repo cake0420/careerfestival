@@ -5,6 +5,7 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
   sql:
     init:
       mode: never
@@ -21,13 +22,14 @@ spring:
 
   jwt:
     secret: ${TOKEN_SECRET}
-    toeknValidTime: ${TOKEN_VALID_TIME}
+    tokenValidTime: ${TOKEN_VALID_TIME}
 
   servlet:
     multipart:
       max-request-size: 10MB
       max-file-size: 10MB
       enabled: true
+
 
 aes:
   secret-key: ${AES_SECRET_KEY}
@@ -44,6 +46,5 @@ cloud:
       static: ap-northeast-2
   stack:
     auto: false
-
 server:
   port: 9000
