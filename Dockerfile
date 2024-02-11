@@ -1,5 +1,4 @@
 FROM openjdk:17-jdk
-WORKDIR /app
-EXPOSE 9000
-COPY build/libs/career-0.0.1-SNAPSHOT.jar /app/app.jar
-CMD ["java", "-jar", "app.jar"]
+ARG JAR_FILE=build/libs/career-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
