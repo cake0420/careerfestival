@@ -3,15 +3,22 @@ package careerfestival.career.repository;
 
 import careerfestival.career.domain.mapping.Inquiry;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
     List<Inquiry> findByOrderNumber(Long orderNumber);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Inquiry i SET i.checked = true WHERE i.isParent = true AND i.orderNumber = :orderNumber AND i.event.id = :eventId")
+    void updateCheckStatusBeforeOrderNumber(@Param("orderNumber") Long orderNumber, @Param("eventId") Long eventId);
 
     @Query("SELECT COALESCE(MAX(c.orderNumber), 0) FROM Inquiry c WHERE c.parent IS NULL")
     Long findMaxOrderNumber();
