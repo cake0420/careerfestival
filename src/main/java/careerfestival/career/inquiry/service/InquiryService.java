@@ -40,6 +40,12 @@ public class InquiryService {
                     Inquiry lastParentComment = parentComment.get(parentComment.size() - 1); // 마지막 부모 댓글을 가져옴
                     Inquiry inquiry = inquiryRequestDto.toEntityWithParent(user.orElse(null), event.orElse(null), inquiryRequestDto.getCommentContent(), lastParentComment);
 
+                    if(Objects.equals(user, event.get().getUser())){
+                        inquiry.setCheck(true);
+                    }
+                    else {
+                        inquiry.setCheck(false);
+                    }
                     // 대댓글이므로 isParent를 false로 설정
                     inquiry.setIsParent(false);
                     inquiry.setOrderNumber(lastParentComment.getOrderNumber());

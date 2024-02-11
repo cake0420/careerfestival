@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +21,8 @@ public class InquiryResponseDto {
     private String Name;
     private String secreteMessage; // 비밀 댓글 여부에 따른 메시지
     private boolean secret;
+    private boolean checked;
+    private LocalDateTime createdAt;
 
 
     public void setSecreteMessage(String secreteMessage) {
@@ -33,5 +37,7 @@ public class InquiryResponseDto {
         this.Name = inquiry.getName();
         this.secreteMessage = inquiry.isSecret() ? getSecreteMessage() : null;
         this.secret = inquiry.isSecret();
+        this.checked = inquiry.isChecked();
+        this.createdAt = inquiry.getCreatedAt();
     }
 }
