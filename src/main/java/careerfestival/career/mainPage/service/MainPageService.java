@@ -8,6 +8,7 @@ import careerfestival.career.domain.mapping.Organizer;
 import careerfestival.career.domain.mapping.Region;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.mainPage.dto.MainPageFestivalListResponseDto;
+import careerfestival.career.mainPage.dto.MainPageOrganizerListResponseDto;
 import careerfestival.career.mainPage.dto.MainPageResponseDto;
 import careerfestival.career.repository.EventRepository;
 import careerfestival.career.repository.OrganizerRepository;
@@ -31,7 +32,7 @@ public class MainPageService {
 
     public List<MainPageResponseDto> getEventsHitsDesc() {
         // 조회수에 의한 내림차순 정렬한 events
-        List<Event> events = eventRepository.findAllByOrderByHitsDesc();
+        List<Event> events = eventRepository.findAllByOrderByHitsDesc(6);
         
         return events.stream()
                 .map(MainPageResponseDto::fromEntity)
@@ -40,7 +41,7 @@ public class MainPageService {
 
     public List<MainPageResponseDto> getEventNames() {
         // 조회수에 의한 정렬 처리 필요
-        List<Event> eventNames = eventRepository.findAllByOrderByHitsDesc();
+        List<Event> eventNames = eventRepository.findAllByOrderByHitsDesc(6);
 
         return eventNames.stream()
                 .map(MainPageResponseDto::fromEntityName)
@@ -49,6 +50,15 @@ public class MainPageService {
 
     public List<MainPageResponseDto> getEventsHitsRandom() {
         List<Event> events = eventRepository.findRandomEvents(3);
+
+        return events.stream()
+                .map(MainPageResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<MainPageResponseDto> getEventsRegion(Region region) {
+        Long regionId = regionRepository.findRegionByCityAndAddressLine(region.getCity(), region.getAddressLine()).getId();
+        List<Event> events = eventRepository.findRegionEvents(regionId);
 
         return events.stream()
                 .map(MainPageResponseDto::fromEntity)
@@ -71,7 +81,33 @@ public class MainPageService {
         return organizers.map(MainPageFestivalListResponseDto::fromOrganizerEntity);
     }
 
+
+
     public boolean findExistUserByCustomUserDetails(CustomUserDetails customUserDetails) {
         return userRepository.existsByEmail(customUserDetails.getUsername());
+    }
+
+    public String getUserName(String email) {
+        User user = userRepository.findByEmail(email);
+        Organizer organizer = organizerRepository.findByUserId(user.getId());
+        if(organizer != null){
+            return organizer.getOrganizerName();
+        } else{
+            return user.getName();
+        }
+    }
+
+
+    public Region findRegion(String city, String addressLine) {
+        return regionRepository.findRegionByCityAndAddressLine(city, addressLine);
+    }
+
+    public int getOrganizerCount() {
+        return organizerRepository.countOrganizer();
+    }
+
+    public Page<MainPageOrganizerListResponseDto> getOrganizers(Pageable organizerPageable) {
+        Page<Organizer> organizers = organizerRepository.findOrganizers(organizerPageable);
+        return organizers.map(MainPageOrganizerListResponseDto::fromOrganizerEntity);
     }
 }

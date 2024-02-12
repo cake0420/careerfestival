@@ -1,19 +1,16 @@
 package careerfestival.career.myPage.dto;
 
-import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.enums.Role;
-import careerfestival.career.domain.mapping.Region;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
-public class MyPageResponseDto {
+@Builder
+public class MyPageUserInfoResponseDto {
 
     private String name;
 
@@ -37,8 +34,8 @@ public class MyPageResponseDto {
     // 부서 및 학과
     private String department;
 
-    // 직급
-    private String position;
 
-    private List<KeywordName> keywordName;
+    private List<KeywordName> keywordNameList;
+
+    private String userProfilefileUrl;
 }

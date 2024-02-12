@@ -100,9 +100,10 @@ public class RecordController {
 
 
     // 메인페이지
-    @GetMapping("")
-    public ResponseEntity<Page<RecordResponseDto>> getRecordsByUserId(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                                      @PageableDefault(size = 4, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("")             // ./record
+    public ResponseEntity<Page<RecordResponseDto>> getRecordsByUserId(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PageableDefault(size = 4, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         try {
             Page<RecordResponseDto> recordResponseDtos = recordService.recordList(customUserDetails.getUsername(), pageable);
             return ResponseEntity.ok(recordResponseDtos);
@@ -111,8 +112,8 @@ public class RecordController {
         }
     }
 
-    // 기록장 메인화면에서 하나의 기록장에 대해서 클릭했을 때 처리
-    @GetMapping("/category")
+    // 기록장 메인화면에서 하나의 기록장에 대해서 클릭했을 때 처리 - 프론트 페이지 나오고 나서 RequestParam 수정 여부 결정
+    @GetMapping("/category")    // ./record/category
     public ResponseEntity<RecordResponseDto> getRecordByRecordId(
             @RequestParam(value = "recordId") Long recordId){
         try{

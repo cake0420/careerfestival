@@ -16,16 +16,18 @@ public class Subscribe extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne  // default EAGER
+    // 구독하려는 사람
+    @ManyToOne
     @JoinColumn(name = "to_user")
     private User toUser;
 
+    // 구독되는 주최자
     @ManyToOne
     @JoinColumn(name = "from_user")
-    private User fromUser;
+    private Organizer fromUser;
 
-    public Subscribe(User toUser, User fromUser){
 
+    public Subscribe(User toUser, Organizer fromUser){
         this.toUser = toUser;
         this.fromUser = fromUser;
     }

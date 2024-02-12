@@ -1,5 +1,6 @@
 package careerfestival.career.register.service;
 
+import careerfestival.career.AES.AESUtil;
 import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.Gender;
@@ -34,21 +35,22 @@ public class RegisterService {
     private final EventRepository eventRepository;
     private final OrganizerRepository organizerRepository;
     private final RegionRepository regionRepository;
+    private final AESUtil aesUtil;
 
     @Autowired
     private S3Uploader s3Uploader;
 
+
     // 주최자 (organizer) 등록
     public void registerOrganizer(String email, MultipartFile organizerProfileImage, RegisterOrganizerDto registerOrganizerDto) {
         User user = userRepository.findByEmail(email);
-        try {
-            if (user.getRole() == Role.ROLE_ORGANIZER);
-            Organizer organizer = registerOrganizerDto.toEntity();
-            organizer.setUser(user);
-
-            try{
+        try{
+            if(Role.ROLE_ORGANIZER.equals(user.getRole())){
+                Organizer organizer = registerOrganizerDto.toEntity();
+                organizer.setUser(user);
+                organizer.setOrganizerEmail(aesUtil.encrypt(email));
                 if(!organizerProfileImage.isEmpty()){
-                    BufferedImage resizedImage = ImageUtils.resizeImage(organizerProfileImage, 600, 400);
+                    BufferedImage resizedImage = ImageUtils.resizeImage(organizerProfileImage, 400, 400);
 
                     // BufferedImage를 byte[]로 변환
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -64,32 +66,26 @@ public class RegisterService {
 
                     String storedFileName = s3Uploader.upload(multipartFile, "organizer_profile");
                     organizer.setOrganizerProfileFileUrl(storedFileName);
-                }
-                else{
+                } else {
                     Gender organizerGender = organizer.getUser().getGender();
                     if(Gender.남성.equals(organizerGender)){
                         organizer.setOrganizerProfileFileUrl("classpath:Male_Profile.png");
                     }
-                    else {
+                    else{
                         organizer.setOrganizerProfileFileUrl("classpath:Female_Profile.png");
                     }
                 }
-            } catch (Exception e){
-                e.printStackTrace();
+                organizerRepository.save(organizer);
             }
-            organizerRepository.save(organizer);
-        } catch(Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
 
     // 행사 등록하기 1, 2단계 기능 구현
     public void registerEvent(String email, MultipartFile eventMainImage, MultipartFile eventInformImage, RegisterEventDto registerEventDto) {
-
         User user = userRepository.findByEmail(email);
-
         Organizer organizer = organizerRepository.findByUserId(user.getId());
-
         Event event = registerEventDto.toEventEntity();
         Region region = registerEventDto.toRegionEntity();
 
@@ -120,7 +116,10 @@ public class RegisterService {
 
                 // 이벤트에 이미지 URL 설정하고 저장
                 event.setEventMainFileUrl(storedFileName);
+                organizer.updateCountEvent();
                 eventRepository.save(event);
+            } else {
+                throw new Exception();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,15 +148,19 @@ public class RegisterService {
     }
 
     // 주최자의 등록행사 개수 counting
-    public int countRegisterEvent(Long organizerId) {
-        int countRegisterEvent = eventRepository.countEventsByOrganizerId(organizerId);
-        return countRegisterEvent;
+    public int getCountRegisterEvent(Long organizerId) {
+        Organizer organizer = organizerRepository.findByUserId(organizerId);
+        return organizer.getCountEvent();
     }
 
     // 주최자 이름 반환
     public String getOrganizerName(Long organizerId) {
-        String organizerName = organizerRepository.findOrganizerNameByOrganizerId(organizerId);
-        return organizerName;
+        return organizerRepository.findOrganizerNameByOrganizerId(organizerId);
+    }
+
+    // 주최자 여부 판단
+    public Role getUserRole(String email){
+        return userRepository.findByEmail(email).getRole();
     }
 
     /*
@@ -167,7 +170,8 @@ public class RegisterService {
     */
 
     public Long getOrganizerId(String email) {
-        return userRepository.findByEmail(email).getId();
+        Long userId =  userRepository.findByEmail(email).getId();
+        return organizerRepository.findByUserId(userId).getId();
     }
 
     private static String getFileExtension(String fileName) {
@@ -177,4 +181,6 @@ public class RegisterService {
         }
         return "";
     }
+
+
 }

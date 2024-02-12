@@ -2,8 +2,10 @@ package careerfestival.career.myPage.dto;
 
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.mapping.Region;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -23,7 +25,6 @@ public class UpdateMypageResponseDto {
     //소속, 부서/학과, 직급
     private String company;
     private String department;
-    private String position;
 
     //커리어 키워드
     private KeywordName[] keywordName;
@@ -31,4 +32,6 @@ public class UpdateMypageResponseDto {
     //관심 지역
     private String city;
     private String addressLine;
+
+    private String userProfileFileUrl;
 }

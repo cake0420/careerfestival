@@ -13,13 +13,13 @@ build/
 .settings
 .springBeans
 .sts4-cache
+.DS_Store
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
 .idea/
-*.yml
 *.iws
 *.iml
 *.ipr
