@@ -48,5 +48,18 @@ cloud:
     stack:
       auto: false
 
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ${gimjeonggeon386@gmail.com}
+    password: ${xvhf hqid kbmu aeyx}
+    auth: true
+    starttls:
+      enable: true
+      required: true
+  subject:
+    member:
+      registration: Thank you for joining our cafe!
 server:
   port: 9000
