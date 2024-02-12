@@ -34,8 +34,9 @@ jobs:
           docker build -t careerfestival-backend .
           docker tag careerfestival-backend euegenechoi/careerfestival-backend:latest
           docker push euegenechoi/careerfestival-backend:latest
-          docker build -t careerfestival-frontend ./Frontend
-          docker tag careerfestival-fronted euegenechoi/careerfestival-frontend:latest
+          cd Frontend
+          docker build -t careerfestival-frontend .
+          docker tag careerfestival-frontend euegenechoi/careerfestival-frontend:latest
           docker push euegenechoi/careerfestival-frontend:latest
 
       - name: Get current time
