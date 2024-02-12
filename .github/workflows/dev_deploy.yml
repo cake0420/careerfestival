@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # (3).OS환경
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'feature/cicd-test'
 
     steps:
       - name: Checkout
@@ -31,9 +31,12 @@ jobs:
       - name: Docker build and push to Docker hub
         run: |
           docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t careerfestival .
-          docker tag careerfestival euegenechoi/careerfestival:latest
-          docker push euegenechoi/careerfestival:latest
+          docker build -t backend .
+          docker tag careerfestival-backend euegenechoi/careerfestival-backend:latest
+          docker push euegenechoi/careerfestival-backend:latest
+          docker build -t frontend ./Frontend
+          docker tag careerfestival-fronted euegenechoi/careerfestival-frontend:latest
+          docker push euegenechoi/careerfestival-frontend:latest
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
