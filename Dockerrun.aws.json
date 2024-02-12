@@ -2,7 +2,7 @@
   "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
-      "name": "backend",
+      "name": "careerfestival-backend",
       "image": "euegenechoi/careerfestival-backend:latest",
       "memory": 256,
       "essential": true,
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "name": "frontend",
+      "name": "careerfestival-frontend",
       "image": "euegenechoi/careerfestival-frontend:latest",
       "memory": 128,
       "essential": true,
