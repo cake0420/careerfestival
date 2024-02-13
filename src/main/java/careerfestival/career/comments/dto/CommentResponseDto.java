@@ -4,6 +4,8 @@ import careerfestival.career.domain.mapping.Comment;
 import careerfestival.career.repository.CommentLikeRepository;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class CommentResponseDto {
     private Long parent;
     private String Name;
     private Integer totalLikeCount;
+    private LocalDateTime createdAt;
 
 
     public CommentResponseDto(Comment comment, CommentLikeRepository commentLikeRepository) {
@@ -24,5 +27,6 @@ public class CommentResponseDto {
         this.parent = (comment.getParent() != null) ? comment.getParent().getId() : null;
         this.Name = comment.getName();
         this.totalLikeCount = commentLikeRepository.countByCommentId(comment.getId());
+        this.createdAt = comment.getCreatedAt();
     }
 }

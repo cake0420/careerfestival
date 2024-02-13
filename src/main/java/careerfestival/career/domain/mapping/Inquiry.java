@@ -24,16 +24,23 @@ public class Inquiry extends BaseEntity {
     @Column(length = 300, name = "comment_content")
     private String commentContent;
 
+    @Column(name = "order_number")
     private Long orderNumber;
 
     @Column(columnDefinition = "INT")
     private int depth;
 
+    @Column(columnDefinition = "BIT")
     private boolean isParent;
 
+    @Column(columnDefinition = "BIT")
     private boolean secret;
 
+    @Column(length = 300, name = "secret_message")
     private String secreteMessage;
+
+    @Column(columnDefinition = "BIT")
+    private boolean checked;
 
     @Column(length = 300, name = "name")
     private String name;
@@ -55,7 +62,7 @@ public class Inquiry extends BaseEntity {
 
 
 
-    public Inquiry(User user, Event event, Inquiry parent, Long orderNumber, int depth, String name, String secreteMessage, boolean secret){
+    public Inquiry(User user, Event event, Inquiry parent, Long orderNumber, int depth, String name, String secreteMessage, boolean secret, boolean checked){
         this.user = user;
         this.event = event;
         this.parent = parent;
@@ -72,10 +79,14 @@ public class Inquiry extends BaseEntity {
         }
         this.secret = secret;
         this.secreteMessage = secreteMessage; // 외부에서 설정된 값으로 초기화
-
+        this.checked = checked;
     }
     public boolean isSecret() {
         return secret;
+    }
+
+    public void setCheck(boolean checked){
+        this.checked = checked;
     }
 
     public void setSecret(boolean secret) {

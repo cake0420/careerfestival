@@ -28,6 +28,13 @@ jobs:
         run: ./gradlew clean build -x test
         shell: bash # (7).build 시작
 
+      - name: Docker build and push to Docker hub
+        run: |
+          docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t careerfestival-backend .
+          docker tag careerfestival-backend euegenechoi/careerfestival-backend:latest
+          docker push euegenechoi/careerfestival-backend:latest
+
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
@@ -39,24 +46,14 @@ jobs:
         run: echo "CurrentTime=$"
         shell: bash # (9).확보한 시간 보여주기
 
-      - name: Generate deployment package
-        run: |
-          mkdir -p deploy
-          cp -f build/libs/*.jar deploy/application.jar
-          cp -f Procfile deploy/Procfile
-          cp -rf .ebextensions-dev deploy/.ebextensions
-          cp -rf .platform deploy/.platform
-          cd deploy && zip -r deploy.zip .
-
-
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          application_name: Careerfastival-dev-cicd
-          environment_name: careerfastival-dev-cicd-env
+          application_name: careerfestival-dev
+          environment_name: Careerfestival-dev-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
+          deployment_package: Dockerrun.aws.json
           wait_for_deployment: false

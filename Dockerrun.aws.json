@@ -1,0 +1,17 @@
+{
+  "AWSEBDockerrunVersion": 1,
+  "containerDefinitions": [
+    {
+      "name": "careerfestival-backend",
+      "image": "euegenechoi/careerfestival-backend:latest",
+      "memory": 256,
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 9000,
+          "containerPort": 9000
+        }
+      ]
+    }
+  ]
+}

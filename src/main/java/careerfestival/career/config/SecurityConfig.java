@@ -71,7 +71,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/login", "/signup", "/signup/detail", "/event/**").permitAll()
+                        .requestMatchers("/", "/login", "/signup", "/signup/detail", "/event/**", "/health").permitAll()
                         .requestMatchers("/mypage", "/mypage/update").hasRole("PARTICIPANT")
                         .anyRequest().permitAll()
                 );

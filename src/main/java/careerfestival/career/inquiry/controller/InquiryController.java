@@ -20,17 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class InquiryController{
     private final InquiryService inquiryService;
     private final UserRepository userRepository;
-    private final UserService userService;
-    public static final Long DEFAULT_USER_ID = 0L;
-
 
     @PostMapping("/event/{eventId}/inquiry")
     public ResponseEntity<Long> addInquiry(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody InquiryRequestDto inquiryRequestDto,
             @PathVariable("eventId") Long eventId){
-        // Assuming you have the authenticated user's email
-        // Replace this with the actual email
 
         if (customUserDetails == null) {
             // 로그인하지 않은 사용자는 로그인 페이지로 리다이렉트합니다.

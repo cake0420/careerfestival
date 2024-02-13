@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,14 +22,16 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class InquiryService {
     private final InquiryRepository inquiryRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     public static final Long DEFAULT_USER_ID = 0L;
 
-
     public Long inquirySave(Long userId, Long eventId, InquiryRequestDto inquiryRequestDto) {
+        boolean isTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+
         Optional<User> user = userRepository.findById(userId);
         Optional<Event> event = eventRepository.findById(eventId);
         if (user.isPresent() && event.isPresent() && inquiryRequestDto.getCommentContent() != null) {
@@ -40,6 +44,12 @@ public class InquiryService {
                     Inquiry lastParentComment = parentComment.get(parentComment.size() - 1); // 마지막 부모 댓글을 가져옴
                     Inquiry inquiry = inquiryRequestDto.toEntityWithParent(user.orElse(null), event.orElse(null), inquiryRequestDto.getCommentContent(), lastParentComment);
 
+                    if(Objects.equals(userId, event.get().getUser().getId())){
+                        inquiryRepository.updateCheckStatusBeforeOrderNumber(inquiry.getOrderNumber(), inquiry.getEvent().getId());
+                    }
+                    else {
+                        inquiry.setCheck(false);
+                    }
                     // 대댓글이므로 isParent를 false로 설정
                     inquiry.setIsParent(false);
                     inquiry.setOrderNumber(lastParentComment.getOrderNumber());
