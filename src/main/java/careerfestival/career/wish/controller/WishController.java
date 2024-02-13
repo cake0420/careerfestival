@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 public class WishController {
     private final WishService wishService;
-    private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
     private final UserService userService;
 
