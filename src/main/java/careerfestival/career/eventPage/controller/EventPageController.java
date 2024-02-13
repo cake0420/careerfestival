@@ -40,9 +40,9 @@ public class EventPageController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "3") int size,
+            @RequestParam(value = "size", defaultValue = "2") int size,
             @RequestParam(value = "index", defaultValue = "1") int index,
-            @RequestParam(value = "standard", defaultValue = "3") int standard) {
+            @RequestParam(value = "standard", defaultValue = "2") int standard) {
         int pageSize = size;
         int pageStandard = standard;
         int offset = (page - 1) * pageSize;
