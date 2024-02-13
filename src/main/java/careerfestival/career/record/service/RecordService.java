@@ -2,11 +2,14 @@ package careerfestival.career.record.service;
 
 import careerfestival.career.domain.Record;
 import careerfestival.career.domain.User;
+import careerfestival.career.domain.enums.Category;
+import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.NetworkDetail;
 import careerfestival.career.domain.mapping.RecordDetail;
 import careerfestival.career.global.S3Uploader;
 import careerfestival.career.record.dto.RecordRequestDto;
 import careerfestival.career.record.dto.RecordResponseDto;
+import careerfestival.career.record.dto.UpdateRecordResponseDto;
 import careerfestival.career.repository.RecordRepository;
 import careerfestival.career.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -197,5 +201,17 @@ public class RecordService {
     public RecordResponseDto getRecord(Long recordId) {
         Record record = recordRepository.findRecordById(recordId);
         return RecordResponseDto.recordFromEntity(record);
+    }
+    //기록업데이트
+    public void findRecordByEmailAndUpdate(Long recordId, UpdateRecordResponseDto updateRecordResponseDto) {
+        Record updateRecord = recordRepository.findRecordById(recordId);
+        updateRecord.update(updateRecordResponseDto);
+       /* Category category = updateRecordResponseDto.getCategory();
+        String eventName = updateRecordResponseDto.getEventName();
+        String eventTitle = updateRecordResponseDto.getEventTitle();
+        String eventDate = updateRecordResponseDto.getEventName();
+        List<KeywordName> keywordNames = updateRecordResponseDto.getKeywordName();
+        List<RecordDetail> recordDetails = updateRecordResponseDto.getRecordDetails();
+        List<NetworkDetail> networkDetails = updateRecordResponseDto.getNetworkDetails();*/
     }
 }

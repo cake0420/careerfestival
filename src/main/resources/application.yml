@@ -1,4 +1,6 @@
+
 spring:
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USER}
@@ -22,7 +24,7 @@ spring:
 
   jwt:
     secret: ${TOKEN_SECRET}
-    tokenValidTime: ${TOKEN_VALID_TIME}
+    toeknValidTime: ${TOKEN_VALID_TIME}
 
   servlet:
     multipart:
@@ -30,10 +32,9 @@ spring:
       max-file-size: 10MB
       enabled: true
 
-
 aes:
-  secret-key: ${AES_SECRET_KEY}
-  init-vector: ${AES_INIT_VECTOR}
+    secret-key: ${AES_SECRET_KEY}
+    init-vector: ${AES_INIT_VECTOR}
 
 cloud:
   aws:
@@ -44,7 +45,21 @@ cloud:
       bucket: ${BUCKET_NAME}
     region:
       static: ap-northeast-2
-  stack:
-    auto: false
+    stack:
+      auto: false
+
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: ${gimjeonggeon386@gmail.com}
+    password: ${xvhf hqid kbmu aeyx}
+    auth: true
+    starttls:
+      enable: true
+      required: true
+  subject:
+    member:
+      registration: Thank you for joining our cafe!
 server:
   port: 9000

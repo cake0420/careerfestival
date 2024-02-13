@@ -2,11 +2,15 @@ package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
+import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.NetworkDetail;
 import careerfestival.career.domain.mapping.RecordDetail;
+import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
+import careerfestival.career.record.dto.UpdateRecordResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -47,4 +51,54 @@ public class Record extends BaseEntity {
     @ElementCollection
     @CollectionTable(name = "record_detail", joinColumns = @JoinColumn(name = "record_detail_id"))
     private List<RecordDetail> recordDetails = new ArrayList<>();
+
+
+
+    //--------------------------------update--------------------------------
+
+    public void updateCategory(Category category) {
+        if(category==null) return;
+        this.category = category;
+    }
+
+    public void updateeventName(String eventName) {
+        if(eventName==null) return;
+        this.eventName = eventName;
+    }
+
+    public void updateEventDate(LocalDate eventDate) {
+        if(eventDate==null) return;
+        this.eventDate = eventDate;
+    }
+
+    public void updateKeywordName(List<KeywordName> keywordName) {
+        if(keywordName == null) return;
+        this.keywordName = keywordName;
+    }
+
+    public void updateRecordDetails(List recordDetails) {
+        if(recordDetails == null) return;
+        /*this.recordDetails = recordDetails;*/
+        this.recordDetails.clear(); // 기존에 저장된 레코드 디테일 모두 제거
+        this.recordDetails.addAll(recordDetails); // 새로운 레코드 디테일 추가
+    }
+
+    public void updateNetworkDetails(List networkDetails) {
+        if(networkDetails == null) return;
+        this.networkDetails.clear(); // 기존에 저장된 네트워크 디테일 모두 제거
+        this.networkDetails.addAll(networkDetails); // 새로운 네트워크 디테일 추가
+    }
+
+
+
+    /*record update 관련*/
+    @Transactional
+    public void update(UpdateRecordResponseDto updateRecordResponseDto) {
+        this.updateCategory(updateRecordResponseDto.getCategory());
+        this.updateeventName(updateRecordResponseDto.getEventName());
+        this.updateEventDate(updateRecordResponseDto.getEventDate());
+        this.updateKeywordName(updateRecordResponseDto.getKeywordName());
+        this.updateRecordDetails(updateRecordResponseDto.getRecordDetails());
+        this.updateNetworkDetails(updateRecordResponseDto.getNetworkDetails());
+    }
 }

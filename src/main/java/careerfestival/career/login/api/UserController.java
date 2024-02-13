@@ -1,12 +1,14 @@
 package careerfestival.career.login.api;
 
 import careerfestival.career.domain.User;
+import careerfestival.career.email.service.EmailService;
 import careerfestival.career.domain.enums.Role;
 import careerfestival.career.jwt.JWTUtil;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.dto.UserSignUpRequestDto;
 import careerfestival.career.login.service.UserService;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,12 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
     private final JWTUtil jwtUtil;
 
     // 회원가입 1, 2 (이름, 이메일, 비밀번호, 비밀번호 확인, role)
@@ -94,5 +99,11 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); //400
         }
+    }
+    //화면 테스트용
+    @GetMapping("/login")
+    @ResponseBody
+    public String login() {
+        return "login page";
     }
 }
