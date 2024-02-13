@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # (3).OS환경
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'feature/cicd-test'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop'
 
     steps:
       - name: Checkout
@@ -34,10 +34,6 @@ jobs:
           docker build -t careerfestival-backend .
           docker tag careerfestival-backend euegenechoi/careerfestival-backend:latest
           docker push euegenechoi/careerfestival-backend:latest
-          cd Frontend
-          docker build -t careerfestival-frontend .
-          docker tag careerfestival-frontend euegenechoi/careerfestival-frontend:latest
-          docker push euegenechoi/careerfestival-frontend:latest
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
