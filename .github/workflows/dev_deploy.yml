@@ -31,17 +31,10 @@ jobs:
         shell: bash  # (7). Build script
 
       - name: Login to Docker Hub
-        run: docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
-
-
-      - name: Build Spring Boot Docker image
-        run: |
+        run: :
+          docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t euegenechoi/careerfestival:latest .
-        env:
-          DOCKER_IMAGE_NAME: euegenechoi/careerfestival
-
-      - name: Push Spring Boot Docker image
-        run: docker push careerfestival:latest
+          docker push careerfestival:latest
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
