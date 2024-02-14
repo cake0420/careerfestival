@@ -1,12 +1,16 @@
 package careerfestival.career.participate.controller;
 
+import careerfestival.career.domain.User;
+import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.participate.dto.ParticipateRequestDto;
 import careerfestival.career.participate.dto.ParticipateResponseDto;
 import careerfestival.career.participate.service.ParticipateService;
 import careerfestival.career.repository.EventRepository;
+import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,16 +19,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParticipateController {
     private final ParticipateService participateService;
-    private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
-    @PostMapping("/event/{eventId}/{userId}/participate")
+    @PostMapping("/event/{eventId}/{participate")
     public ResponseEntity<Long> addParticipate(
-            @PathVariable("userId") Long userId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId,
             @RequestBody ParticipateRequestDto participateRequestDto) {
-        // Assuming you have the authenticated user's email
-        String userEmail = "user@example.com"; // Replace this with the actual email
 
+        User user = userRepository.findByEmail(customUserDetails.getUsername());
+        Long userId = user.getId();
         try {
             Long participateId = participateService.participateSave(userId, eventId, participateRequestDto);
 
@@ -46,13 +50,13 @@ public class ParticipateController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/event/{eventId}/{userId}/participate")
+    @GetMapping("/event/{eventId}/participate")
     public ResponseEntity<List<ParticipateResponseDto>> getAllParticipateByEvent(
-            @PathVariable("userId") Long userId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId) {
-        String userEmail = "user@example.com"; // Replace this with the actual email
-        String name = "test";
 
+        User user = userRepository.findByEmail(customUserDetails.getUsername());
+        Long userId = user.getId();
 
 
         try {
