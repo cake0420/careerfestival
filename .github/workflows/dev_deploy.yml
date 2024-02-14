@@ -41,7 +41,7 @@ jobs:
           DOCKER_IMAGE_NAME: euegenechoi/careerfestival
 
       - name: Push Spring Boot Docker image
-        run: docker push ${{ env.DOCKER_IMAGE_NAME }}:latest
+        run: docker push careerfestival:latest
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
