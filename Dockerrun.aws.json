@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "euegenechoi/careerfestival-backend:latest",
+    "Name": "euegenechoi/careerfestival",
     "Update": "true"
   },
   "Ports": [
