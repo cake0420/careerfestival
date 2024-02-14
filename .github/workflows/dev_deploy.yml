@@ -56,7 +56,7 @@ jobs:
           environment_name: Careerfestival-dev-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: dockerrun.aws.json  # Change to this after creating the file
+          deployment_package: Dockerrun.aws.json  # Change to this after creating the file
           wait_for_deployment: 200
 
       - name: Start services using Docker Compose (optional)
