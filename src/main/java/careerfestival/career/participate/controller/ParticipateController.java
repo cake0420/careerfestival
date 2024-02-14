@@ -30,8 +30,11 @@ public class ParticipateController {
             @PathVariable("eventId") Long eventId,
             @RequestBody ParticipateRequestDto participateRequestDto) {
 
-        System.out.println("eventId = " + eventId);
-
+        if(customUserDetails == null){
+            return ResponseEntity.ok()
+                    .header("Location","/login")
+                    .build();
+        }
         User user = userRepository.findByEmail(customUserDetails.getUsername());
         Long userId = user.getId();
         try {
