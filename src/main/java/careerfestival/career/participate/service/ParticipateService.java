@@ -31,12 +31,19 @@ public class ParticipateService {
         Optional<User> user = userRepository.findById(userId);
         Optional<Event> event = eventRepository.findById(eventId);
         if(user.isPresent() && event.isPresent()){
-        Participate participate = participateRequestDto.toEntity(user.orElse(null), event.orElse(null));
-        participateRepository.save(participate);
-        return participate.getId();
+            Participate check = participateRepository.findByUserIdAndEventId(userId, eventId);
+            if(check == null){
+                Participate participate = participateRequestDto.toEntity(user.orElse(null), event.orElse(null));
+                participateRepository.save(participate);
+                return participate.getId();
+            }
+            else {
+                return null;
+            }
+
         }
         else {
-            throw new UserOrEventNotFoundException("U");
+            throw new UserOrEventNotFoundException("User or Event not found");
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ParticipateRepository extends JpaRepository<Participate, Long> {
     List<Participate> findByUserAndEvent(User user, Event event);
-
+    Participate findByUserIdAndEventId(Long userId, Long eventId);
     @Query(value = "SELECT p FROM Participate p WHERE p.user IN (?1) ORDER BY p.createdAt DESC")
     List<Participate> findAllByUserOrderByCreatedAtDesc(User user);
 
