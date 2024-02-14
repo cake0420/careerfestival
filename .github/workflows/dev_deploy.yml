@@ -1,6 +1,9 @@
 name: Dev CI/CD
 
 on:
+  push:
+    branches:
+      - test-cicd
   pull_request:
     types: [closed]
   workflow_dispatch: # (2).수동 실행도 가능하도록
@@ -8,8 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # (3).OS환경
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop'
-
+    if: |
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'feat-test-cicd') ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/test-cicd')
     steps:
       - name: Checkout
         uses: actions/checkout@v2 # (4).코드 check out
@@ -20,20 +24,24 @@ jobs:
           java-version: '17' # (5).자바 설치
           distribution: 'adopt'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-        shell: bash # (6).권한 부여
-
-      - name: Build with Gradle
-        run: ./gradlew clean build -x test
+      - name: Grant execute permission for gradlew And Build with Gradle
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
         shell: bash # (7).build 시작
 
-      - name: Docker build and push to Docker hub
+
+
+
+      - name: Docker build backend and push to Docker hub
         run: |
           docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t careerfestival-backend .
-          docker tag careerfestival-backend euegenechoi/careerfestival-backend:latest
-          docker push euegenechoi/careerfestival-backend:latest
+          pwd
+          cd backend
+          docker build -t careerfestival .
+          docker tag careerfestival euegenechoi/careerfestival:latest
+          docker push euegenechoi/careerfestival:latest
+
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
@@ -55,5 +63,8 @@ jobs:
           environment_name: Careerfestival-dev-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: Dockerrun.aws.json
-          wait_for_deployment: false
+          deployment_package: docker-compose.yml
+          wait_for_deployment: 60
+
+      - name: Docker Compose Up
+        run: docker compose up -d
