@@ -40,6 +40,7 @@ public class ParticipateController {
             //참가 확정하면 행사 통계자료 최신화
             participateService.updateStatics(eventId);
             Optional<Event> event = eventRepository.findById(eventId);
+            eventRepository.save(event.get());
 
             // 리다이렉트를 위한 URL 생성
             String redirectUrl = "/event/" + userId + "/" + eventId;

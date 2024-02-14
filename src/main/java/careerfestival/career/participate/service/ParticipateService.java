@@ -106,13 +106,8 @@ public class ParticipateService {
                 .countedCompanyType6(countedCompanyType6)
                 .build();
 
-        Optional<Event> findEvent = eventRepository.findById(eventId);
-        boolean present = findEvent.isPresent();
-        if(present){
-            findEvent.get().updateStatistics(statisticsDto);
-            System.out.println("findEvent.get().getCountedMale() = " + findEvent.get().getCountedMale());
-            return;
-        }
+        Event findEvent = eventRepository.findById(eventId).orElse(null);
+        findEvent.updateStatistics(statisticsDto);
     }
 }
 
