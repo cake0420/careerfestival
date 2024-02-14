@@ -21,7 +21,7 @@ public class ParticipateController {
     private final ParticipateService participateService;
     private final UserRepository userRepository;
 
-    @PostMapping("/event/{eventId}/{participate")
+    @PostMapping("/event/{eventId}/participate")
     public ResponseEntity<Long> addParticipate(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId,
