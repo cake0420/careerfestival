@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest  # (3). OS environment
     if: |
-      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'feat-test-cicd') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop') ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/ci')
     steps:
       - name: Checkout
@@ -57,8 +57,5 @@ jobs:
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: Dockerrun.aws.json  # Change to this after creating the file
-          wait_for_deployment: 200
-
-      - name: Start services using Docker Compose (optional)
-        run: docker-compose up -d
+          wait_for_deployment: false
 
