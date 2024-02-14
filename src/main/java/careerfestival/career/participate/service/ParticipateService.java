@@ -4,6 +4,7 @@ import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.domain.enums.CompanyType;
 import careerfestival.career.domain.enums.Gender;
+import careerfestival.career.domain.enums.Role;
 import careerfestival.career.domain.mapping.Participate;
 import careerfestival.career.participate.Exception.UserOrEventNotFoundException;
 import careerfestival.career.participate.dto.ParticipateRequestDto;
@@ -32,7 +33,7 @@ public class ParticipateService {
         Optional<Event> event = eventRepository.findById(eventId);
         if(user.isPresent() && event.isPresent()){
             Participate check = participateRepository.findByUserIdAndEventId(userId, eventId);
-            if(check == null){
+            if(check == null && user.get().getRole() == Role.ROLE_PARTICIPANT){
                 Participate participate = participateRequestDto.toEntity(user.orElse(null), event.orElse(null));
                 participateRepository.save(participate);
                 return participate.getId();
