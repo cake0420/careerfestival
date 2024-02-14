@@ -1,10 +1,7 @@
 package careerfestival.career.domain;
 
 import careerfestival.career.domain.common.BaseEntity;
-import careerfestival.career.domain.enums.Gender;
-import careerfestival.career.domain.enums.KeywordName;
-import careerfestival.career.domain.enums.Role;
-import careerfestival.career.domain.enums.UserStatus;
+import careerfestival.career.domain.enums.*;
 import careerfestival.career.domain.mapping.*;
 import careerfestival.career.myPage.dto.UpdateMypageResponseDto;
 import jakarta.persistence.*;
@@ -53,8 +50,8 @@ public class User extends BaseEntity {
     private int age;
 
     // 소속
-    @Column(length = 20, name = "company")
-    private String company;
+    @Enumerated(EnumType.STRING)
+    private CompanyType company;
 
     // 부서 및 학과
     @Column(length = 20, name = "department")
@@ -140,7 +137,7 @@ public class User extends BaseEntity {
     }
 
 
-    public void updateCompany(String company) {
+    public void updateCompany(CompanyType company) {
         if(company==null) return;
         this.company = company;
     }
