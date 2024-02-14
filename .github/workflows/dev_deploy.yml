@@ -62,7 +62,7 @@ jobs:
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: docker-compose.yml
-          wait_for_deployment: 60
+          wait_for_deployment: 200
 
       - name: Docker Compose Up
         run: docker compose up -d
