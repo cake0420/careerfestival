@@ -31,10 +31,8 @@ jobs:
         shell: bash  # (7). Build script
 
       - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
+
 
       - name: Build Spring Boot Docker image
         run: |
