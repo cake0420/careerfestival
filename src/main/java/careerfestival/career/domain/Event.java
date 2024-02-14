@@ -8,6 +8,7 @@ import careerfestival.career.participate.dto.StatisticsDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -125,6 +126,7 @@ public class Event extends BaseEntity {
     private int countedCompanyType5;
     private int countedCompanyType6 ;
 
+    @Transactional
     public void updateStatistics(StatisticsDto statisticsDto){
         //성별 통계 업데이트
         this.countedMale = statisticsDto.getCountedMale();
@@ -146,6 +148,4 @@ public class Event extends BaseEntity {
         this.countedCompanyType5 = statisticsDto.getCountedCompanyType5();
         this.countedCompanyType6 = statisticsDto.getCountedCompanyType6();
     }
-
-
 }
