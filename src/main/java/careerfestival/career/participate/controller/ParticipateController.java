@@ -1,5 +1,6 @@
 package careerfestival.career.participate.controller;
 
+import careerfestival.career.domain.Event;
 import careerfestival.career.domain.User;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.participate.dto.ParticipateRequestDto;
@@ -14,18 +15,22 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class ParticipateController {
     private final ParticipateService participateService;
     private final UserRepository userRepository;
+    private final EventRepository eventRepository;
 
-    @PostMapping("/event/{eventId}/{participate")
+    @PostMapping("/event/{eventId}/participate")
     public ResponseEntity<Long> addParticipate(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("eventId") Long eventId,
             @RequestBody ParticipateRequestDto participateRequestDto) {
+
+        System.out.println("eventId = " + eventId);
 
         User user = userRepository.findByEmail(customUserDetails.getUsername());
         Long userId = user.getId();
@@ -34,6 +39,7 @@ public class ParticipateController {
 
             //참가 확정하면 행사 통계자료 최신화
             participateService.updateStatics(eventId);
+            Optional<Event> event = eventRepository.findById(eventId);
 
             // 리다이렉트를 위한 URL 생성
             String redirectUrl = "/event/" + userId + "/" + eventId;

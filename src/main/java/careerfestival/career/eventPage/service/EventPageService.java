@@ -26,4 +26,10 @@ public class EventPageService {
                 .collect(Collectors.toList());
     }
 
+    public Event findEvent(Long eventId){
+
+        Optional<Event> findEvent = eventRepository.findById(eventId);
+        return findEvent.get();
+    }
+
 }

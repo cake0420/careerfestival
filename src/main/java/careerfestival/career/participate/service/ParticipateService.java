@@ -110,6 +110,8 @@ public class ParticipateService {
         boolean present = findEvent.isPresent();
         if(present){
             findEvent.get().updateStatistics(statisticsDto);
+            System.out.println("findEvent.get().getCountedMale() = " + findEvent.get().getCountedMale());
+            return;
         }
     }
 }

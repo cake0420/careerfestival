@@ -11,6 +11,7 @@ import careerfestival.career.inquiry.service.InquiryService;
 import careerfestival.career.jwt.JWTUtil;
 import careerfestival.career.login.dto.CustomUserDetails;
 import careerfestival.career.login.service.UserService;
+import careerfestival.career.participate.dto.StatisticsDto;
 import careerfestival.career.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,7 @@ public class EventPageController {
             @RequestParam(value = "size", defaultValue = "2") int size,
             @RequestParam(value = "index", defaultValue = "1") int index,
             @RequestParam(value = "standard", defaultValue = "2") int standard) {
+
         int pageSize = size;
         int pageStandard = standard;
         int offset = (page - 1) * pageSize;
@@ -56,12 +58,15 @@ public class EventPageController {
         try {
             List<EventPageResponseDto> eventInformation = eventPageService.getEvents(eventId);
 
+            StatisticsDto statistics = StatisticsDto.fromEntity(eventPageService.findEvent(eventId));
+
             // 수정된 부분: CommentService에서 수정한 메서드 사용
             Page<CommentResponseDto> comments = commentService.getAllCommentsByEvent(eventId, pageSize, offset);
             Page<InquiryResponseDto> inquiry = inquiryService.getAllCommentsByEvent(userId ,eventId, pageStandard, setOff);
             // 댓글 정보를 응답으로 반환합니다.
             Map<String, Object> eventPage = new HashMap<>();
             eventPage.put("eventInformation", eventInformation);
+            eventPage.put("statistics", statistics);
             eventPage.put("comments", comments.getContent());  // Page의 getContent() 메서드를 사용하여 데이터 추출
             eventPage.put("currentPage", comments.getNumber());  // 현재 페이지 번호
             eventPage.put("totalPages", comments.getTotalPages());  // 전체 페이지 수
