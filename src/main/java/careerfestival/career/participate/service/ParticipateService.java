@@ -30,10 +30,21 @@ public class ParticipateService {
 
         Optional<User> user = userRepository.findById(userId);
         Optional<Event> event = eventRepository.findById(eventId);
-        System.out.println("event = " + event);
-        Participate participate = participateRequestDto.toEntity(user.orElse(null), event.orElse(null));
-        participateRepository.save(participate);
-        return participate.getId();
+        if(user.isPresent() && event.isPresent()){
+            Participate check = participateRepository.findByUserIdAndEventId(userId, eventId);
+            if(check == null){
+                Participate participate = participateRequestDto.toEntity(user.orElse(null), event.orElse(null));
+                participateRepository.save(participate);
+                return participate.getId();
+            }
+            else {
+                return null;
+            }
+
+        }
+        else {
+            throw new UserOrEventNotFoundException("User or Event not found");
+        }
     }
 
     public List<ParticipateResponseDto> getAllParticipateByEvent(Long userId, Long eventId) {
