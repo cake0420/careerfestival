@@ -36,8 +36,6 @@ jobs:
       - name: Docker build backend and push to Docker hub
         run: |
           docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
-          pwd
-          cd backend
           docker build -t careerfestival .
           docker tag careerfestival euegenechoi/careerfestival:latest
           docker push euegenechoi/careerfestival:latest
