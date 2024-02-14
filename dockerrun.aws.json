@@ -1,0 +1,59 @@
+{
+  "AWSEBDockerrunVersion": "2",
+  "Image": {
+    "Name": "euegenechoi/careerfestival:latest"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "80"
+    }
+  ],
+  "Volumes": [
+    {
+      "Name": "nginx-conf",
+      "HostPath": "./.platform/nginx.conf"
+    }
+  ],
+  "ContainerDefinitions": [
+    {
+      "Name": "careerfestival",
+      "Image": "euegenechoi/careerfestival:latest",
+      "Essential": true,
+      "PortMappings": [
+        {
+          "ContainerPort": "9000"
+        }
+      ],
+      "DependsOn": [
+        {
+          "ContainerName": "nginx",
+          "Condition": "START"
+        }
+      ]
+    },
+    {
+      "Name": "nginx",
+      "Image": "nginx:latest",
+      "Essential": true,
+      "RestartPolicy": "always",
+      "MountPoints": [
+        {
+          "SourceVolume": "nginx-conf",
+          "ContainerPath": "/etc/nginx/conf.d/nginx.conf",
+          "ReadOnly": true
+        }
+      ],
+      "PortMappings": [
+        {
+          "ContainerPort": "80"
+        }
+      ],
+      "DependsOn": [
+        {
+          "ContainerName": "careerfestival",
+          "Condition": "START"
+        }
+      ]
+    }
+  ]
+}
