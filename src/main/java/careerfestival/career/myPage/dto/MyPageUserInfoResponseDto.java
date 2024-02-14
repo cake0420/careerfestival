@@ -1,5 +1,6 @@
 package careerfestival.career.myPage.dto;
 
+import careerfestival.career.domain.enums.CompanyType;
 import careerfestival.career.domain.enums.Gender;
 import careerfestival.career.domain.enums.KeywordName;
 import jakarta.validation.constraints.Email;
@@ -29,7 +30,7 @@ public class MyPageUserInfoResponseDto {
     private String addressLine;
 
     // 소속(회사/기관/학교명)
-    private String company;
+    private CompanyType company;
 
     // 부서 및 학과
     private String department;

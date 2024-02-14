@@ -4,8 +4,10 @@ import careerfestival.career.domain.common.BaseEntity;
 import careerfestival.career.domain.enums.Category;
 import careerfestival.career.domain.enums.KeywordName;
 import careerfestival.career.domain.mapping.*;
+import careerfestival.career.participate.dto.StatisticsDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -101,4 +103,49 @@ public class Event extends BaseEntity {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
+
+
+    //통계자료-------------------------------------------------------------------
+
+
+    private int countedMale;
+    private int countedFemale;
+
+    private int countedUnder19 ;
+    private int counted20to24 ;
+    private int counted25to29 ;
+    private int counted30to34 ;
+    private int counted35to39;
+    private int countedOver40;
+
+    private int countedCompanyType1;
+    private int countedCompanyType2;
+    private int countedCompanyType3 ;
+    private int countedCompanyType4;
+    private int countedCompanyType5;
+    private int countedCompanyType6 ;
+
+    public void updateStatistics(StatisticsDto statisticsDto){
+        //성별 통계 업데이트
+        this.countedMale = statisticsDto.getCountedMale();
+        this.countedFemale = statisticsDto.getCountedFemale();
+
+        //나이 통계 업데이트
+        this.countedUnder19 = statisticsDto.getCountedUnder19();
+        this.counted20to24 = statisticsDto.getCounted20to24();
+        this.counted25to29 = statisticsDto.getCounted25to29();
+        this.counted30to34 = statisticsDto.getCounted30to34();
+        this.counted35to39 = statisticsDto.getCounted35to39();
+        this.countedOver40 = statisticsDto.getCountedOver40();
+
+        //소속 통계 업데이트
+        this.countedCompanyType1 = statisticsDto.getCountedCompanyType1();
+        this.countedCompanyType2 = statisticsDto.getCountedCompanyType2();
+        this.countedCompanyType3 = statisticsDto.getCountedCompanyType3();
+        this.countedCompanyType4 = statisticsDto.getCountedCompanyType4();
+        this.countedCompanyType5 = statisticsDto.getCountedCompanyType5();
+        this.countedCompanyType6 = statisticsDto.getCountedCompanyType6();
+    }
+
+
 }

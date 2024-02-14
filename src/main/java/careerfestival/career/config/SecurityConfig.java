@@ -73,6 +73,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/", "/login", "/signup", "/signup/detail", "/event/**", "/health").permitAll()
                         .requestMatchers("/mypage", "/mypage/update").hasRole("PARTICIPANT")
+                        .requestMatchers("event/organizer, event/register").hasRole("ORGANIZER")
                         .anyRequest().permitAll()
                 );
 
