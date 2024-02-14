@@ -34,7 +34,7 @@ jobs:
         run: |
           docker login -u euegenechoi -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t euegenechoi/careerfestival .
-          docker push careerfestival
+          docker push euegenechoi/careerfestival
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
