@@ -3,7 +3,7 @@ name: Dev CI/CD
 on:
   push:
     branches:
-      - test-cicd
+      - ci
   pull_request:
     types: [closed]
   workflow_dispatch: # (2).수동 실행도 가능하도록
